@@ -86,7 +86,7 @@ def test_answer_citations_are_checked_against_retrieved_paragraphs():
     hits = [Hit(c, 1.0) for c in chunks if c.paragraph == "9-14"]
     assert "[AC 43.13-1B par. 9-14]" in context_block(hits)
     answer = "Inspect the tread [AC 43.13-1B par. 9-14]. Re-torque the axle nut [AC 43.13-1B par. 9-99]."
-    assert check_citations(answer, hits) == (["9-14"], ["9-99"])
+    assert check_citations(answer, hits) == (["AC 43.13-1B par. 9-14"], ["AC 43.13-1B par. 9-99"])
     assert "9-99" not in strip_unknown_citations(answer, hits)
     assert "[AC 43.13-1B par. 9-14]" in strip_unknown_citations(answer, hits)
 
@@ -102,7 +102,7 @@ def test_committed_index_covers_every_chapter():
 
 
 def test_search_finds_the_right_ac_paragraph():
-    index = ProcedureIndex.load()
+    index = ProcedureIndex.load()  # AC + handbooks; limit this search to the AC
     cases = {
         "tire worn in center, cut on sidewall": "9-14",
         "rudder control cable frayed at pulley, broken wires": "7-149",
@@ -112,12 +112,12 @@ def test_search_finds_the_right_ac_paragraph():
         "exhaust stack crack": "8-47",
     }
     for query, para in cases.items():
-        top = [h.chunk.paragraph for h in index.search(query, k=3)]
+        top = [h.chunk.paragraph for h in index.search(query, k=3, docs={"AC 43.13-1B"})]
         assert para in top, (query, top)
 
 
 def test_search_returns_one_hit_per_paragraph():
-    hits = ProcedureIndex.load().search("brake dragging, temperature high after taxi", k=5)
+    hits = ProcedureIndex.load(DEFAULT_CHUNKS).search("brake dragging, temperature high after taxi", k=5)
     paras = [h.chunk.paragraph for h in hits]
     assert len(paras) == len(set(paras)) == 5
     assert "9-7" in paras[:2]  # Landing-gear components: brakes

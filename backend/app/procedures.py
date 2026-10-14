@@ -1,10 +1,15 @@
-"""Cited procedures: FAA Advisory Circular chunks and a lexical search index.
+"""Cited procedures: FAA AC 43.13-1B and AMT Handbook chunks, and a lexical search index.
 
 The AC PDF is split by paragraph ("9-14. TIRE INSPECTION AND REPAIR.") so every
 chunk carries the AC number, chapter, section, paragraph number and the page it
 starts on. Search is BM25 over those chunks; it runs on the CPU in milliseconds
 and needs no model, so it works before the embedding service is up. Embedding
 search on the MI300X can rerank these hits later without changing the output.
+
+The FAA AMT Handbooks (General, Airframe, Powerplant) are chunked by heading in
+handbooks.py into the same `Chunk` record; for them `ac_number` holds the
+handbook number ("FAA-H-8083-31B") and `paragraph` a section key ("13.14").
+`ProcedureIndex.load()` searches every chunk file in data/procedures/.
 
 Build the chunk file once from the PDF:
     python -m app.procedures build ../data/raw/ac/AC_43.13-1B_CHG_1_Ed_Upd_FAA.pdf
@@ -23,7 +28,13 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_CHUNKS = REPO_ROOT / "data" / "procedures" / "ac_43-13-1b.jsonl"
+PROCEDURES_DIR = REPO_ROOT / "data" / "procedures"
+DEFAULT_CHUNKS = PROCEDURES_DIR / "ac_43-13-1b.jsonl"
+
+
+def chunk_files() -> list[Path]:
+    """Every committed chunk file: the AC and the AMT Handbooks."""
+    return sorted(PROCEDURES_DIR.glob("*.jsonl"))
 
 # AC 43.13-1B CHG 1 (editorial update, May 2024) on the FAA site.
 AC_43_13_1B = {
@@ -40,14 +51,14 @@ SNIPPET_CHARS = 280
 @dataclass
 class Chunk:
     id: str
-    ac_number: str
+    ac_number: str  # document number: "AC 43.13-1B", or a handbook's "FAA-H-8083-31B"
     doc: str
     chapter: str  # "9"
     chapter_title: str  # "Aircraft Systems and Components"
-    section: str  # "1" (sections restart in each chapter)
-    section_title: str
-    paragraph: str  # "9-14"
-    title: str  # "Tire Inspection and Repair"
+    section: str  # "1" (sections restart in each chapter); "" for handbooks
+    section_title: str  # handbooks: the parent headings, "Landing Gear Types > Shock Struts"
+    paragraph: str  # "9-14"; handbooks: a section key, "13.14" (not printed in the book)
+    title: str  # "Tire Inspection and Repair"; handbooks: the heading
     part: int  # 1.. when a long paragraph is split
     page: int  # 1-based page in the PDF (for links)
     page_label: str  # printed page, e.g. "9-12"
@@ -268,6 +279,10 @@ def load_chunks(path: str | Path = DEFAULT_CHUNKS) -> list[Chunk]:
         return [Chunk(**json.loads(line)) for line in f if line.strip()]
 
 
+def is_handbook(c: Chunk) -> bool:
+    return c.ac_number.startswith("FAA-H-")
+
+
 # ---------------------------------------------------------------- search
 
 # Shop-floor shorthand seen in ASRS/SDR narratives, expanded so it matches AC wording.
@@ -336,13 +351,22 @@ class ProcedureIndex:
         self.idf = {t: math.log(1 + (n - f + 0.5) / (f + 0.5)) for t, f in df.items()}
 
     @classmethod
-    def load(cls, path: str | Path = DEFAULT_CHUNKS) -> "ProcedureIndex":
-        return cls(load_chunks(path))
+    def load(cls, paths: str | Path | list[str | Path] | None = None) -> "ProcedureIndex":
+        """Load one chunk file, a list of them, or (by default) all of data/procedures/."""
+        if paths is None:
+            paths = chunk_files()
+        elif isinstance(paths, (str, Path)):
+            paths = [paths]
+        return cls([c for p in paths for c in load_chunks(p)])
 
-    def search(self, query: str, k: int = 3) -> list[Hit]:
+    def search(self, query: str, k: int = 3, docs: set[str] | None = None) -> list[Hit]:
+        """Top k chunks, one per paragraph/section. `docs` limits it to document numbers,
+        e.g. {"AC 43.13-1B"} or {"FAA-H-8083-31B", "FAA-H-8083-32B"}."""
         q = Counter(tokenize(query))
         scored = []
         for i, d in enumerate(self.docs):
+            if docs and self.chunks[i].ac_number not in docs:
+                continue
             s = 0.0
             norm = self.k1 * (1 - self.b + self.b * self.lengths[i] / self.avg_len)
             for t, qf in q.items():
@@ -355,9 +379,9 @@ class ProcedureIndex:
         hits, seen = [], set()
         for s, i in scored:
             c = self.chunks[i]
-            if c.paragraph in seen:  # one hit per paragraph, best part wins
+            if (c.ac_number, c.paragraph) in seen:  # one hit per paragraph, best part wins
                 continue
-            seen.add(c.paragraph)
+            seen.add((c.ac_number, c.paragraph))
             hits.append(Hit(c, round(s, 3)))
             if len(hits) == k:
                 break
@@ -368,7 +392,10 @@ class ProcedureIndex:
 
 
 def citation(c: Chunk) -> str:
-    """'AC 43.13-1B, Chapter 9, Section 1, par. 9-14 (Tire Inspection and Repair), page 9-12'"""
+    """'AC 43.13-1B, Chapter 9, Section 1, par. 9-14 (Tire Inspection and Repair), page 9-12', or
+    'FAA-H-8083-31B, Chapter 13 (Aircraft Landing Gear Systems), "Bleeding Shock Struts", page 13-14'"""
+    if is_handbook(c):
+        return f'{c.ac_number}, Chapter {c.chapter} ({c.chapter_title}), "{c.title}", page {c.page_label}'
     parts = [c.ac_number, f"Chapter {c.chapter}"]
     if c.section:
         parts.append(f"Section {c.section}")
@@ -395,8 +422,11 @@ def snippet(text: str, query: str | None = None, limit: int = SNIPPET_CHARS) -> 
 
 def to_procedure(c: Chunk, query: str | None = None) -> dict:
     """Shape a chunk as a `procedures[]` item of POST /api/assist (docs/API.md)."""
-    section = f"Par. {c.paragraph} {c.title}"
-    if c.section_title:
+    if is_handbook(c):
+        section = f"{c.title} (Ch. {c.chapter}: {c.chapter_title})"
+    else:
+        section = f"Par. {c.paragraph} {c.title}"
+    if c.section_title and not is_handbook(c):
         section += f" (Ch. {c.chapter}, Sec. {c.section}: {c.section_title})"
     return {
         "doc": c.doc,
@@ -414,34 +444,47 @@ def context_block(hits: list[Hit]) -> str:
     blocks = []
     for h in hits:
         c = h.chunk
-        blocks.append(f"[{c.ac_number} par. {c.paragraph}] {c.title} (page {c.page_label})\n{c.text}")
+        blocks.append(f"[{cite_tag(c)}] {c.title} (page {c.page_label})\n{c.text}")
     return "\n\n".join(blocks)
+
+
+def cite_tag(c: Chunk) -> str:
+    """The short label the model cites: 'AC 43.13-1B par. 9-14' or 'FAA-H-8083-31B p. 13-14'."""
+    return f"{c.ac_number} p. {c.page_label}" if is_handbook(c) else f"{c.ac_number} par. {c.paragraph}"
 
 
 CITE_INSTRUCTION = (
     "Use only the procedure excerpts below. After each step that relies on one, cite it in square "
-    "brackets exactly as tagged, e.g. [AC 43.13-1B par. 9-14]. Do not cite anything else."
+    "brackets exactly as tagged, e.g. [AC 43.13-1B par. 9-14] or [FAA-H-8083-31B p. 13-14]. "
+    "Do not cite anything else."
 )
 
-_CITED = re.compile(r"\[\s*(AC\s*43\.13-1B)\s+par\.?\s*(\d{1,2}-\d{1,3})\s*\]", re.I)
+_CITED = re.compile(
+    r"\[\s*(?:(AC\s*43\.13-1B)\s+par\.?\s*(\d{1,2}-\d{1,3})|(FAA-H-8083-3[012]B)\s+p(?:age|\.)?\s*(\d{1,2}-\d{1,3}))\s*\]",
+    re.I,
+)
+
+
+def _cited_tag(m: re.Match) -> str:
+    if m.group(1):
+        return f"AC 43.13-1B par. {m.group(2)}"
+    return f"{m.group(3).upper()} p. {m.group(4)}"
 
 
 def check_citations(answer: str, hits: list[Hit]) -> tuple[list[str], list[str]]:
-    """Return (valid, unknown) paragraph numbers cited in a model answer.
+    """Return (valid, unknown) citation tags in a model answer, e.g. "AC 43.13-1B par. 9-14".
 
-    Unknown citations point at paragraphs that were not retrieved; the caller
-    should strip them so the UI never shows a made-up section.
+    Unknown citations point at paragraphs or pages that were not retrieved; the
+    caller should strip them so the UI never shows a made-up section.
     """
-    allowed = {h.chunk.paragraph for h in hits}
-    cited = [m.group(2) for m in _CITED.finditer(answer)]
-    valid = [p for p in dict.fromkeys(cited) if p in allowed]
-    unknown = [p for p in dict.fromkeys(cited) if p not in allowed]
-    return valid, unknown
+    allowed = {cite_tag(h.chunk) for h in hits}
+    cited = list(dict.fromkeys(_cited_tag(m) for m in _CITED.finditer(answer)))
+    return [t for t in cited if t in allowed], [t for t in cited if t not in allowed]
 
 
 def strip_unknown_citations(answer: str, hits: list[Hit]) -> str:
-    allowed = {h.chunk.paragraph for h in hits}
-    return _CITED.sub(lambda m: m.group(0) if m.group(2) in allowed else "", answer).replace("  ", " ")
+    allowed = {cite_tag(h.chunk) for h in hits}
+    return _CITED.sub(lambda m: m.group(0) if _cited_tag(m) in allowed else "", answer).replace("  ", " ")
 
 
 # ---------------------------------------------------------------- CLI
@@ -457,7 +500,7 @@ def _main(argv: list[str]) -> int:
         return 0
     if len(argv) >= 2 and argv[0] == "search":
         index = ProcedureIndex.load()
-        hits = index.search(" ".join(argv[1:]))
+        hits = index.search(" ".join(argv[1:]), k=5)
         print(json.dumps([to_procedure(h.chunk, " ".join(argv[1:])) | {"score": h.score} for h in hits], indent=2, ensure_ascii=False))
         return 0
     print(__doc__)
