@@ -55,9 +55,13 @@ Request: `{ "fault_text": "...", "asset": "N12345" | null, "aircraft_type": "B73
                    "snippet": "...", "url": "optional link to PDF page" }],
   "work_order": { "title": "...", "asset": "N12345", "steps": ["..."], "parts": ["..."],
                   "est_hours": 3.0, "status": "draft" },
-  "timing": { "total_ms": 2100, "tokens_per_s": 95.0 }
+  "repeat_history": { "count": 4, "first_date": "2026-01-08", "last_date": "2026-05-19",
+                      "card_ids": ["sdr-..."] },   // optional/null: earlier cards with the same failure_mode
+                                                     // on this asset (or fleet if no asset); drives the repeat alert
+  "timing": { "total_ms": 2100, "tokens_per_s": 95.0 }  // tokens_per_s may be null
 }
 ```
+`procedures[].page` may be `null` when only the section is known. `ata_name` is optional on any JobCard or repeat row; the UI falls back to its own ATA chapter table.
 
 ### `POST /api/work-orders/{id}/approve`
 Request: `{ "work_order": { ...edited fields... }, "approved_by": "name" }` → `{ "id": "wo-0001", "status": "approved" }`
