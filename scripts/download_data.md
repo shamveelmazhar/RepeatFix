@@ -13,4 +13,5 @@ Save full downloads to `data/raw/`, which is git-ignored. Commit only small samp
 ## Notes
 - **ASRS** has no tail numbers. Group repeats by `aircraft_type + ata_chapter + failure_mode`.
 - **SDR** has an aircraft registration, so it can find true per-tail repeats. Check on day 1 that the download page is live, because AIN reported maintenance downtime in mid-2026. Start with one recent year and filter to 2–3 common types (e.g. B737, A320, CRJ) to keep the demo focused.
+- **AC 43.13-1B:** the indexed file is `AC_43.13-1B_CHG_1_Ed_Upd_FAA.pdf` (CHG 1 editorial update, May 2024, 756 pages). Save it to `data/raw/ac/`. The older `AC_43.13-1B_w-chg1.pdf` (2002) has the same content, so it isn't indexed separately.
 - Record each file's download date here.

@@ -1,5 +1,5 @@
 {
-  "_note": "Sample knowledge used only in mock mode. The backend replaces this with model output and real citations (section + page) retrieved from FAA AC 43.13-1B and the FAA AMT Handbook.",
+  "_note": "Sample knowledge used only in mock mode. The AC 43.13-1B entries are real excerpts from the committed index (data/procedures/ac_43-13-1b.jsonl); the backend retrieves them per fault and adds model output.",
   "failure_modes": [
     {"code":"brake_overheat","label":"Brake overheat / dragging brake","ata_chapter":"32","keywords":["brake","brk","temp","drag","fuse plug","overheat","hot"],
      "hypotheses":[
@@ -10,7 +10,7 @@
      "steps":["Check brake wear pins and record measurements.","Inspect brake metering valve for slow release; perform release test.","Bleed brake system and check for air.","Inspect wheel fuse plugs and tire condition.","Perform taxi test and record brake temperatures."],
      "procedures":[
        {"doc":"FAA-H-8083-31 AMT Handbook, Airframe","section":"Chapter 13 — Aircraft Landing Gear Systems (brakes)","page":null,"snippet":"Covers brake inspection, wear checks, bleeding and troubleshooting of dragging or overheating brakes."},
-       {"doc":"FAA AC 43.13-1B","section":"Chapter 9 — Aircraft Systems and Components","page":null,"snippet":"Acceptable methods for inspecting and repairing aircraft systems and components, including landing gear and brakes."}
+       {"doc":"FAA AC 43.13-1B CHG 1","section":"Par. 9-7 Landing-gear Components (Ch. 9, Sec. 1: Inspection and Maintenance of Landing Gear)","page":495,"page_label":"9-6","snippet":"Disassemble and inspect the brakes periodically and examine the parts for wear, cracks, warpage, corrosion, elongated holes, etc. Discolored brake disks are an indication of overheated brakes and should be replaced. If any of these or other faults are indicated, repair…","citation":"AC 43.13-1B, Chapter 9, Section 1, par. 9-7 (Landing-gear Components), page 9-6"}
      ]},
     {"code":"hyd_pump_leak","label":"Hydraulic pump leak","ata_chapter":"29","keywords":["hydraulic","hyd","pump","edp","leak","seep","fluid","pressure"],
      "hypotheses":[
@@ -21,7 +21,7 @@
      "steps":["Clean area and run leak check to find the exact leak point.","Inspect case drain filter for metal or debris.","Check fittings and B-nuts for correct torque.","Replace seals or pump as required.","Perform system pressure and leak check."],
      "procedures":[
        {"doc":"FAA-H-8083-31 AMT Handbook, Airframe","section":"Chapter 12 — Hydraulic and Pneumatic Power Systems","page":null,"snippet":"Covers hydraulic pumps, seals, fittings, filters and troubleshooting of leaks and low pressure."},
-       {"doc":"FAA AC 43.13-1B","section":"Chapter 9 — Aircraft Systems and Components","page":null,"snippet":"Acceptable methods for inspection and repair of hydraulic system components and lines."}
+       {"doc":"FAA AC 43.13-1B CHG 1","section":"Par. 9-30 Hydraulic Lines and Fittings (Ch. 9, Sec. 2: Hydraulic Systems)","page":511,"page_label":"9-22","snippet":"Carefully inspect all lines and fittings at regular intervals to ensure airworthiness. Investigate any evidence of fluid loss or leaks. Check metal lines for leaks, loose anchorage, scratches, kinks, or other damage. Inspect fittings and connections for leakage, looseness…","citation":"AC 43.13-1B, Chapter 9, Section 2, par. 9-30 (Hydraulic Lines and Fittings), page 9-22"}
      ]},
     {"code":"pressure_controller_fault","label":"Cabin pressure controller fault","ata_chapter":"21","keywords":["cab pr","cabin","pressure","cpc","pressurization","ecam"],
      "hypotheses":[
@@ -32,7 +32,7 @@
      "steps":["Read BITE history from the controller.","Inspect connector and wiring behind the mounting bracket for chafing.","Repair wiring and secure with clamps.","Replace controller only if wiring is good.","Perform pressurization system test."],
      "procedures":[
        {"doc":"FAA-H-8083-31 AMT Handbook, Airframe","section":"Chapter 16 — Cabin Environmental Control Systems","page":null,"snippet":"Covers pressurization controllers, outflow valves and troubleshooting pressurization faults."},
-       {"doc":"FAA AC 43.13-1B","section":"Chapter 11 — Aircraft Electrical Systems","page":null,"snippet":"Acceptable methods for inspecting wire bundles, chafing protection, clamping and splicing."}
+       {"doc":"FAA AC 43.13-1B CHG 1","section":"Par. 11-146 General (Ch. 11, Sec. 11: Clamping)","page":637,"page_label":"11-66","snippet":"Plastic clamps or cable ties must not be used where their failure could result in interference with movable controls, wire bundle contact with movable equipment, or chafing damage to essential or unprotected wiring. They must not be used on vertical runs where inadvertent slack…","citation":"AC 43.13-1B, Chapter 11, Section 11, par. 11-146 (General), page 11-66"}
      ]},
     {"code":"idg_low_oil_pressure","label":"Generator (IDG) low oil pressure","ata_chapter":"24","keywords":["idg","generator","gen","oil","disc","disconnect"],
      "hypotheses":[
@@ -51,7 +51,7 @@
      "steps":["Check indication on ground with known fuel load.","Inspect probe connectors for moisture and corrosion.","Check harness continuity and insulation resistance.","Clean, reseal or replace harness section.","Verify indication."],
      "procedures":[
        {"doc":"FAA-H-8083-31 AMT Handbook, Airframe","section":"Chapter 14 — Aircraft Fuel System","page":null,"snippet":"Covers fuel quantity indicating systems, probes and troubleshooting."},
-       {"doc":"FAA AC 43.13-1B","section":"Chapter 11 — Aircraft Electrical Systems","page":null,"snippet":"Acceptable methods for connector inspection, moisture protection and wire repair."}
+       {"doc":"FAA AC 43.13-1B CHG 1","section":"Par. 6-77 Electrical Connectors (Ch. 6, Sec. 5: Visual Corrosion Inspection Guide for Aircraft)","page":326,"page_label":"6-20","snippet":"If the electrical connector is suspected of having moisture intrusion, disassemble the connector, clean the connector, and inspect it for corrosion.","citation":"AC 43.13-1B, Chapter 6, Section 5, par. 6-77 (Electrical Connectors), page 6-20"}
      ]}
   ],
   "default_procedures":[
