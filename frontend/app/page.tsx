@@ -94,7 +94,7 @@ export default function FixAFaultPage() {
                 id="asset"
                 value={asset}
                 onChange={(e) => setAsset(e.target.value)}
-                className="min-h-11 w-full rounded-lg border border-line bg-surface px-3 text-ink focus:border-accent focus:outline-none"
+                className="min-h-11 w-full rounded-xl border border-line bg-surface px-3 text-ink focus:border-accent focus:outline-none focus:ring-4 focus:ring-accent/15"
               >
                 <option value="">Not sure / any</option>
                 {aircraft.map((a) => (
@@ -114,7 +114,7 @@ export default function FixAFaultPage() {
                 onChange={(e) => setText(e.target.value)}
                 rows={3}
                 placeholder="Type it the way you would write it in the logbook"
-                className="w-full rounded-lg border border-line bg-surface px-3 py-2.5 text-ink placeholder:text-muted focus:border-accent focus:outline-none"
+                className="w-full rounded-xl border border-line bg-surface px-3 py-2.5 text-ink placeholder:text-muted focus:border-accent focus:outline-none focus:ring-4 focus:ring-accent/15"
               />
             </div>
           </div>
@@ -126,7 +126,7 @@ export default function FixAFaultPage() {
                 key={ex}
                 type="button"
                 onClick={() => setText(ex)}
-                className="rounded-full border border-line px-3 py-1 text-sm text-muted hover:border-accent hover:text-accent"
+                className="rounded-full border border-line bg-surface/60 px-3 py-1 text-sm text-muted transition-colors hover:border-accent hover:text-accent"
               >
                 {ex}
               </button>
@@ -175,9 +175,9 @@ export default function FixAFaultPage() {
 
 function LoadingResults() {
   return (
-    <div className="grid gap-5 lg:grid-cols-3" aria-busy="true" aria-label="Loading results">
+    <div className="grid gap-6 lg:grid-cols-3" aria-busy="true" aria-label="Loading results">
       {[0, 1, 2].map((i) => (
-        <div key={i} className="space-y-3 rounded-xl border border-line bg-surface p-6">
+        <div key={i} className="glass space-y-3 rounded-2xl p-6">
           <Skeleton className="h-6 w-1/2" />
           <Skeleton className="h-20" />
           <Skeleton className="h-20" />
@@ -205,7 +205,7 @@ function Results({ result, onReset }: { result: AssistResponse; onReset: () => v
       {history && history.count >= 2 && (
         <div
           role="status"
-          className={`flex flex-col gap-3 rounded-xl border p-5 sm:flex-row sm:items-center sm:justify-between ${
+          className={`flex flex-col gap-3 rounded-2xl border p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between ${
             history.count >= 3
               ? "border-critical/30 bg-critical-soft text-critical"
               : "border-warning/30 bg-warning-soft text-warning"
@@ -239,8 +239,8 @@ function Results({ result, onReset }: { result: AssistResponse; onReset: () => v
         </span>
       </div>
 
-      <div className="grid gap-5 lg:grid-cols-3">
-        <Panel title="Seen before" icon={<HistoryIcon />}>
+      <div className="grid gap-6 lg:grid-cols-3">
+        <Panel title="Seen before" icon={<HistoryIcon />} lift>
           {result.similar.length === 0 ? (
             <p className="text-muted">No similar past fixes found.</p>
           ) : (
@@ -249,15 +249,15 @@ function Results({ result, onReset }: { result: AssistResponse; onReset: () => v
                 <li key={card.id}>
                   <button
                     onClick={() => openCard(card.id)}
-                    className="w-full rounded-lg border border-line p-3 text-left hover:border-accent"
+                    className="w-full rounded-xl border border-line bg-surface/70 p-3 text-left transition-colors hover:border-accent"
                   >
-                    <div className="mb-1 flex items-center justify-between gap-2 text-sm text-muted">
-                      <span>
-                        {card.registration ?? card.aircraft_type} · {formatDate(card.date)}
-                      </span>
-                      <span className="shrink-0 whitespace-nowrap font-medium text-accent">{matchLabel(score)}</span>
-                    </div>
+                    <span className="mb-1.5 inline-block rounded-full bg-accent-soft px-2 py-0.5 text-xs font-semibold text-accent">
+                      {matchLabel(score)}
+                    </span>
                     <p className="font-medium">{card.symptom}</p>
+                    <p className="text-sm text-muted">
+                      {card.registration ?? card.aircraft_type} · {formatDate(card.date)}
+                    </p>
                     <p className="mt-1 text-sm text-muted">
                       <span className="font-medium text-ink">Fix:</span> {card.action_taken || "Not recorded"}
                     </p>
@@ -268,14 +268,14 @@ function Results({ result, onReset }: { result: AssistResponse; onReset: () => v
           )}
         </Panel>
 
-        <Panel title="Likely causes" icon={<SearchIcon />}>
+        <Panel title="Likely causes" icon={<SearchIcon />} lift>
           {result.hypotheses.length === 0 ? (
             <p className="text-muted">Not enough past records to suggest a cause.</p>
           ) : (
             <ol className="space-y-4">
               {result.hypotheses.map((h, i) => (
                 <li key={h.cause} className="flex gap-3">
-                  <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-accent-soft text-sm font-bold text-accent">
+                  <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-accent/30 bg-accent-soft text-sm font-bold text-accent">
                     {i + 1}
                   </span>
                   <div>
@@ -300,10 +300,10 @@ function Results({ result, onReset }: { result: AssistResponse; onReset: () => v
           )}
         </Panel>
 
-        <Panel title="Procedure" icon={<BookIcon />}>
+        <Panel title="Procedure" icon={<BookIcon />} lift>
           <ul className="space-y-3">
             {result.procedures.map((p) => (
-              <li key={`${p.doc}-${p.section}`} className="rounded-lg border border-line p-3">
+              <li key={`${p.doc}-${p.section}`} className="rounded-xl border border-line bg-surface/70 p-3">
                 <p className="text-sm font-semibold text-muted">{p.doc}</p>
                 <p className="font-medium">
                   {p.section}
@@ -364,7 +364,7 @@ function WorkOrderPanel({ id, initial, onReset }: { id: string; initial: WorkOrd
   }
 
   const input =
-    "w-full rounded-lg border border-line bg-surface px-3 py-2 text-ink focus:border-accent focus:outline-none disabled:bg-bg disabled:text-muted";
+    "w-full rounded-xl border border-line bg-surface px-3 py-2 text-ink focus:border-accent focus:outline-none focus:ring-4 focus:ring-accent/15 disabled:bg-bg disabled:text-muted";
 
   return (
     <Panel

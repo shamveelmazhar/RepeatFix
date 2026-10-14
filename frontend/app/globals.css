@@ -4,44 +4,73 @@
 
 /* Design tokens — see CLAUDE.md "UI style rules". Light is the default (bright hangars). */
 :root {
-  --bg: #f8fafc;
-  --surface: #ffffff;
-  --border: #e2e8f0;
+  --bg: #f6f7f9;
+  --surface: #ffffff; /* solid surface: inputs, dialogs */
+  --glass: rgb(255 255 255 / 0.68);
+  --glass-strong: rgb(255 255 255 / 0.82);
+  --glass-border: rgb(255 255 255 / 0.9);
+  --border: rgb(15 23 42 / 0.1);
   --text: #0f172a;
   --muted: #475569;
-  --accent: #2563eb;
-  --accent-hover: #1d4ed8;
-  --accent-soft: #eff6ff;
+  --accent: #c2410c; /* text-safe orange: 4.9:1 on the page */
+  --accent-hover: #9a3412;
+  --accent-soft: #fff1e6;
+  --accent-from: #c8430b; /* button gradient, white text ≥ 4.9:1 */
+  --accent-to: #9a3412;
+  --brand-from: #fb923c; /* decorative only: logo, chart bars, glows */
+  --brand-to: #ea580c;
   --on-accent: #ffffff;
   --critical: #b91c1c;
   --critical-soft: #fef2f2;
-  --warning: #b45309;
-  --warning-soft: #fffbeb;
+  --warning: #a16207;
+  --warning-soft: #fefce8;
   --ok: #15803d;
   --ok-soft: #f0fdf4;
+  --shadow: 0 1px 2px rgb(15 23 42 / 0.04), 0 8px 24px -8px rgb(15 23 42 / 0.12);
+  --shadow-hover: 0 2px 4px rgb(15 23 42 / 0.05), 0 16px 36px -10px rgb(194 65 12 / 0.25);
+  --page-gradient:
+    radial-gradient(60rem 40rem at -10% -10%, rgb(251 146 60 / 0.3), transparent 60%),
+    radial-gradient(50rem 36rem at 110% 0%, rgb(253 186 116 / 0.32), transparent 60%),
+    radial-gradient(60rem 40rem at 100% 110%, rgb(148 163 184 / 0.25), transparent 60%);
 }
 
 .dark {
-  --bg: #0b1220;
-  --surface: #111a2e;
-  --border: #1f2a44;
-  --text: #e2e8f0;
+  --bg: #0b0f17;
+  --surface: #151b27;
+  --glass: rgb(21 27 39 / 0.62);
+  --glass-strong: rgb(21 27 39 / 0.8);
+  --glass-border: rgb(255 255 255 / 0.08);
+  --border: rgb(255 255 255 / 0.1);
+  --text: #e5e7eb;
   --muted: #94a3b8;
-  --accent: #60a5fa;
-  --accent-hover: #93c5fd;
-  --accent-soft: #172554;
-  --on-accent: #0b1220;
+  --accent: #fb923c;
+  --accent-hover: #fdba74;
+  --accent-soft: rgb(251 146 60 / 0.14);
+  --accent-from: #fb923c;
+  --accent-to: #f97316;
+  --brand-from: #fdba74;
+  --brand-to: #f97316;
+  --on-accent: #1c0a02;
   --critical: #f87171;
-  --critical-soft: #2a1215;
-  --warning: #fbbf24;
-  --warning-soft: #2a1f0a;
+  --critical-soft: rgb(248 113 113 / 0.12);
+  --warning: #facc15;
+  --warning-soft: rgb(250 204 21 / 0.1);
   --ok: #4ade80;
-  --ok-soft: #0f2a1a;
+  --ok-soft: rgb(74 222 128 / 0.12);
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px -8px rgb(0 0 0 / 0.5);
+  --shadow-hover: 0 2px 4px rgb(0 0 0 / 0.3), 0 16px 36px -10px rgb(249 115 22 / 0.28);
+  --page-gradient:
+    radial-gradient(60rem 40rem at -10% -10%, rgb(234 88 12 / 0.22), transparent 60%),
+    radial-gradient(50rem 36rem at 110% 0%, rgb(251 146 60 / 0.12), transparent 60%),
+    radial-gradient(60rem 40rem at 100% 110%, rgb(30 41 59 / 0.6), transparent 60%);
 }
 
 @theme inline {
   --color-bg: var(--bg);
   --color-surface: var(--surface);
+  --color-glass: var(--glass);
+  --color-glass-strong: var(--glass-strong);
+  --color-glass-border: var(--glass-border);
   --color-line: var(--border);
   --color-ink: var(--text);
   --color-muted: var(--muted);
@@ -64,9 +93,54 @@ html {
 }
 
 body {
-  background: var(--bg);
+  background-color: var(--bg);
+  background-image: var(--page-gradient);
+  background-attachment: fixed;
   color: var(--text);
   font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+@layer components {
+  /* Frosted-glass panel. Kept mostly opaque so text stays high-contrast. */
+  .glass {
+    background-color: var(--glass);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow), inset 0 0 0 1px var(--border);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    backdrop-filter: blur(18px) saturate(140%);
+  }
+
+  .glass-strong {
+    background-color: var(--glass-strong);
+  }
+
+  /* Gentle grow-on-hover for cards you can look at or click. */
+  .lift {
+    transition:
+      transform 180ms ease,
+      box-shadow 180ms ease;
+  }
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .lift:hover {
+      transform: translateY(-2px) scale(1.012);
+      box-shadow: var(--shadow-hover), inset 0 0 0 1px var(--border);
+    }
+  }
+
+  .bg-accent-gradient {
+    background-image: linear-gradient(135deg, var(--accent-from), var(--accent-to));
+  }
+
+  .bg-brand-gradient {
+    background-image: linear-gradient(135deg, var(--brand-from), var(--brand-to));
+  }
+
+  .text-brand-gradient {
+    background-image: linear-gradient(135deg, var(--brand-to), var(--accent-to));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
 }
 
 .tabular {
@@ -74,5 +148,7 @@ body {
 }
 
 dialog::backdrop {
-  background: rgb(15 23 42 / 0.5);
+  background: rgb(15 23 42 / 0.45);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
 }

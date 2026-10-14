@@ -38,14 +38,14 @@ export default function RepeatFailuresPage() {
             Worst first, by total downtime.
           </p>
         </div>
-        <div role="group" aria-label="Group by" className="inline-flex rounded-lg border border-line bg-surface p-1">
+        <div role="group" aria-label="Group by" className="glass inline-flex rounded-xl p-1">
           {(["aircraft", "component"] as GroupBy[]).map((g) => (
             <button
               key={g}
               onClick={() => setGroupBy(g)}
               aria-pressed={groupBy === g}
-              className={`min-h-10 whitespace-nowrap rounded-md px-4 font-medium ${
-                groupBy === g ? "bg-accent text-on-accent" : "text-muted hover:text-ink"
+              className={`min-h-10 whitespace-nowrap rounded-lg px-4 font-medium ${
+                groupBy === g ? "bg-accent-gradient text-on-accent shadow-sm" : "text-muted hover:text-ink"
               }`}
             >
               By {g}
@@ -89,7 +89,7 @@ export default function RepeatFailuresPage() {
               const key = `${r.asset}|${r.failure_mode}`;
               const sev = repeatSeverity(r.count);
               return (
-                <li key={key} className="rounded-lg border border-line p-4">
+                <li key={key} className="lift rounded-xl border border-line bg-surface/70 p-4">
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <p className="font-semibold">
@@ -103,15 +103,15 @@ export default function RepeatFailuresPage() {
                     <AtaTag chapter={r.ata_chapter} name={r.ata_name} />
                   </div>
                   <dl className="tabular mt-3 grid grid-cols-3 gap-2 text-center">
-                    <div className="rounded-md bg-bg py-2">
+                    <div className="rounded-lg bg-accent-soft/50 py-2">
                       <dt className="text-xs text-muted">Times</dt>
                       <dd className="text-lg font-semibold">{r.count}</dd>
                     </div>
-                    <div className="rounded-md bg-bg py-2">
+                    <div className="rounded-lg bg-accent-soft/50 py-2">
                       <dt className="text-xs text-muted">Avg days between</dt>
                       <dd className="text-lg font-semibold">{r.mtbf_days !== null ? Math.round(r.mtbf_days) : "—"}</dd>
                     </div>
-                    <div className="rounded-md bg-bg py-2">
+                    <div className="rounded-lg bg-accent-soft/50 py-2">
                       <dt className="text-xs text-muted">Downtime</dt>
                       <dd className="text-lg font-semibold">{r.downtime_hours.toFixed(1)} h</dd>
                     </div>
@@ -121,7 +121,7 @@ export default function RepeatFailuresPage() {
                       <button
                         key={id}
                         onClick={() => openCard(id)}
-                        className="rounded-md border border-line px-3 py-1.5 text-sm font-medium text-accent hover:border-accent"
+                        className="rounded-lg border border-line bg-surface/80 px-3 py-1.5 text-sm font-medium text-accent hover:border-accent"
                       >
                         {id}
                       </button>
@@ -154,7 +154,7 @@ export default function RepeatFailuresPage() {
                     <Fragment key={key}>
                       <tr
                         onClick={() => setOpen(expanded ? null : key)}
-                        className="cursor-pointer border-b border-line hover:bg-bg"
+                        className="cursor-pointer border-b border-line transition-colors hover:bg-accent-soft/50"
                         aria-expanded={expanded}
                       >
                         <td className="px-5 py-3 sm:px-6">
@@ -175,7 +175,7 @@ export default function RepeatFailuresPage() {
                         </td>
                       </tr>
                       {expanded && (
-                        <tr className="border-b border-line bg-bg">
+                        <tr className="border-b border-line bg-accent-soft/30">
                           <td colSpan={6} className="px-5 py-3 sm:px-6">
                             <p className="mb-2 text-sm font-medium text-muted">Job cards in this group (oldest first)</p>
                             <div className="flex flex-wrap gap-2">
@@ -183,7 +183,7 @@ export default function RepeatFailuresPage() {
                                 <button
                                   key={id}
                                   onClick={() => openCard(id)}
-                                  className="rounded-md border border-line bg-surface px-3 py-1.5 text-sm font-medium text-accent hover:border-accent"
+                                  className="rounded-lg border border-line bg-surface/80 px-3 py-1.5 text-sm font-medium text-accent hover:border-accent"
                                 >
                                   {id}
                                 </button>
@@ -207,7 +207,7 @@ export default function RepeatFailuresPage() {
 
 function Stat({ label, value, sub }: { label: string; value: string | null; sub?: string }) {
   return (
-    <div className="rounded-xl border border-line bg-surface p-5">
+    <div className="glass lift rounded-2xl p-5">
       <p className="text-sm font-medium text-muted">{label}</p>
       {value === null ? (
         <Skeleton className="mt-2 h-9 w-24" />
@@ -239,13 +239,13 @@ function DowntimeChart({ rows }: { rows: RepeatRow[] }) {
             </span>
             <div className="flex items-center gap-2">
               <div
-                className={`h-6 rounded-r-[4px] bg-accent transition-opacity ${hover !== null && hover !== i ? "opacity-40" : ""}`}
+                className={`h-6 rounded-r-[4px] bg-brand-gradient transition-opacity ${hover !== null && hover !== i ? "opacity-40" : ""}`}
                 style={{ width: `${(r.downtime_hours / max) * 85}%`, minWidth: 4 }}
               />
               <span className="tabular text-sm font-medium">{r.downtime_hours.toFixed(1)}</span>
             </div>
             {hover === i && (
-              <div className="pointer-events-none absolute left-1/2 top-full z-10 mt-1 rounded-lg border border-line bg-surface px-3 py-2 text-sm shadow-lg">
+              <div className="glass glass-strong pointer-events-none absolute left-1/2 top-full z-10 mt-1 rounded-xl px-3 py-2 text-sm">
                 <p className="font-semibold">
                   {r.asset} · {failureModeLabel(r.failure_mode)}
                 </p>

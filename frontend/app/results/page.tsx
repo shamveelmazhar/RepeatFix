@@ -95,7 +95,7 @@ export default function ResultsPage() {
           <ol className="space-y-5">
             {STEPS.map((s, i) => (
               <li key={s.title} className="flex gap-4">
-                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-accent text-sm font-bold text-on-accent">
+                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-accent-gradient text-sm font-bold text-on-accent">
                   {i + 1}
                 </span>
                 <div>
@@ -150,7 +150,7 @@ function Metric({
   loading: boolean;
 }) {
   return (
-    <div className="rounded-xl border border-line bg-surface p-5">
+    <div className="glass lift rounded-2xl p-5">
       <p className="text-sm font-medium text-muted">{label}</p>
       {loading ? (
         <Skeleton className="mt-2 h-10 w-28" />

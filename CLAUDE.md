@@ -99,20 +99,29 @@ scripts/        data download notes, benchmark scripts
 - No login or auth.
 - No marketing-page elements in the app (big glowing heroes, pricing, "trusted by" logos). Keep that style for the cover image, slides and video.
 
+### Look and feel
+- **Orange accent with soft gradients.** The page background has faint orange/slate radial glows. Buttons, the active nav item, icon chips and chart bars use an orange gradient.
+- **Frosted glass, kept minimal.** Panels and the floating sidebar use the `.glass` class (mostly opaque, blurred, thin border, soft shadow) so they stand apart from the page. Keep text on glass high-contrast; never put body text directly on a bright gradient.
+- **Gentle hover lift.** Add `.lift` (or `<Panel lift>`) to cards people look at or click: result panels, stat tiles, list cards. Don't add it to forms or the work order. It is turned off for `prefers-reduced-motion`.
+- **Logo:** two circular repeat arrows with a wrench through the gap, knocked out in negative space, on an orange gradient tile (`components/Logo.tsx`, favicon `app/icon.svg`).
+
 ### Colour palette
-Light mode is the default; dark mode is optional, and the user's choice is remembered. Tokens live in `frontend/app/globals.css`, so use the Tailwind names and never raw hex values. The single accent is blue. Red, amber and green are **reserved for status** and always come with an icon and a word.
+Light mode is the default; dark mode is optional, and the user's choice is remembered. Tokens live in `frontend/app/globals.css`, so use the Tailwind names and never raw hex values. The single accent is **orange**. Red, yellow and green are **reserved for status** and always come with an icon and a word. Warning is yellow (not amber) so it doesn't blur into the orange accent.
 
 | Token (Tailwind) | Light | Dark | Use |
 |---|---|---|---|
-| `bg` | `#F8FAFC` | `#0B1220` | page |
-| `surface` | `#FFFFFF` | `#111A2E` | cards, tables |
-| `line` | `#E2E8F0` | `#1F2A44` | borders |
-| `ink` | `#0F172A` | `#E2E8F0` | body text |
+| `bg` | `#F6F7F9` + orange glows | `#0B0F17` + orange glow | page |
+| `glass` | white 68% | `#151B27` 62% | panels, sidebar (`.glass`) |
+| `surface` | `#FFFFFF` | `#151B27` | inputs, dialogs |
+| `line` | slate 10% | white 10% | borders |
+| `ink` | `#0F172A` | `#E5E7EB` | body text |
 | `muted` | `#475569` | `#94A3B8` | labels |
-| `accent` | `#2563EB` | `#60A5FA` | buttons, links, chart bars |
-| `accent-soft` | `#EFF6FF` | `#172554` | selected / highlight |
+| `accent` | `#C2410C` | `#FB923C` | links, accent text (passes 4.5:1) |
+| `bg-accent-gradient` | `#C8430B → #9A3412` | `#FB923C → #F97316` | primary buttons, active nav (text ≥ 4.9:1) |
+| `bg-brand-gradient` | `#FB923C → #EA580C` | `#FDBA74 → #F97316` | decorative only: logo, icon chips, chart bars |
+| `accent-soft` | `#FFF1E6` | orange 14% | highlights, match tags |
 | `critical` | `#B91C1C` | `#F87171` | 4+ repeats, errors |
-| `warning` | `#B45309` | `#FBBF24` | 3 repeats, sample-data banner |
+| `warning` | `#A16207` | `#FACC15` | 3 repeats, sample-data banner |
 | `ok` | `#15803D` | `#4ADE80` | approved |
 
 Font: Geist Sans and Geist Mono (the `geist` npm package, served locally). Base size 18px; use tabular numbers in tables.
