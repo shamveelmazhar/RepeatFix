@@ -14,3 +14,4 @@ Save full downloads to `data/raw/`, which is git-ignored. Commit only small samp
 - **ASRS** has no tail numbers. Group repeats by `aircraft_type + ata_chapter + failure_mode`.
 - **SDR** has an aircraft registration, so it can find true per-tail repeats. Check on day 1 that the download page is live, because AIN reported maintenance downtime in mid-2026. Start with one recent year and filter to 2–3 common types (e.g. B737, A320, CRJ) to keep the demo focused.
 - Record each file's download date here.
+- **ASRS Maintenance report set** (`mechanic.pdf`, 50 reports, ACN 2000321 to 2069879): saved by Shamveel by 14 Oct 2026; parsed into `data/samples/asrs_mechanic.jsonl` on 14 Oct 2026. The cloud sandbox can't reach asrs.arc.nasa.gov, so download it in a browser and put it in `data/raw/`.

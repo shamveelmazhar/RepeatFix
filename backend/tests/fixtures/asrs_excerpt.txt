@@ -1,0 +1,382 @@
+Report Synopses
+
+ACN: 2069879 (1 of 4)
+Synopsis
+Aircraft Technician reported lack of key information in A321 aircraft maintenance manual
+when removing a fuel pump lead to fuel spill.
+
+
+ACN: 2062965 (2 of 4)
+Synopsis
+Maintenance technicians reported that while they were working on an aircraft with a flap
+issue the company management was not supportive of AMT's working to find root cause of
+the problem.
+
+
+ACN: 2061955 (3 of 4)
+Synopsis
+Air carrier maintenance personnel reported the improper shipping and handling of fire
+extinguisher bottles. Reporter suggests additional training of shipping and handling
+personnel is needed.
+
+
+ACN: 2032484 (4 of 4)
+Synopsis
+Aircraft Maintenance Technician towing an aircraft into the hangar struck the wing of
+another aircraft with the radome of the aircraft under tow.
+
+
+Report Narratives
+
+ACN: 2069879 (1 of 4)
+Time / Day
+Date : 202401
+Local Time Of Day : 0001-0600
+Place
+Locale Reference.Airport : ZZZ.Airport
+State Reference : US
+Altitude.AGL.Single Value : 0
+Aircraft
+Reference : X
+Aircraft Operator : Air Carrier
+Make Model Name : A321
+Operating Under FAR Part : Part 121
+Flight Phase : Parked
+Maintenance Status.Maintenance Type : Unscheduled Maintenance
+Maintenance Status.Maintenance Items Involved : Repair
+Component
+Aircraft Component : Fuel Booster Pump
+Aircraft Reference : X
+Problem : Design
+Person
+Location Of Person : Hangar / Base
+Reporter Organization : Air Carrier
+Function.Maintenance : Lead Technician
+Qualification.Maintenance : Airframe
+Qualification.Maintenance : Powerplant
+ASRS Report Number.Accession Number : 2069879
+Human Factors : Troubleshooting
+Events
+Anomaly.Aircraft Equipment Problem : Critical
+Anomaly.Deviation / Discrepancy - Procedural : Published Material / Policy
+Anomaly.Ground Event / Encounter : Fuel Issue
+Anomaly.No Specific Anomaly Occurred : Unwanted Situation
+Detector.Person : Maintenance
+When Detected : Routine Inspection
+Result.General : Maintenance Action
+Assessments
+Contributing Factors / Situations : Aircraft
+Contributing Factors / Situations : Chart Or Publication
+Contributing Factors / Situations : Human Factors
+Contributing Factors / Situations : Manuals
+Contributing Factors / Situations : Procedure
+Primary Problem : Procedure
+Narrative: 1
+Aircraft X had an open discrepancy for the RH wing INBD fuel pump fuel leak. As the crew
+chief assigned with the aircraft, I requested a defuel of the aircraft because it had
+22,000lbs total fuel. The Aircraft Maintenance Manual (AMM) does not call for a defuel but
+I decided it was best as a precaution. The aircraft was eventually defueled to 13,000 lbs
+total fuel but was imbalanced with fuel in the right wing tank. I instructed the mechanic to
+pump all of the fuel into the center tank which resulted in roughly 8000lbs of fuel in the
+center tank and the remaining fuel in the left wing. Once the fuel was moved, the
+mechanic began the removal procedure of the fuel pump in accordance with the AMM. All
+precautions and steps were followed. During the removal of the pump, the slide valve
+remained on the pump and was pulled from the wing tank as one unit. The slide valve was
+tightly sealed with O-rings on the fuel pump which prevented it from separating from the
+pump as it should have per the AMM. This caused a fuel leak from the wing. The mechanic
+immediately tried to stop the leak but was unable to successfully put the fuel pump back
+in place. He then contacted me by phone. I immediately went to the aircraft. I contacted
+management and was told that the fire department was already notified. Many mechanics,
+crew chiefs, and supervisors immediately got spill kits and attempted to contain the fuel.
+Mechanics were able to then separate the slide valve from the fuel pump on the ground
+and slide it into place on the wing to stop the leak. We then cleaned the spill. The slide
+valve is supposed to be locked in place by a flange. The flange is very small and easily
+worn, about the size of half a 3/16 washer. The pump was very sealed into the slide valve,
+so when it was removed, it came out as one assembly past the flange. In addition, the
+center fuel tank gravity fed fuel into the right wing which caused the large spill even after
+taking extra precautions to defuel the wing tank. Suggestions: There needs to be more
+details in the AMM as precautions to take when removing a fuel pump. The Aircraft
+Maintenance Manual does not suggest defueling the tank before removal of the pump. The
+Aircraft Maintenance Manual also does not caution in the removal procedures that on A321
+aircraft the center fuel tank will gravity feed into the wing tanks if the center tank has less
+fuel. This spill could have been easily avoided if that precaution was present in the
+removal of the fuel pump reference.
+Synopsis
+Aircraft Technician reported lack of key information in A321 aircraft maintenance manual
+when removing a fuel pump lead to fuel spill.
+
+
+ACN: 2062965 (2 of 4)
+Time / Day
+Date : 202311
+Local Time Of Day : 1801-2400
+Place
+Locale Reference.Airport : ZZZ.Airport
+State Reference : US
+Altitude.AGL.Single Value : 0
+Aircraft
+Reference : X
+Aircraft Operator : Air Carrier
+Make Model Name : Commercial Fixed Wing
+Crew Size.Number Of Crew : 2
+Operating Under FAR Part : Part 121
+Mission : Passenger
+Flight Phase : Parked
+Maintenance Status.Maintenance Type : Unscheduled Maintenance
+Maintenance Status.Maintenance Items Involved : Inspection
+Component
+Aircraft Component : Flap Control (Trailing & Leading Edge)
+Aircraft Reference : X
+Problem : Malfunctioning
+Person : 1
+Location Of Person : Repair Facility
+Reporter Organization : Air Carrier
+Function.Maintenance : Technician
+Qualification.Maintenance : Powerplant
+Qualification.Maintenance : Airframe
+ASRS Report Number.Accession Number : 2062965
+Human Factors : Time Pressure
+Person : 2
+Location Of Person : Repair Facility
+Reporter Organization : Air Carrier
+Function.Maintenance : Technician
+ASRS Report Number.Accession Number : 2065814
+Human Factors : Time Pressure
+Events
+Anomaly.Aircraft Equipment Problem : Critical
+Anomaly.Deviation / Discrepancy - Procedural : Maintenance
+Anomaly.Deviation / Discrepancy - Procedural : Published Material / Policy
+Detector.Person : Maintenance
+When Detected.Other
+Result.General : None Reported / Taken
+Assessments
+Contributing Factors / Situations : Aircraft
+Contributing Factors / Situations : Company Policy
+Contributing Factors / Situations : Human Factors
+Contributing Factors / Situations : Staffing
+Primary Problem : Company Policy
+Narrative: 1
+On the night of Day 0 going into Day 1, a few of us were assigned to work the OTS (Out of
+Service) aircraft for a flap lock issue. The report generated from the aircraft stated the
+warning message (F/CTL FLAPS LOCKED, SFCS). Failure messages included: (FLP 1 CHK
+LH MECH DRIVE, AND FLP 2 CHK LH MECH DRIVE). We failed to receive any kind of
+turnover due to the fact that morning shift was the last to touch the aircraft, and swing
+shift was waiting on parts, so by the time the midnight crew arrived, we had no direction
+on where to start besides searching through scattered paperwork in search of where to
+begin maintenance. We concluded that a previous shift found damage to the track 3
+system and based off our manual instructions for the associated faults, we proceeded as
+such to inspect for more damage. By the end of the shift, we discovered more underlying
+damage of the flap system which included track 3 and track 4 (the outboard flap), and
+potential damage to the inboard flap system (track 1 and 2). Us AMTs created a copious
+amount of non-routine items for tracks 3 and 4, and nothing for track 1 and 2. We were
+told by a crew chief to hold off on writing up a potentially worn attaching link of the track
+2 inboard flap, due to the fact that since track 3 was removed, it could have caused play in
+the inboard flap system. We were told that the next shift will check out track 1 and 2 when
+track 3 was reassembled. This is a failure on our behalf to write this particular item up.
+When the aircraft left ZZZ, we proceeded to check documentation, and did not find
+anything regarding inspection of the LH track 1 and 2 system, but rather a GVI (General
+Visual Inspection) of the LH flap system, in which we are unsure if that was included. The
+following night after we were assigned to the aircraft, management decided that the crew
+chief from the day before will no longer be able to have that aircraft, and they wanted a
+whole new crew to be assigned to it. Our opinion was that due to the immense amount of
+write ups the day prior, management felt as if it caused an operational delay in production.
+Mind you, this is suspected by us AMTs. As techs searching for a flap failure, we felt as if
+there was an unjust pressure and judgement against us by scrupulously following the
+approved maintenance manual references. This feeling of a "push" in order to have
+forward progress in regard to aircraft repair seemed to become overwhelming as the night
+progressed. This type of operational pressure and feelings of being wanted to "look the
+other way" is a dangerous work practice when attempting to make possibly consequential
+airworthiness decisions, especially regarding an emergency landing flight control issue with
+our innocent passengers onboard. Cause: Saturation of write ups for damage found, and
+pressure for forward progress regarding work production in order to get the aircraft out as
+soon as possible for revenue service. Contributing factors regarding why this happened
+also includes preemptive decision making by our crew chief without reference material
+regarding our track 2 inboard flap concern. Solution: "Judgement free" expectation for
+writing up suspected damage or confirmed damage/failures. Management pressure
+expectations to be reduced, due to the fact that the AMTs and Crew Chiefs have the
+ultimate and final say on airworthiness decisions. We are told that management expects
+write ups and issues throughout the night on an OTS aircraft, but in turn show the
+opposite by failure of their word by inducing pressure. Most of these situations whe n later
+talked about seem to be disregarded as not a big deal and expected to happen based off
+experience of what supervision has seen, but when it comes to the actual event occurring,
+this ideology changes.
+Narrative: 2
+On the night of Day 0 working into Day 1 I was part of OTS (Out of Service) crew assigned
+to an A/C. After a complete lack of briefing and or turnover from anyone of the techs or
+crew chiefs of swing shift due to the fact they did not work the A/C and day shift was the
+last ones to do so and they never left a turnover for them either, at which point we had to
+deduce where the A/C was left off just from non routine write ups and from visually
+examining what was removed. Failure of the turnover had us start at the beginning thus
+inspecting the report and associated faults which were for a FLP1 CHK MECH DRIVE and
+FLP 2 CHK LH MECH DRIVE, with this information in hand we looked over the L/H wing on
+the aircraft and found that Track 3 was disassembled and was found to have mechanical
+failure in a few major parts. As we restarted all troubleshooting from scratch we performed
+a visual inspection of the area and found numerous discrepancies that were noted on non
+routine paperwork, out of which one discrepancy for a loose/worn attach link on FLAP 2
+was to be left unwritten at the request of crew chief on duty due to the fact Track 3 was
+disassembled at the time there was no way of knowing any effects from that that would
+create issues/looseness to Track 2. This is a failure on us as techs to write up the issue
+even against the wishes of the crew chief. Upon the aircraft final sign off we reviewed the
+sign offs done here in ZZZ and noted that our concern was never addressed about the #2
+flap even though the initial faults to the system were for Track1 and Track2. Even before
+the aircraft left ZZZ we had our doubts about management over involvement during the
+course of the aircraft’s OTS time here. The night of Day 1 we were not reassigned to the
+aircraft and neither was our crew chief due to managements concerns over the copious
+amounts of non routines generated the previous night shift, the constant pressure from
+management involvement towards an operational goal and not towards the actual safety
+was constantly felt and was observed by most everyone that had involvement in aircraft ’s
+stay here and the ultimate reason that both techs and crew chiefs were under such
+ridiculous sustained pressure and scrupulous oversight was why ultimately the aircraft left
+without certain aspects of possibly unserviceable items to have been overlooked and thus
+letting an aircraft full of paying customers leave this station in questionable airworthiness
+and this issue has been an issue with our local management during every single OTS
+event. Cause: Pressure for aircraft progress at no regard to procedures, or restrictions to
+such procedures be it by equipment and or time, operational needs of the A/C being
+pushed against the airworthiness needs of the A/C, numerous crews of AMTs and crew
+chiefs being rotated through in hopes that they will find a crew that would comply with
+management requests better then the others and in hopes of bending/breaking some
+regulations for the operational need. Broken and/or missing equipment/tooling,
+improper/missing turn over paperwork from AMT and/or crew chiefs, decision making from
+supervision without any kind of paperwork or written approved deviation from reference
+material. Solution: Management pressure needs to stop, it is extremely unsafe and they
+especially good at inducing fear of being reprimanded into new and young AMTs during
+their probationary periods and they continue this trend of bullying into submission
+afterwards, at a time the A/C is OTS it is up to the AMTs and the Crew chiefs as to proper
+and correct actions as per our FAA approved reference material and any kind of deviation
+from such reference material with written authorization if needed. The operational needs
+of the A/C will and should always come in second place to safety. Technicians should not
+be scrutinized or looked down upon for doing their sworn duty to maintain the A/C in a
+airworthy condition as instructed to do so by the FAA rules and regulations and by the
+reference material that were agreed upon by the FAA and our company.
+Synopsis
+Maintenance technicians reported that while they were working on an aircraft with a flap
+issue the company management was not supportive of AMT's working to find root cause of
+the problem.
+
+
+ACN: 2061955 (3 of 4)
+Time / Day
+Date : 202312
+Local Time Of Day : 1801-2400
+Place
+Locale Reference.Airport : ZZZ.Airport
+State Reference : US
+Altitude.AGL.Single Value : 0
+Aircraft
+Reference : X
+Aircraft Operator : Air Carrier
+Make Model Name : Regional Jet 200 ER/LR (CRJ200)
+Operating Under FAR Part : Part 121
+Mission : Passenger
+Flight Phase : Parked
+Person
+Reporter Organization : Air Carrier
+Function.Ground Personnel : Ramp
+Function.Maintenance : Lead Technician
+Qualification.Maintenance : Airframe
+Qualification.Maintenance : Powerplant
+ASRS Report Number.Accession Number : 2061955
+Human Factors : Communication Breakdown
+Human Factors : Other / Unknown
+Human Factors : Training / Qualification
+Communication Breakdown.Party1 : Ground Personnel
+Communication Breakdown.Party2 : Other
+Events
+Anomaly.Deviation / Discrepancy - Procedural : Hazardous Material Violation
+Anomaly.Deviation / Discrepancy - Procedural : Published Material / Policy
+Anomaly.Deviation / Discrepancy - Procedural : FAR
+Detector.Person : Maintenance
+When Detected : Aircraft In Service At Gate
+Result.General : None Reported / Taken
+Assessments
+Contributing Factors / Situations : Human Factors
+Contributing Factors / Situations : Procedure
+Primary Problem : Human Factors
+Narrative: 1
+Fire extinguisher bottles are being shipped, issued, and handled without protective shunt
+caps on the squibs. The cardboard boxes are only labeled as nonflammable gas, not as
+explosive. When we receive the bottles, the squibs are installed on them and have only a
+non-ESD plastic cap over the squib connectors. The squibs should have shunts on from the
+manufacturer, what are the venders doing with them? I brought this up in the past when
+there was only 1 cap in house. We were told we should make shunt caps via a supplement
+due to no inventory. Whoever is, doing the inspections, testing, shipping and squi b tag
+should be aware of the need for the shunts at all times until installed on the aircraft.
+Suggestion: 1st educate the venders and shippers of the hazards associated with the
+squibs. 2nd make sure the squibs are shipped handled and stored with shunt caps on at all
+times. 3rd cartons need to be properly labeled as to the hazards contained inside.
+Synopsis
+Air carrier maintenance personnel reported the improper shipping and handling of fire
+extinguisher bottles. Reporter suggests additional training of shipping and handling
+personnel is needed.
+
+
+ACN: 2032484 (4 of 4)
+Time / Day
+Date : 202308
+Place
+Altitude.AGL.Single Value : 0
+Aircraft : 1
+Reference : X
+Aircraft Operator : Air Carrier
+Make Model Name : B777-200
+Operating Under FAR Part : Part 121
+Flight Phase : Parked
+Aircraft : 2
+Reference : Y
+Make Model Name : Commercial Fixed Wing
+Flight Phase : Parked
+Aircraft : 3
+Reference : Z
+Make Model Name : Commercial Fixed Wing
+Flight Phase : Parked
+Person : 1
+Location Of Person : Hangar / Base
+Reporter Organization : Air Carrier
+Function.Maintenance : Technician
+ASRS Report Number.Accession Number : 2032484
+Human Factors : Situational Awareness
+Person : 2
+Location Of Person : Hangar / Base
+Reporter Organization : Air Carrier
+Function.Maintenance : Technician
+ASRS Report Number.Accession Number : 2032486
+Human Factors : Situational Awareness
+Events
+Anomaly.Deviation / Discrepancy - Procedural : Published Material / Policy
+Anomaly.Ground Event / Encounter : Aircraft
+Detector.Person : Maintenance
+When Detected.Other
+Result.Aircraft : Aircraft Damaged
+Assessments
+Contributing Factors / Situations : Company Policy
+Contributing Factors / Situations : Human Factors
+Contributing Factors / Situations : Procedure
+Contributing Factors / Situations : Staffing
+Primary Problem : Human Factors
+Narrative: 1
+Aircraft X was moved into [the] center hangar to be set up for RON (Routine Overnight)
+work. The Aircraft was to be moved in deep so that two narrow body aircraft could be
+parked behind Aircraft X. Aircraft Y was moved out of the south hanger so that Aircraft X
+could be moved into the hangar. Lead Technician and crew held a huddle prior to moving
+Aircraft Y out of the hangar and they reviewed the move of Aircraft Y out of the hangar,
+the move of Aircraft X into the hangar, followed by the move of Aircraft Y back into the
+south hanger. After hookup of the tow tractor, the crew members took their positions and
+the Lead Technician went to the marshal in position. I joined the Lead Technician at that
+position. The Lead Technician marshalled in the tug driver and the wing walkers moved in
+with the aircraft. As Aircraft X got close to the parking spot, I moved to the front of
+Aircraft Z to observe the distance between the #1 engine nose cowl on Aircraft X and the
+radome on Aircraft Z. The Lead Technician slowed the movement of Aircraft X as it
+approached the parking spot and a popping sound then occurred. I turned and walked
+back to see the radome of Aircraft X resting on the leading edge of Aircraft Z left wing. The
+Lead Technician then motioned the driver to push Aircraft X back. The crew then gathered
+to place chocks under wheels, disconnect tow bar, hook up power, and position the entry
+stand.
+Narrative: 2
+While parking Aircraft X in the hanger, as guide man I did not pay enough attention to
+clearance on nose of Aircraft X and leading edge of Aircraft Z causing impact damage of
+radome and leading edge slat.
+Synopsis
+Aircraft Maintenance Technician towing an aircraft into the hangar struck the wing of
+another aircraft with the radome of the aircraft under tow.
+
+
