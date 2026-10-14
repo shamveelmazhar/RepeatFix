@@ -15,11 +15,14 @@ from dataclasses import dataclass
 # no aircraft system involved (hazmat shipping, towing, paperwork).
 GENERAL_ATA = "00"
 
-# ATA iSpec 2200 chapter names (mirrors frontend/lib/ata.ts, plus 00 and the rotorcraft chapters).
+# ATA iSpec 2200 chapter names (mirrors frontend/lib/ata.ts, plus 00, rotorcraft and the other
+# chapters FAA SDR JASC codes use).
 ATA_NAMES: dict[str, str] = {
     "00": "General / Ground Operations",
     "05": "Time Limits / Inspections",
+    "11": "Placards & Markings",
     "12": "Servicing",
+    "14": "Hardware",
     "21": "Air Conditioning & Pressurization",
     "22": "Auto Flight",
     "23": "Communications",
@@ -36,15 +39,23 @@ ATA_NAMES: dict[str, str] = {
     "34": "Navigation",
     "35": "Oxygen",
     "36": "Pneumatic",
+    "37": "Vacuum",
     "38": "Water / Waste",
+    "45": "Central Maintenance System",
     "49": "Auxiliary Power Unit",
+    "51": "Structures – General",
     "52": "Doors",
     "53": "Fuselage",
+    "54": "Nacelles / Pylons",
     "55": "Stabilizers",
     "56": "Windows",
     "57": "Wings",
     "61": "Propellers",
+    "62": "Main Rotor",
+    "63": "Main Rotor Drive",
+    "64": "Tail Rotor",
     "65": "Tail Rotor Drive",
+    "67": "Rotors Flight Control",
     "71": "Power Plant",
     "72": "Engine",
     "73": "Engine Fuel & Control",
@@ -55,6 +66,10 @@ ATA_NAMES: dict[str, str] = {
     "78": "Exhaust / Thrust Reverser",
     "79": "Oil",
     "80": "Starting",
+    "81": "Turbines",
+    "82": "Water Injection",
+    "83": "Accessory Gearboxes",
+    "85": "Reciprocating Engine",
 }
 
 
@@ -194,6 +209,17 @@ FAILURE_MODES: list[FailureMode] = [
     FailureMode("engine_power_loss", "Engine loss of power", "72", r"loss of power|power loss"),
     FailureMode("pressure_controller_fault", "Cabin pressure controller fault", "21", r"pressure controller"),
     FailureMode("bleed_valve_fault", "Bleed valve fault", "36", r"bleed valve"),
+    # System-specific modes common in FAA SDR (added with the SDR ingestion).
+    FailureMode("emer_light_battery_fault", "Emergency light or battery fault", "33",
+                r"(emer(gency)?|exit|escape|path(way)?|floor prox).{0,40}(light|batt|power supply)|batt(ery)? pack"),
+    FailureMode("escape_slide_fault", "Escape slide fault", "25", r"\bslides?\b|girt bar"),
+    FailureMode("emergency_equipment_fault", "Emergency equipment fault or missing", "25",
+                r"flashlight|megaphone|\bPBE\b|\bELT\b|first aid|life ?vest"),
+    FailureMode("oxygen_mask_deploy", "Oxygen masks deployed or fault", "35", r"\bmasks?\b"),
+    FailureMode("flight_control_sensor_fault", "Flight control sensor or computer fault", "27",
+                r"sensor|transmitter|\bRVDT\b|\bLVDT\b|computer|\bFCE\b|\bSEC\b|\bELAC\b"),
+    FailureMode("gear_sensor_fault", "Landing gear sensor or indication fault", "32",
+                r"proximity|prox sensor|sensor|gear (disagree|unsafe)|indication"),
     # Generic modes, valid under any chapter.
     FailureMode("corrosion", "Corrosion found", None, r"corro"),
     FailureMode("incorrect_installation", "Incorrect installation or missing hardware", None,
@@ -205,6 +231,17 @@ FAILURE_MODES: list[FailureMode] = [
     FailureMode("ground_handling", "Towing or ground handling event", None,
                 r"\btow(ing|ed)?\b|marshal|chock|ground encounter|service vehicle"),
     FailureMode("structural_damage", "Structural damage", None, r"damage|\bdent|struck"),
+    # Generic modes added with the FAA SDR ingestion, where PartCondition codes them.
+    FailureMode("crack_found", "Crack found", None, r"\bcrack"),
+    FailureMode("wear_or_chafing", "Worn, chafed or loose", None,
+                r"\bworn\b|\bwear\b|chaf|excess(ive)? play|\bloose\b"),
+    FailureMode("fluid_leak", "Fluid leak", None, r"\bleak"),
+    FailureMode("smoke_or_odor", "Smoke, fumes or odor", None, r"smoke|fume|odou?r|smell"),
+    FailureMode("false_warning", "False warning or unwanted activation", None,
+                r"false (warning|activation|indication|alarm)|nuisance|uncommanded|inadvertent"),
+    FailureMode("low_pressure", "Low pressure (bottle, tire or system)", None, r"low (pressure|press\b)"),
+    FailureMode("out_of_adjustment", "Out of adjustment, binding or needs lubrication", None,
+                r"out of (adjust|rig)|binding|\bstiff\b|lack of lub"),
     # Last-resort fallbacks driven by the ASRS "Problem" field.
     FailureMode("component_malfunction", "Component malfunction", None),
     FailureMode("other", "Other / not classified", None),
