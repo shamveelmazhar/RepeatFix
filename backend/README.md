@@ -6,6 +6,15 @@ Suggested layout: `app/main.py` (routes), `app/extract.py` (LLM → JobCard), `a
 
 vLLM on MI300X: `VLLM_ROCM_USE_AITER=1 vllm serve Qwen/Qwen2.5-VL-7B-Instruct --port 8000`
 
+## ASRS ingestion (`app/asrs.py`)
+Parses a NASA ASRS report set PDF into JobCards with deterministic rules (no LLM):
+```
+pip install -r requirements-dev.txt
+python -m app.asrs ../data/raw/mechanic.pdf -o ../data/samples/asrs_mechanic.jsonl
+python -m pytest
+```
+The ATA and failure-mode vocabularies live in `app/vocab.py`; `vocab.failure_mode_list()` has the shape of `GET /api/failure-modes`.
+
 ## Cited procedures (FAA AC 43.13-1B)
 
 `app/procedures.py` splits AC 43.13-1B CHG 1 into one chunk per paragraph (e.g. `9-14. TIRE INSPECTION AND REPAIR`), keeping the chapter, section, paragraph number and the page each chunk starts on. Long paragraphs are split at their sub-paragraphs (`a.`, `(3)`), and each part keeps the page it starts on. The result is committed as `data/procedures/ac_43-13-1b.jsonl` (661 paragraphs, 970 chunks), so the service doesn't need the PDF at runtime.
@@ -16,7 +25,7 @@ For `/api/assist`, put `CITE_INSTRUCTION` and `context_block(hits)` in the promp
 
 ```bash
 cd backend
-pip install -r requirements.txt -r requirements-dev.txt
+pip install -r requirements-dev.txt
 python -m app.procedures search "#2 brk dragging, brk temp high after taxi"
 python -m pytest
 # rebuild the chunks (PDF in data/raw/ac/, git-ignored)

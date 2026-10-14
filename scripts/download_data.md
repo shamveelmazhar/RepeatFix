@@ -15,3 +15,4 @@ Save full downloads to `data/raw/`, which is git-ignored. Commit only small samp
 - **SDR** has an aircraft registration, so it can find true per-tail repeats. Check on day 1 that the download page is live, because AIN reported maintenance downtime in mid-2026. Start with one recent year and filter to 2–3 common types (e.g. B737, A320, CRJ) to keep the demo focused.
 - **AC 43.13-1B:** the indexed file is `AC_43.13-1B_CHG_1_Ed_Upd_FAA.pdf` (CHG 1 editorial update, May 2024, 756 pages). Save it to `data/raw/ac/`. The older `AC_43.13-1B_w-chg1.pdf` (2002) has the same content, so it isn't indexed separately.
 - Record each file's download date here.
+- **ASRS Maintenance report set** (`mechanic.pdf`, 50 reports, ACN 2000321 to 2069879): saved by Shamveel by 14 Oct 2026; parsed into `data/samples/asrs_mechanic.jsonl` on 14 Oct 2026. The cloud sandbox can't reach asrs.arc.nasa.gov, so download it in a browser and put it in `data/raw/`.
