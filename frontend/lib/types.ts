@@ -43,8 +43,10 @@ export interface Procedure {
   doc: string;
   section: string;
   page: number | null;
+  page_label?: string | null; // printed page, e.g. "9-12"
   snippet: string;
-  url?: string;
+  url?: string | null;
+  citation?: string; // full reference, e.g. "AC 43.13-1B, Chapter 9, Section 1, par. 9-14 (...), page 9-12"
 }
 
 export interface WorkOrder {

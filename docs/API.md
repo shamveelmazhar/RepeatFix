@@ -51,8 +51,11 @@ Request: `{ "fault_text": "...", "asset": "N12345" | null, "aircraft_type": "B73
   "similar": [{ "card": JobCard, "score": 0.83 }],
   "hypotheses": [{ "cause": "Worn brake wear pins", "confidence": "high|medium|low",
                    "evidence_card_ids": ["sdr-..."] }],
-  "procedures": [{ "doc": "FAA AC 43.13-1B", "section": "9-xx", "page": 412,
-                   "snippet": "...", "url": "optional link to PDF page" }],
+  "procedures": [{ "doc": "FAA AC 43.13-1B CHG 1",
+                   "section": "Par. 9-7 Landing-gear Components (Ch. 9, Sec. 1: Inspection and Maintenance of Landing Gear)",
+                   "page": 495, "page_label": "9-6",            // page_label and citation are optional
+                   "snippet": "...", "url": "optional link to the document",
+                   "citation": "AC 43.13-1B, Chapter 9, Section 1, par. 9-7 (Landing-gear Components), page 9-6" }],
   "work_order": { "title": "...", "asset": "N12345", "steps": ["..."], "parts": ["..."],
                   "est_hours": 3.0, "status": "draft" },
   "repeat_history": { "count": 4, "first_date": "2026-01-08", "last_date": "2026-05-19",
@@ -61,7 +64,7 @@ Request: `{ "fault_text": "...", "asset": "N12345" | null, "aircraft_type": "B73
   "timing": { "total_ms": 2100, "tokens_per_s": 95.0 }  // tokens_per_s may be null
 }
 ```
-`procedures[].page` may be `null` when only the section is known. `ata_name` is optional on any JobCard or repeat row; the UI falls back to its own ATA chapter table.
+`procedures[].page` may be `null` when only the section is known. Two optional fields may also be present: `page_label`, the page number printed in the document (e.g. `"9-12"`; `page` is the PDF page, for links), and `citation`, the full reference string, e.g. `"AC 43.13-1B, Chapter 9, Section 1, par. 9-14 (Tire Inspection and Repair), page 9-12"`. AC excerpts come from `data/procedures/ac_43-13-1b.jsonl` (see `backend/README.md`). `ata_name` is optional on any JobCard or repeat row; the UI falls back to its own ATA chapter table.
 
 ### `POST /api/work-orders/{id}/approve`
 Request: `{ "work_order": { ...edited fields... }, "approved_by": "name" }` → `{ "id": "wo-0001", "status": "approved" }`

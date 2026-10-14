@@ -307,7 +307,9 @@ function Results({ result, onReset }: { result: AssistResponse; onReset: () => v
                 <p className="text-sm font-semibold text-muted">{p.doc}</p>
                 <p className="font-medium">
                   {p.section}
-                  {p.page !== null && <span className="text-muted">, page {p.page}</span>}
+                  {(p.page_label ?? p.page) != null && (
+                    <span className="text-muted">, page {p.page_label ?? p.page}</span>
+                  )}
                 </p>
                 <p className="mt-1 text-sm text-muted">{p.snippet}</p>
                 {p.url && (
