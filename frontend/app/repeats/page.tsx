@@ -2,7 +2,8 @@
 
 import { Fragment, useEffect, useState } from "react";
 import { useOpenCard } from "@/components/CardViewer";
-import { AtaTag, Panel, Skeleton, StatusBadge, repeatSeverity } from "@/components/ui";
+import { ClockIcon, RepeatIcon, WrenchIcon } from "@/components/icons";
+import { AtaTag, Panel, Skeleton, StatTile, StatusBadge, repeatSeverity } from "@/components/ui";
 import { api } from "@/lib/api";
 import { failureModeLabel } from "@/lib/mock";
 import type { GroupBy, RepeatRow } from "@/lib/types";
@@ -61,10 +62,25 @@ export default function RepeatFailuresPage() {
       )}
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <Stat label="Repeat problems found" value={rows ? String(rows.length) : null} />
-        <Stat label="Downtime from repeats" value={rows ? `${totalDowntime.toFixed(1)} h` : null} />
-        <Stat
+        <StatTile
+          tint="peach"
+          icon={<RepeatIcon />}
+          label="Repeat problems found"
+          loading={!rows}
+          value={rows ? String(rows.length) : null}
+        />
+        <StatTile
+          tint="sand"
+          icon={<ClockIcon />}
+          label="Downtime from repeats"
+          loading={!rows}
+          value={rows ? `${totalDowntime.toFixed(1)} h` : null}
+        />
+        <StatTile
+          tint="slate"
+          icon={<WrenchIcon />}
           label="Worst offender"
+          loading={!rows}
           value={top ? top.asset : rows ? "None" : null}
           sub={top ? `${failureModeLabel(top.failure_mode)} · ${top.count} times` : undefined}
         />
@@ -89,7 +105,7 @@ export default function RepeatFailuresPage() {
               const key = `${r.asset}|${r.failure_mode}`;
               const sev = repeatSeverity(r.count);
               return (
-                <li key={key} className="lift rounded-xl border border-line bg-surface/70 p-4">
+                <li key={key} className="glass-inset lift rounded-xl p-4">
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <p className="font-semibold">
@@ -103,15 +119,15 @@ export default function RepeatFailuresPage() {
                     <AtaTag chapter={r.ata_chapter} name={r.ata_name} />
                   </div>
                   <dl className="tabular mt-3 grid grid-cols-3 gap-2 text-center">
-                    <div className="rounded-lg bg-accent-soft/50 py-2">
+                    <div className="rounded-lg bg-white/40 py-2 dark:bg-white/5">
                       <dt className="text-xs text-muted">Times</dt>
                       <dd className="text-lg font-semibold">{r.count}</dd>
                     </div>
-                    <div className="rounded-lg bg-accent-soft/50 py-2">
+                    <div className="rounded-lg bg-white/40 py-2 dark:bg-white/5">
                       <dt className="text-xs text-muted">Avg days between</dt>
                       <dd className="text-lg font-semibold">{r.mtbf_days !== null ? Math.round(r.mtbf_days) : "—"}</dd>
                     </div>
-                    <div className="rounded-lg bg-accent-soft/50 py-2">
+                    <div className="rounded-lg bg-white/40 py-2 dark:bg-white/5">
                       <dt className="text-xs text-muted">Downtime</dt>
                       <dd className="text-lg font-semibold">{r.downtime_hours.toFixed(1)} h</dd>
                     </div>
@@ -121,7 +137,7 @@ export default function RepeatFailuresPage() {
                       <button
                         key={id}
                         onClick={() => openCard(id)}
-                        className="rounded-lg border border-line bg-surface/80 px-3 py-1.5 text-sm font-medium text-accent hover:border-accent"
+                        className="glass-inset rounded-lg px-3 py-1.5 text-sm font-medium text-accent hover:border-accent"
                       >
                         {id}
                       </button>
@@ -183,7 +199,7 @@ export default function RepeatFailuresPage() {
                                 <button
                                   key={id}
                                   onClick={() => openCard(id)}
-                                  className="rounded-lg border border-line bg-surface/80 px-3 py-1.5 text-sm font-medium text-accent hover:border-accent"
+                                  className="glass-inset rounded-lg px-3 py-1.5 text-sm font-medium text-accent hover:border-accent"
                                 >
                                   {id}
                                 </button>
@@ -201,20 +217,6 @@ export default function RepeatFailuresPage() {
           </>
         )}
       </Panel>
-    </div>
-  );
-}
-
-function Stat({ label, value, sub }: { label: string; value: string | null; sub?: string }) {
-  return (
-    <div className="glass lift rounded-2xl p-5">
-      <p className="text-sm font-medium text-muted">{label}</p>
-      {value === null ? (
-        <Skeleton className="mt-2 h-9 w-24" />
-      ) : (
-        <p className="tabular mt-1 text-3xl font-bold">{value}</p>
-      )}
-      {sub && <p className="mt-1 text-sm text-muted">{sub}</p>}
     </div>
   );
 }

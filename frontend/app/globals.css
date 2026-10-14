@@ -2,14 +2,16 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Design tokens — see CLAUDE.md "UI style rules". Light is the default (bright hangars). */
+/* Design tokens — see CLAUDE.md "Look and feel". Light is the default (bright hangars). */
 :root {
-  --bg: #f6f7f9;
+  --bg: #fbf6f1;
   --surface: #ffffff; /* solid surface: inputs, dialogs */
-  --glass: rgb(255 255 255 / 0.68);
-  --glass-strong: rgb(255 255 255 / 0.82);
-  --glass-border: rgb(255 255 255 / 0.9);
-  --border: rgb(15 23 42 / 0.1);
+  --glass: rgb(255 251 247 / 0.58); /* outer panels */
+  --glass-strong: rgb(255 251 247 / 0.8);
+  --glass-inset: rgb(255 255 255 / 0.72); /* cards inside panels */
+  --glass-border: rgb(255 255 255 / 0.7);
+  --glass-highlight: rgb(255 255 255 / 0.95);
+  --border: rgb(120 53 15 / 0.1);
   --text: #0f172a;
   --muted: #475569;
   --accent: #c2410c; /* text-safe orange: 4.9:1 on the page */
@@ -26,21 +28,33 @@
   --warning-soft: #fefce8;
   --ok: #15803d;
   --ok-soft: #f0fdf4;
-  --shadow: 0 1px 2px rgb(15 23 42 / 0.04), 0 8px 24px -8px rgb(15 23 42 / 0.12);
-  --shadow-hover: 0 2px 4px rgb(15 23 42 / 0.05), 0 16px 36px -10px rgb(194 65 12 / 0.25);
-  --page-gradient:
-    radial-gradient(60rem 40rem at -10% -10%, rgb(251 146 60 / 0.3), transparent 60%),
-    radial-gradient(50rem 36rem at 110% 0%, rgb(253 186 116 / 0.32), transparent 60%),
-    radial-gradient(60rem 40rem at 100% 110%, rgb(148 163 184 / 0.25), transparent 60%);
+  /* Tinted stat tiles (decorative surfaces, not status) */
+  --tint-peach: rgb(255 228 204 / 0.62);
+  --tint-sand: rgb(245 236 226 / 0.7);
+  --tint-slate: rgb(226 232 244 / 0.7);
+  /* Sidebar: dark glass in both themes for contrast with the content */
+  --side: rgb(17 20 30 / 0.86);
+  --side-text: #e2e8f0;
+  --side-muted: #94a3b8;
+  --shadow: 0 1px 2px rgb(120 53 15 / 0.05), 0 12px 32px -12px rgb(120 53 15 / 0.2);
+  --shadow-hover: 0 2px 4px rgb(120 53 15 / 0.06), 0 22px 44px -14px rgb(194 65 12 / 0.35);
+  --orb-1: rgb(251 146 60 / 0.55);
+  --orb-2: rgb(253 186 116 / 0.6);
+  --orb-3: rgb(251 113 133 / 0.18);
+  --fan-a: #fdba74;
+  --fan-b: #fb923c;
+  --fan-opacity: 0.55;
 }
 
 .dark {
-  --bg: #0b0f17;
+  --bg: #0a0d14;
   --surface: #151b27;
-  --glass: rgb(21 27 39 / 0.62);
-  --glass-strong: rgb(21 27 39 / 0.8);
+  --glass: rgb(20 25 36 / 0.58);
+  --glass-strong: rgb(20 25 36 / 0.82);
+  --glass-inset: rgb(255 255 255 / 0.04);
   --glass-border: rgb(255 255 255 / 0.08);
-  --border: rgb(255 255 255 / 0.1);
+  --glass-highlight: rgb(255 255 255 / 0.1);
+  --border: rgb(255 255 255 / 0.09);
   --text: #e5e7eb;
   --muted: #94a3b8;
   --accent: #fb923c;
@@ -57,12 +71,20 @@
   --warning-soft: rgb(250 204 21 / 0.1);
   --ok: #4ade80;
   --ok-soft: rgb(74 222 128 / 0.12);
-  --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px -8px rgb(0 0 0 / 0.5);
-  --shadow-hover: 0 2px 4px rgb(0 0 0 / 0.3), 0 16px 36px -10px rgb(249 115 22 / 0.28);
-  --page-gradient:
-    radial-gradient(60rem 40rem at -10% -10%, rgb(234 88 12 / 0.22), transparent 60%),
-    radial-gradient(50rem 36rem at 110% 0%, rgb(251 146 60 / 0.12), transparent 60%),
-    radial-gradient(60rem 40rem at 100% 110%, rgb(30 41 59 / 0.6), transparent 60%);
+  --tint-peach: rgb(251 146 60 / 0.12);
+  --tint-sand: rgb(214 211 209 / 0.07);
+  --tint-slate: rgb(148 163 184 / 0.1);
+  --side: rgb(8 10 16 / 0.72);
+  --side-text: #e2e8f0;
+  --side-muted: #94a3b8;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 12px 32px -12px rgb(0 0 0 / 0.6);
+  --shadow-hover: 0 2px 4px rgb(0 0 0 / 0.3), 0 22px 44px -14px rgb(249 115 22 / 0.3);
+  --orb-1: rgb(234 88 12 / 0.35);
+  --orb-2: rgb(194 65 12 / 0.25);
+  --orb-3: rgb(99 102 241 / 0.1);
+  --fan-a: #7c2d12;
+  --fan-b: #c2410c;
+  --fan-opacity: 0.35;
 }
 
 @theme inline {
@@ -84,6 +106,8 @@
   --color-warning-soft: var(--warning-soft);
   --color-ok: var(--ok);
   --color-ok-soft: var(--ok-soft);
+  --color-side-text: var(--side-text);
+  --color-side-muted: var(--side-muted);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -94,36 +118,78 @@ html {
 
 body {
   background-color: var(--bg);
-  background-image: var(--page-gradient);
-  background-attachment: fixed;
   color: var(--text);
   font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
 
 @layer components {
-  /* Frosted-glass panel. Kept mostly opaque so text stays high-contrast. */
+  /* Frosted glass: translucent, blurred, thin bright border, top-edge highlight. */
   .glass {
     background-color: var(--glass);
     border: 1px solid var(--glass-border);
-    box-shadow: var(--shadow), inset 0 0 0 1px var(--border);
-    -webkit-backdrop-filter: blur(18px) saturate(140%);
-    backdrop-filter: blur(18px) saturate(140%);
+    box-shadow:
+      var(--shadow),
+      inset 0 1px 0 var(--glass-highlight);
+    -webkit-backdrop-filter: blur(24px) saturate(170%);
+    backdrop-filter: blur(24px) saturate(170%);
   }
 
   .glass-strong {
     background-color: var(--glass-strong);
   }
 
+  /* Lighter frosted card that sits inside a glass panel. */
+  .glass-inset {
+    background-color: var(--glass-inset);
+    border: 1px solid var(--glass-border);
+    box-shadow:
+      0 1px 2px rgb(120 53 15 / 0.05),
+      inset 0 1px 0 var(--glass-highlight);
+  }
+
+  /* Dark glass sidebar. */
+  .glass-side {
+    background-color: var(--side);
+    border: 1px solid rgb(255 255 255 / 0.08);
+    box-shadow:
+      0 24px 48px -16px rgb(15 23 42 / 0.45),
+      inset 0 1px 0 rgb(255 255 255 / 0.08);
+    color: var(--side-text);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    backdrop-filter: blur(24px) saturate(160%);
+  }
+
+  .tint-peach {
+    background-color: var(--tint-peach);
+  }
+  .tint-sand {
+    background-color: var(--tint-sand);
+  }
+  .tint-slate {
+    background-color: var(--tint-slate);
+  }
+
+  /* Small uppercase label, e.g. "REPEAT PROBLEMS FOUND". */
+  .eyebrow {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
   /* Gentle grow-on-hover for cards you can look at or click. */
   .lift {
     transition:
-      transform 180ms ease,
-      box-shadow 180ms ease;
+      transform 200ms ease,
+      box-shadow 200ms ease;
   }
   @media (hover: hover) and (prefers-reduced-motion: no-preference) {
     .lift:hover {
-      transform: translateY(-2px) scale(1.012);
-      box-shadow: var(--shadow-hover), inset 0 0 0 1px var(--border);
+      transform: translateY(-3px) scale(1.012);
+      box-shadow:
+        var(--shadow-hover),
+        inset 0 1px 0 var(--glass-highlight);
     }
   }
 
@@ -134,13 +200,28 @@ body {
   .bg-brand-gradient {
     background-image: linear-gradient(135deg, var(--brand-from), var(--brand-to));
   }
+}
 
-  .text-brand-gradient {
-    background-image: linear-gradient(135deg, var(--brand-to), var(--accent-to));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+/* Decorative warm shapes behind the glass (components/Backdrop.tsx). */
+.backdrop-orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(70px);
+}
+@media (max-width: 767px) {
+  .backdrop-orb,
+  .backdrop-fan {
+    opacity: 0.6;
   }
+}
+.backdrop-fan {
+  position: absolute;
+  border-radius: 9999px;
+  opacity: var(--fan-opacity);
+  background: repeating-conic-gradient(from 210deg, var(--fan-a) 0deg 5deg, var(--fan-b) 5deg 10deg);
+  -webkit-mask-image: radial-gradient(closest-side, black 30%, transparent 100%);
+  mask-image: radial-gradient(closest-side, black 30%, transparent 100%);
+  filter: blur(1.5px);
 }
 
 .tabular {
@@ -149,6 +230,6 @@ body {
 
 dialog::backdrop {
   background: rgb(15 23 42 / 0.45);
-  -webkit-backdrop-filter: blur(4px);
-  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }

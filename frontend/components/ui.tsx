@@ -106,3 +106,44 @@ export function formatDate(iso: string | null): string {
 export function Skeleton({ className = "" }: { className?: string }) {
   return <div className={`animate-pulse rounded-lg bg-line/70 ${className}`} />;
 }
+
+type Tint = "peach" | "sand" | "slate";
+
+/**
+ * Tinted stat tile: uppercase label, big number, icon bubble top-right.
+ * Tints are decorative surfaces, never status. `value === null` shows "Not measured yet".
+ */
+export function StatTile({
+  label,
+  value,
+  sub,
+  icon,
+  tint = "peach",
+  loading = false,
+}: {
+  label: string;
+  value: string | null | undefined;
+  sub?: string;
+  icon?: ReactNode;
+  tint?: Tint;
+  loading?: boolean;
+}) {
+  return (
+    <div className={`glass tint-${tint} lift relative overflow-hidden rounded-2xl p-5`}>
+      <div className="flex items-start justify-between gap-3">
+        <p className="eyebrow pt-1">{label}</p>
+        {icon && (
+          <span className="glass-inset grid h-10 w-10 shrink-0 place-items-center rounded-full text-accent">{icon}</span>
+        )}
+      </div>
+      {loading ? (
+        <Skeleton className="mt-3 h-10 w-28" />
+      ) : value ? (
+        <p className="tabular mt-2 text-4xl font-bold tracking-tight">{value}</p>
+      ) : (
+        <p className="mt-3 text-lg font-medium text-muted">Not measured yet</p>
+      )}
+      {sub && !loading && value && <p className="mt-1 text-sm text-muted">{sub}</p>}
+    </div>
+  );
+}

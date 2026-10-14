@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import { USE_MOCKS } from "@/lib/api";
+import { Backdrop } from "./Backdrop";
 import { CardViewerProvider } from "./CardViewer";
 import { ChipIcon, GaugeIcon, MoonIcon, RepeatIcon, SunIcon, WrenchIcon } from "./icons";
 import { LogoMark } from "./Logo";
@@ -23,7 +24,7 @@ function Logo() {
   );
 }
 
-function ThemeToggle() {
+function ThemeToggle({ onDark = false }: { onDark?: boolean }) {
   const [dark, setDark] = useState(false);
   useEffect(() => setDark(document.documentElement.classList.contains("dark")), []);
   const toggle = () => {
@@ -39,7 +40,9 @@ function ThemeToggle() {
   return (
     <button
       onClick={toggle}
-      className="flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-medium text-muted hover:bg-accent-soft hover:text-ink"
+      className={`flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-medium ${
+        onDark ? "text-side-muted hover:bg-white/10 hover:text-white" : "text-muted hover:bg-accent-soft hover:text-ink"
+      }`}
       aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
     >
       {dark ? <SunIcon /> : <MoonIcon />}
@@ -50,12 +53,12 @@ function ThemeToggle() {
 
 function AmdBadge() {
   return (
-    <div className="flex items-center gap-2.5 rounded-xl border border-line bg-accent-soft/60 px-3 py-2.5 text-sm text-muted">
+    <div className="flex items-center gap-2.5 rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-side-muted">
       <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-brand-gradient text-white">
         <ChipIcon width={18} height={18} />
       </span>
       <span>
-        Runs on <strong className="text-ink">AMD Instinct MI300X</strong>
+        Runs on <strong className="text-white">AMD Instinct MI300X</strong>
         <br />
         vLLM + ROCm
       </span>
@@ -67,13 +70,17 @@ export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   return (
     <CardViewerProvider>
+      <Backdrop />
       <div className="min-h-screen md:flex">
-        {/* Floating glass sidebar (tablet / desktop) */}
+        {/* Floating dark-glass sidebar (tablet / desktop) */}
         <aside className="hidden w-64 shrink-0 p-4 pr-0 md:block">
-          <div className="glass glass-strong sticky top-4 flex h-[calc(100vh-2rem)] flex-col justify-between rounded-3xl p-5">
+          <div className="glass-side sticky top-4 flex h-[calc(100vh-2rem)] flex-col justify-between rounded-3xl p-5">
             <div className="space-y-8">
-              <Logo />
+              <div className="text-white">
+                <Logo />
+              </div>
               <nav aria-label="Main" className="space-y-1.5">
+                <p className="eyebrow mb-3 px-3.5 text-side-muted/80">Workspace</p>
                 {NAV.map(({ href, label, icon: Icon }) => {
                   const active = pathname === href;
                   return (
@@ -83,8 +90,8 @@ export function AppShell({ children }: { children: ReactNode }) {
                       aria-current={active ? "page" : undefined}
                       className={`flex min-h-12 items-center gap-3 rounded-xl px-3.5 font-medium transition-colors ${
                         active
-                          ? "bg-accent-gradient text-on-accent shadow-md shadow-orange-600/20"
-                          : "text-muted hover:bg-accent-soft hover:text-ink"
+                          ? "bg-accent-gradient text-on-accent shadow-lg shadow-orange-600/30"
+                          : "text-side-muted hover:bg-white/10 hover:text-white"
                       }`}
                     >
                       <Icon />
@@ -95,8 +102,9 @@ export function AppShell({ children }: { children: ReactNode }) {
               </nav>
             </div>
             <div className="space-y-3">
+              <p className="eyebrow px-3.5 text-side-muted/80">Powered by</p>
               <AmdBadge />
-              <ThemeToggle />
+              <ThemeToggle onDark />
             </div>
           </div>
         </aside>

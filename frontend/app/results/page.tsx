@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ChipIcon } from "@/components/icons";
-import { Panel, Skeleton } from "@/components/ui";
+import { BoltIcon, ChipIcon, ClockIcon, CoinIcon, FileIcon, RepeatIcon, TargetIcon } from "@/components/icons";
+import { Panel, StatTile } from "@/components/ui";
 import { USE_MOCKS, api } from "@/lib/api";
 import type { Metrics } from "@/lib/types";
 
@@ -61,22 +61,22 @@ export default function ResultsPage() {
       )}
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <Metric
+        <StatTile tint="peach" icon={<TargetIcon />}
           loading={!m}
           label="Reading accuracy"
           value={m && pct(m.extraction_field_accuracy)}
           sub={m ? `Fields read correctly on ${m.labelled_cards} hand-checked job cards` : ""}
         />
-        <Metric loading={!m} label="Job cards processed" value={m && m.cards_processed.toLocaleString()} />
-        <Metric loading={!m} label="Repeat problems found" value={m && String(m.repeat_groups_found)} />
-        <Metric
+        <StatTile tint="sand" icon={<FileIcon />} loading={!m} label="Job cards processed" value={m && m.cards_processed.toLocaleString()} />
+        <StatTile tint="slate" icon={<RepeatIcon />} loading={!m} label="Repeat problems found" value={m && String(m.repeat_groups_found)} />
+        <StatTile tint="sand" icon={<ClockIcon />}
           loading={!m}
           label="Time to answer a fault"
           value={m && (m.p50_latency_ms === null ? null : `${(m.p50_latency_ms / 1000).toFixed(1)} s`)}
           sub="Typical (median) time"
         />
-        <Metric loading={!m} label="Generation speed" value={m && (m.tokens_per_s === null ? null : `${Math.round(m.tokens_per_s)} tokens/s`)} />
-        <Metric
+        <StatTile tint="slate" icon={<BoltIcon />} loading={!m} label="Generation speed" value={m && (m.tokens_per_s === null ? null : `${Math.round(m.tokens_per_s)} tokens/s`)} />
+        <StatTile tint="peach" icon={<CoinIcon />}
           loading={!m}
           label="Cost per 100 job cards"
           value={m && (m.cost_per_100_cards_usd === null ? null : `$${m.cost_per_100_cards_usd.toFixed(2)}`)}
@@ -134,32 +134,6 @@ export default function ResultsPage() {
           </Panel>
         </div>
       </div>
-    </div>
-  );
-}
-
-function Metric({
-  label,
-  value,
-  sub,
-  loading,
-}: {
-  label: string;
-  value: string | null | undefined;
-  sub?: string;
-  loading: boolean;
-}) {
-  return (
-    <div className="glass lift rounded-2xl p-5">
-      <p className="text-sm font-medium text-muted">{label}</p>
-      {loading ? (
-        <Skeleton className="mt-2 h-10 w-28" />
-      ) : value ? (
-        <p className="tabular mt-1 text-4xl font-bold">{value}</p>
-      ) : (
-        <p className="mt-2 text-lg font-medium text-muted">Not measured yet</p>
-      )}
-      {sub && !loading && value && <p className="mt-1 text-sm text-muted">{sub}</p>}
     </div>
   );
 }
