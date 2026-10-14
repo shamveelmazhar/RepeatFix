@@ -1,0 +1,454 @@
+"use client";
+
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import { useOpenCard } from "@/components/CardViewer";
+import { AlertIcon, BookIcon, CameraIcon, CheckIcon, HistoryIcon, SearchIcon } from "@/components/icons";
+import { AtaTag, Button, Panel, Skeleton, StatusBadge, formatDate } from "@/components/ui";
+import { USE_MOCKS, api } from "@/lib/api";
+import { failureModeLabel } from "@/lib/mock";
+import type { AssistResponse, WorkOrder } from "@/lib/types";
+
+const EXAMPLES = [
+  "#2 brake temp high after taxi-in, brake slow to release",
+  "Hydraulic fluid leak at system A pump, low pressure light",
+  "CAB PR SYS 1 FAULT on climb, comes and goes",
+];
+
+export default function FixAFaultPage() {
+  const [aircraft, setAircraft] = useState<string[]>([]);
+  const [asset, setAsset] = useState("");
+  const [text, setText] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [reading, setReading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [result, setResult] = useState<AssistResponse | null>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    api
+      .getCards()
+      .then((cards) =>
+        setAircraft(
+          Array.from(new Set(cards.map((c) => c.registration).filter((r): r is string => !!r))).sort(),
+        ),
+      )
+      .catch(() => setAircraft([]));
+  }, []);
+
+  async function submit(e?: React.FormEvent) {
+    e?.preventDefault();
+    if (!text.trim()) return;
+    setLoading(true);
+    setError(null);
+    setResult(null);
+    try {
+      setResult(await api.assist(text, asset || null));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function readPhoto(file: File | undefined) {
+    if (!file) return;
+    setReading(true);
+    setError(null);
+    try {
+      const card = await api.ingestImage(file);
+      setText(card.raw_text || card.symptom);
+      if (card.registration) setAsset(card.registration);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not read the photo.");
+    } finally {
+      setReading(false);
+      if (fileRef.current) fileRef.current.value = "";
+    }
+  }
+
+  function reset() {
+    setResult(null);
+    setText("");
+    setAsset("");
+  }
+
+  return (
+    <div className="space-y-8">
+      <header>
+        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Fix a fault</h1>
+        <p className="mt-2 max-w-2xl text-lg text-muted">
+          Describe the problem. RepeatFix shows how it was fixed before, the likely causes and the procedure to
+          follow.
+        </p>
+      </header>
+
+      <Panel>
+        <form onSubmit={submit} className="space-y-5">
+          <div className="grid gap-5 sm:grid-cols-[220px_1fr]">
+            <div>
+              <label htmlFor="asset" className="mb-1.5 block font-medium">
+                Aircraft
+              </label>
+              <select
+                id="asset"
+                value={asset}
+                onChange={(e) => setAsset(e.target.value)}
+                className="min-h-11 w-full rounded-lg border border-line bg-surface px-3 text-ink focus:border-accent focus:outline-none"
+              >
+                <option value="">Not sure / any</option>
+                {aircraft.map((a) => (
+                  <option key={a} value={a}>
+                    {a}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label htmlFor="fault" className="mb-1.5 block font-medium">
+                What&apos;s the problem?
+              </label>
+              <textarea
+                id="fault"
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                rows={3}
+                placeholder="Type it the way you would write it in the logbook"
+                className="w-full rounded-lg border border-line bg-surface px-3 py-2.5 text-ink placeholder:text-muted focus:border-accent focus:outline-none"
+              />
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-sm text-muted">Try:</span>
+            {EXAMPLES.map((ex) => (
+              <button
+                key={ex}
+                type="button"
+                onClick={() => setText(ex)}
+                className="rounded-full border border-line px-3 py-1 text-sm text-muted hover:border-accent hover:text-accent"
+              >
+                {ex}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex flex-col-reverse gap-3 border-t border-line pt-5 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <input
+                ref={fileRef}
+                type="file"
+                accept="image/*"
+                capture="environment"
+                className="hidden"
+                onChange={(e) => readPhoto(e.target.files?.[0])}
+              />
+              <Button type="button" variant="secondary" onClick={() => fileRef.current?.click()} disabled={reading}>
+                <CameraIcon />
+                {reading ? "Reading photo…" : "Read a photo of a log entry"}
+                <span className="rounded bg-accent-soft px-1.5 text-xs font-semibold text-accent">Beta</span>
+              </Button>
+            </div>
+            <Button type="submit" disabled={loading || !text.trim()} className="px-6 text-lg">
+              <SearchIcon />
+              {loading ? "Searching past fixes…" : "Find past fixes"}
+            </Button>
+          </div>
+        </form>
+      </Panel>
+
+      {error && (
+        <div role="alert" className="flex items-start gap-3 rounded-xl border border-critical/30 bg-critical-soft p-4 text-critical">
+          <AlertIcon className="mt-0.5 shrink-0" />
+          <div>
+            <p className="font-semibold">Couldn&apos;t get an answer</p>
+            <p>{error}</p>
+          </div>
+        </div>
+      )}
+
+      {loading && <LoadingResults />}
+      {result && <Results result={result} onReset={reset} />}
+    </div>
+  );
+}
+
+function LoadingResults() {
+  return (
+    <div className="grid gap-5 lg:grid-cols-3" aria-busy="true" aria-label="Loading results">
+      {[0, 1, 2].map((i) => (
+        <div key={i} className="space-y-3 rounded-xl border border-line bg-surface p-6">
+          <Skeleton className="h-6 w-1/2" />
+          <Skeleton className="h-20" />
+          <Skeleton className="h-20" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function matchLabel(score: number) {
+  if (score >= 0.75) return "Close match";
+  if (score >= 0.5) return "Good match";
+  return "Partial match";
+}
+
+const CONFIDENCE_LABEL = { high: "Most likely", medium: "Possible", low: "Less likely" } as const;
+
+function Results({ result, onReset }: { result: AssistResponse; onReset: () => void }) {
+  const openCard = useOpenCard();
+  const s = result.structured;
+  const history = result.repeat_history;
+
+  return (
+    <div className="space-y-6">
+      {history && history.count >= 2 && (
+        <div
+          role="status"
+          className={`flex flex-col gap-3 rounded-xl border p-5 sm:flex-row sm:items-center sm:justify-between ${
+            history.count >= 3
+              ? "border-critical/30 bg-critical-soft text-critical"
+              : "border-warning/30 bg-warning-soft text-warning"
+          }`}
+        >
+          <div className="flex items-start gap-3">
+            <AlertIcon className="mt-0.5 shrink-0" />
+            <div>
+              <p className="text-lg font-semibold">
+                Repeat failure: logged {history.count} times before
+                {s.registration ? ` on ${s.registration}` : " across the fleet"}
+              </p>
+              <p className="text-ink">
+                {failureModeLabel(s.failure_mode)}, {formatDate(history.first_date)} to {formatDate(history.last_date)}.
+                Replacing the same part again may not stop it. Check the likely causes below.
+              </p>
+            </div>
+          </div>
+          <Link href="/repeats" className="shrink-0 font-semibold underline underline-offset-4">
+            See repeat failures
+          </Link>
+        </div>
+      )}
+
+      <div className="flex flex-wrap items-center gap-2 text-muted">
+        <span>Read as:</span>
+        <AtaTag chapter={s.ata_chapter} name={s.ata_name} />
+        <span className="rounded-md border border-line px-2 py-0.5 text-sm text-ink">{failureModeLabel(s.failure_mode)}</span>
+        <span className="text-sm">
+          {s.registration ?? "Any aircraft"} · {s.aircraft_type}
+        </span>
+      </div>
+
+      <div className="grid gap-5 lg:grid-cols-3">
+        <Panel title="Seen before" icon={<HistoryIcon />}>
+          {result.similar.length === 0 ? (
+            <p className="text-muted">No similar past fixes found.</p>
+          ) : (
+            <ul className="space-y-3">
+              {result.similar.map(({ card, score }) => (
+                <li key={card.id}>
+                  <button
+                    onClick={() => openCard(card.id)}
+                    className="w-full rounded-lg border border-line p-3 text-left hover:border-accent"
+                  >
+                    <div className="mb-1 flex items-center justify-between gap-2 text-sm text-muted">
+                      <span>
+                        {card.registration ?? card.aircraft_type} · {formatDate(card.date)}
+                      </span>
+                      <span className="shrink-0 whitespace-nowrap font-medium text-accent">{matchLabel(score)}</span>
+                    </div>
+                    <p className="font-medium">{card.symptom}</p>
+                    <p className="mt-1 text-sm text-muted">
+                      <span className="font-medium text-ink">Fix:</span> {card.action_taken || "Not recorded"}
+                    </p>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </Panel>
+
+        <Panel title="Likely causes" icon={<SearchIcon />}>
+          {result.hypotheses.length === 0 ? (
+            <p className="text-muted">Not enough past records to suggest a cause.</p>
+          ) : (
+            <ol className="space-y-4">
+              {result.hypotheses.map((h, i) => (
+                <li key={h.cause} className="flex gap-3">
+                  <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-accent-soft text-sm font-bold text-accent">
+                    {i + 1}
+                  </span>
+                  <div>
+                    <p className="text-sm font-semibold text-muted">{CONFIDENCE_LABEL[h.confidence]}</p>
+                    <p className="font-medium">{h.cause}</p>
+                    {h.evidence_card_ids.length > 0 ? (
+                      <p className="mt-1 flex flex-wrap gap-1.5 text-sm text-muted">
+                        Based on:
+                        {h.evidence_card_ids.map((id) => (
+                          <button key={id} onClick={() => openCard(id)} className="font-medium text-accent underline underline-offset-2">
+                            {id}
+                          </button>
+                        ))}
+                      </p>
+                    ) : (
+                      <p className="mt-1 text-sm text-muted">No past record supports this yet.</p>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ol>
+          )}
+        </Panel>
+
+        <Panel title="Procedure" icon={<BookIcon />}>
+          <ul className="space-y-3">
+            {result.procedures.map((p) => (
+              <li key={`${p.doc}-${p.section}`} className="rounded-lg border border-line p-3">
+                <p className="text-sm font-semibold text-muted">{p.doc}</p>
+                <p className="font-medium">
+                  {p.section}
+                  {p.page !== null && <span className="text-muted">, page {p.page}</span>}
+                </p>
+                <p className="mt-1 text-sm text-muted">{p.snippet}</p>
+                {p.url && (
+                  <a href={p.url} target="_blank" rel="noreferrer" className="mt-1 inline-block text-sm font-medium text-accent underline">
+                    Open document
+                  </a>
+                )}
+              </li>
+            ))}
+          </ul>
+        </Panel>
+      </div>
+
+      <WorkOrderPanel key={result.id} id={result.id} initial={result.work_order} onReset={onReset} />
+
+      <p className="text-sm text-muted">
+        Answered in {(result.timing.total_ms / 1000).toFixed(1)} s
+        {result.timing.tokens_per_s ? ` · ${Math.round(result.timing.tokens_per_s)} tokens/s` : ""}
+        {USE_MOCKS ? " · sample data" : " · on AMD Instinct MI300X"}
+      </p>
+    </div>
+  );
+}
+
+function WorkOrderPanel({ id, initial, onReset }: { id: string; initial: WorkOrder; onReset: () => void }) {
+  const [title, setTitle] = useState(initial.title);
+  const [steps, setSteps] = useState(initial.steps.join("\n"));
+  const [parts, setParts] = useState(initial.parts.join(", "));
+  const [hours, setHours] = useState(initial.est_hours?.toString() ?? "");
+  const [approver, setApprover] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [approved, setApproved] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function approve() {
+    setSaving(true);
+    setError(null);
+    const wo: WorkOrder = {
+      title,
+      asset: initial.asset,
+      steps: steps.split("\n").map((s) => s.trim()).filter(Boolean),
+      parts: parts.split(",").map((s) => s.trim()).filter(Boolean),
+      est_hours: hours ? Number(hours) : null,
+      status: "approved",
+    };
+    try {
+      await api.approve(id, wo, approver.trim());
+      setApproved(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not approve.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  const input =
+    "w-full rounded-lg border border-line bg-surface px-3 py-2 text-ink focus:border-accent focus:outline-none disabled:bg-bg disabled:text-muted";
+
+  return (
+    <Panel
+      title="Draft work order"
+      icon={<CheckIcon />}
+      action={approved ? <StatusBadge severity="ok">Approved</StatusBadge> : <StatusBadge severity="neutral">Draft</StatusBadge>}
+    >
+      <div className="space-y-4">
+        <div>
+          <label htmlFor="wo-title" className="mb-1.5 block text-sm font-medium text-muted">
+            Title
+          </label>
+          <input id="wo-title" value={title} onChange={(e) => setTitle(e.target.value)} disabled={approved} className={input} />
+        </div>
+        <div>
+          <label htmlFor="wo-steps" className="mb-1.5 block text-sm font-medium text-muted">
+            Steps (one per line)
+          </label>
+          <textarea
+            id="wo-steps"
+            value={steps}
+            onChange={(e) => setSteps(e.target.value)}
+            rows={Math.max(4, initial.steps.length + 1)}
+            disabled={approved}
+            className={input}
+          />
+        </div>
+        <div className="grid gap-4 sm:grid-cols-[1fr_160px_1fr]">
+          <div>
+            <label htmlFor="wo-parts" className="mb-1.5 block text-sm font-medium text-muted">
+              Parts that may be needed
+            </label>
+            <input id="wo-parts" value={parts} onChange={(e) => setParts(e.target.value)} disabled={approved} className={input} />
+          </div>
+          <div>
+            <label htmlFor="wo-hours" className="mb-1.5 block text-sm font-medium text-muted">
+              Est. hours
+            </label>
+            <input
+              id="wo-hours"
+              type="number"
+              min={0}
+              step={0.5}
+              value={hours}
+              onChange={(e) => setHours(e.target.value)}
+              disabled={approved}
+              className={`${input} tabular`}
+            />
+          </div>
+          <div>
+            <label htmlFor="wo-approver" className="mb-1.5 block text-sm font-medium text-muted">
+              Approved by
+            </label>
+            <input
+              id="wo-approver"
+              value={approver}
+              onChange={(e) => setApprover(e.target.value)}
+              placeholder="Supervisor name"
+              disabled={approved}
+              className={input}
+            />
+          </div>
+        </div>
+
+        {error && <p className="text-critical">{error}</p>}
+
+        <div className="flex flex-col gap-3 border-t border-line pt-4 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm text-muted">
+            {approved
+              ? `Approved by ${approver}. The work order is ready to issue.`
+              : "Nothing is issued until a supervisor reviews and approves this draft."}
+          </p>
+          {approved ? (
+            <Button variant="secondary" onClick={onReset}>
+              Start a new fault
+            </Button>
+          ) : (
+            <Button onClick={approve} disabled={saving || !approver.trim()}>
+              <CheckIcon />
+              {saving ? "Approving…" : "Approve work order"}
+            </Button>
+          )}
+        </div>
+      </div>
+    </Panel>
+  );
+}

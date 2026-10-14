@@ -59,7 +59,7 @@ scripts/        data download notes, benchmark scripts
 
 ## Running locally
 - **Backend** (once scaffolded): `cd backend && pip install -r requirements.txt && uvicorn app.main:app --reload --port 8000`. It needs `VLLM_BASE_URL` to point at the MI300X vLLM endpoint.
-- **Frontend** (once scaffolded): `cd frontend && npm install && npm run dev`.
+- **Frontend:** `cd frontend && npm install && npm run dev` (http://localhost:3000). Before pushing, run `npm run lint && npm run build`. Details are in `frontend/README.md`.
 - **Mock mode:** `NEXT_PUBLIC_USE_MOCKS=true` makes the UI read JSON fixtures in `frontend/mocks/` instead of the API. Use it to build the UI before the backend is ready, and as the fallback "cached demo mode" during judging.
 
 ## Environment variables (never commit values; use `.env`, which is git-ignored)
@@ -97,6 +97,25 @@ scripts/        data download notes, benchmark scripts
 - Every AI answer shows its evidence: the past cards it used and the manual section/page it cites. Nothing auto-executes; a human approves the work order.
 - Large type, high contrast, a neutral palette with one accent colour. Generous spacing, usable on a tablet.
 - No login or auth.
+- No marketing-page elements in the app (big glowing heroes, pricing, "trusted by" logos). Keep that style for the cover image, slides and video.
+
+### Colour palette
+Light mode is the default; dark mode is optional, and the user's choice is remembered. Tokens live in `frontend/app/globals.css`, so use the Tailwind names and never raw hex values. The single accent is blue. Red, amber and green are **reserved for status** and always come with an icon and a word.
+
+| Token (Tailwind) | Light | Dark | Use |
+|---|---|---|---|
+| `bg` | `#F8FAFC` | `#0B1220` | page |
+| `surface` | `#FFFFFF` | `#111A2E` | cards, tables |
+| `line` | `#E2E8F0` | `#1F2A44` | borders |
+| `ink` | `#0F172A` | `#E2E8F0` | body text |
+| `muted` | `#475569` | `#94A3B8` | labels |
+| `accent` | `#2563EB` | `#60A5FA` | buttons, links, chart bars |
+| `accent-soft` | `#EFF6FF` | `#172554` | selected / highlight |
+| `critical` | `#B91C1C` | `#F87171` | 4+ repeats, errors |
+| `warning` | `#B45309` | `#FBBF24` | 3 repeats, sample-data banner |
+| `ok` | `#15803D` | `#4ADE80` | approved |
+
+Font: Geist Sans and Geist Mono (the `geist` npm package, served locally). Base size 18px; use tabular numbers in tables.
 
 ## Data rules
 - Public, licence-clean sources only (NASA ASRS, FAA SDR, FAA AC 43.13-1B, FAA AMT Handbook). Download links are in `scripts/download_data.md`.

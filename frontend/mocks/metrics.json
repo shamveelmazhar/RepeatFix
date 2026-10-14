@@ -1,0 +1,11 @@
+{
+  "cards_processed": 16,
+  "extraction_field_accuracy": null,
+  "labelled_cards": 0,
+  "repeat_groups_found": 5,
+  "p50_latency_ms": null,
+  "tokens_per_s": null,
+  "cost_per_100_cards_usd": null,
+  "gpu": "AMD Instinct MI300X",
+  "model": "Qwen2.5-VL-7B-Instruct"
+}
