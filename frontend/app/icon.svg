@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FB923C"/>
+      <stop offset="0.55" stop-color="#EA580C"/>
+      <stop offset="1" stop-color="#9A3412"/>
+    </linearGradient>
+    <mask id="m" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64">
+      <rect width="64" height="64" fill="white"/>
+      <g transform="translate(32 32) rotate(-45)" fill="black">
+        <rect x="-21.2" y="-4.8" width="36.4" height="9.6" rx="4.8"/>
+        <path d="M20.45 2.89 A4.5 4.5 0 1 1 20.45 -2.89" fill="none" stroke="black" stroke-width="8.6"/>
+      </g>
+    </mask>
+  </defs>
+  <rect width="64" height="64" rx="15" fill="url(#g)"/>
+  <g mask="url(#m)" fill="white">
+    <path d="M40.45 16.11 A18 18 0 0 0 14 32" fill="none" stroke="white" stroke-width="6"/>
+    <path d="M23.55 47.89 A18 18 0 0 0 50 32" fill="none" stroke="white" stroke-width="6"/>
+    <path d="M7 31 L21 31 L14 41 Z M43 33 L57 33 L50 23 Z"/>
+  </g>
+  <g transform="translate(32 32) rotate(-45)" fill="white">
+    <rect x="-19" y="-2.6" width="32" height="5.2" rx="2.6"/>
+    <path d="M20.45 2.89 A4.5 4.5 0 1 1 20.45 -2.89" fill="none" stroke="white" stroke-width="4.2"/>
+  </g>
+</svg>

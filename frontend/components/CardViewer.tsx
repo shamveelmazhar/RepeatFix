@@ -45,7 +45,7 @@ export function CardViewerProvider({ children }: { children: ReactNode }) {
       <dialog
         ref={dialogRef}
         aria-label="Past job card"
-        className="m-auto w-[min(640px,calc(100vw-2rem))] rounded-xl border border-line bg-surface p-0 text-ink shadow-xl"
+        className="m-auto w-[min(640px,calc(100vw-2rem))] rounded-2xl border border-line bg-surface p-0 text-ink shadow-2xl"
       >
         <div className="flex items-start justify-between gap-4 border-b border-line p-5">
           <div>
