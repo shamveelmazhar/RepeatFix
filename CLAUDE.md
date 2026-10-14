@@ -100,8 +100,10 @@ scripts/        data download notes, benchmark scripts
 - No marketing-page elements in the app (big glowing heroes, pricing, "trusted by" logos). Keep that style for the cover image, slides and video.
 
 ### Look and feel
-- **Orange accent with soft gradients.** The page background has faint orange/slate radial glows. Buttons, the active nav item, icon chips and chart bars use an orange gradient.
-- **Frosted glass, kept minimal.** Panels and the floating sidebar use the `.glass` class (mostly opaque, blurred, thin border, soft shadow) so they stand apart from the page. Keep text on glass high-contrast; never put body text directly on a bright gradient.
+- **Orange accent with soft gradients.** Behind the page, `components/Backdrop.tsx` draws fixed decorative shapes: blurred warm orbs and two orange "fan" shapes. They give the glass something to blur. Buttons, the active nav item, icon chips and chart bars use an orange gradient.
+- **Layered frosted glass, kept minimal.** Outer panels use `.glass`: warm translucent fill, 24px blur, thin bright border and a top-edge highlight. Cards inside a panel use `.glass-inset`, a lighter frosted layer. Keep text on glass high-contrast; never put body text directly on a bright gradient.
+- **Dark sidebar.** The sidebar uses `.glass-side` (dark glass) in both themes, so it clearly separates from the light content. Group labels are uppercase ("Workspace", "Powered by").
+- **Tinted stat tiles.** Use `<StatTile>` (`components/ui.tsx`): an uppercase `.eyebrow` label, a big number and an icon bubble top-right, on a peach, sand or slate tint. Tints are decoration, never status.
 - **Gentle hover lift.** Add `.lift` (or `<Panel lift>`) to cards people look at or click: result panels, stat tiles, list cards. Don't add it to forms or the work order. It is turned off for `prefers-reduced-motion`.
 - **Logo:** two circular repeat arrows with a wrench through the gap, knocked out in negative space, on an orange gradient tile (`components/Logo.tsx`, favicon `app/icon.svg`).
 
@@ -110,8 +112,8 @@ Light mode is the default; dark mode is optional, and the user's choice is remem
 
 | Token (Tailwind) | Light | Dark | Use |
 |---|---|---|---|
-| `bg` | `#F6F7F9` + orange glows | `#0B0F17` + orange glow | page |
-| `glass` | white 68% | `#151B27` 62% | panels, sidebar (`.glass`) |
+| `bg` | `#FBF6F1` + warm backdrop | `#0A0D14` + deep orange backdrop | page |
+| `glass` | warm white 58% | `#141924` 58% | panels (`.glass`); `.glass-inset` for cards inside |
 | `surface` | `#FFFFFF` | `#151B27` | inputs, dialogs |
 | `line` | slate 10% | white 10% | borders |
 | `ink` | `#0F172A` | `#E5E7EB` | body text |

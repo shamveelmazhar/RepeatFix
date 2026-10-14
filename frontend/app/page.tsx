@@ -126,7 +126,7 @@ export default function FixAFaultPage() {
                 key={ex}
                 type="button"
                 onClick={() => setText(ex)}
-                className="rounded-full border border-line bg-surface/60 px-3 py-1 text-sm text-muted transition-colors hover:border-accent hover:text-accent"
+                className="glass-inset rounded-full px-3 py-1 text-sm text-muted transition-colors hover:border-accent hover:text-accent"
               >
                 {ex}
               </button>
@@ -231,7 +231,7 @@ function Results({ result, onReset }: { result: AssistResponse; onReset: () => v
       )}
 
       <div className="flex flex-wrap items-center gap-2 text-muted">
-        <span>Read as:</span>
+        <span className="eyebrow">Read as</span>
         <AtaTag chapter={s.ata_chapter} name={s.ata_name} />
         <span className="rounded-md border border-line px-2 py-0.5 text-sm text-ink">{failureModeLabel(s.failure_mode)}</span>
         <span className="text-sm">
@@ -249,7 +249,7 @@ function Results({ result, onReset }: { result: AssistResponse; onReset: () => v
                 <li key={card.id}>
                   <button
                     onClick={() => openCard(card.id)}
-                    className="w-full rounded-xl border border-line bg-surface/70 p-3 text-left transition-colors hover:border-accent"
+                    className="w-full glass-inset rounded-xl p-3 text-left transition-colors hover:border-accent"
                   >
                     <span className="mb-1.5 inline-block rounded-full bg-accent-soft px-2 py-0.5 text-xs font-semibold text-accent">
                       {matchLabel(score)}
@@ -279,7 +279,7 @@ function Results({ result, onReset }: { result: AssistResponse; onReset: () => v
                     {i + 1}
                   </span>
                   <div>
-                    <p className="text-sm font-semibold text-muted">{CONFIDENCE_LABEL[h.confidence]}</p>
+                    <p className="eyebrow">{CONFIDENCE_LABEL[h.confidence]}</p>
                     <p className="font-medium">{h.cause}</p>
                     {h.evidence_card_ids.length > 0 ? (
                       <p className="mt-1 flex flex-wrap gap-1.5 text-sm text-muted">
@@ -303,7 +303,7 @@ function Results({ result, onReset }: { result: AssistResponse; onReset: () => v
         <Panel title="Procedure" icon={<BookIcon />} lift>
           <ul className="space-y-3">
             {result.procedures.map((p) => (
-              <li key={`${p.doc}-${p.section}`} className="rounded-xl border border-line bg-surface/70 p-3">
+              <li key={`${p.doc}-${p.section}`} className="glass-inset rounded-xl p-3">
                 <p className="text-sm font-semibold text-muted">{p.doc}</p>
                 <p className="font-medium">
                   {p.section}

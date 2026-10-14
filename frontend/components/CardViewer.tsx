@@ -45,11 +45,11 @@ export function CardViewerProvider({ children }: { children: ReactNode }) {
       <dialog
         ref={dialogRef}
         aria-label="Past job card"
-        className="m-auto w-[min(640px,calc(100vw-2rem))] rounded-2xl border border-line bg-surface p-0 text-ink shadow-2xl"
+        className="m-auto w-[min(640px,calc(100vw-2rem))] glass glass-strong rounded-3xl p-0 text-ink"
       >
         <div className="flex items-start justify-between gap-4 border-b border-line p-5">
           <div>
-            <p className="text-sm text-muted">Past job card</p>
+            <p className="eyebrow">Past job card</p>
             <h2 className="text-xl font-semibold">{card ? card.symptom : missing ? "Card not found" : "Loading…"}</h2>
           </div>
           <button
@@ -81,7 +81,7 @@ export function CardViewerProvider({ children }: { children: ReactNode }) {
             </dl>
             <div>
               <p className="mb-1 text-sm font-medium text-muted">Original entry</p>
-              <p className="rounded-lg bg-bg p-3 font-mono text-sm leading-relaxed">{card.raw_text}</p>
+              <p className="glass-inset rounded-xl p-3 font-mono text-sm leading-relaxed">{card.raw_text}</p>
             </div>
             <p className="text-sm text-muted">
               Source: {SOURCE_LABEL[card.source] ?? card.source} · {card.id}
