@@ -148,7 +148,7 @@ def test_cli_writes_jsonl(tmp_path, capsys):
 
 
 def test_committed_sample_is_valid():
-    cards = [json.loads(line) for line in SAMPLE.read_text().splitlines()]
+    cards = [json.loads(line) for line in SAMPLE.read_text(encoding="utf-8").splitlines()]
     assert len(cards) == 50
     assert len({c["id"] for c in cards}) == 50
     for card in cards:
