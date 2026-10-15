@@ -3,7 +3,8 @@ import os
 from pathlib import Path
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
@@ -54,6 +55,16 @@ app.add_middleware(
 async def error_handler(request, exc):
     return JSONResponse(status_code=exc.status_code, content={"error": exc.detail})
 
+# A bad value like limit=abc also gets our {"error": "..."} shape
+@app.exception_handler(RequestValidationError)
+async def validation_error_handler(request, exc):
+    first = exc.errors()[0]
+    field = ".".join(str(p) for p in first["loc"] if p != "query")
+    return JSONResponse(
+        status_code=422,
+        content={"error": f"Invalid value for '{field}': {first['msg']}"},
+    )
+
 
 @app.get("/api/health")
 def health():
@@ -62,7 +73,12 @@ def health():
 
 
 @app.get("/api/cards")
-def list_cards(limit: int = 50, offset: int = 0, ata: str | None = None, asset: str | None = None):
+def list_cards(
+    limit: int = Query(50, ge=0, le=500),
+    offset: int = Query(0, ge=0),
+    ata: str | None = None,
+    asset: str | None = None,
+):
     found = CARDS
     if ata:
         found = [c for c in found if c.get("ata_chapter") == ata]

@@ -2,3 +2,4 @@ pypdf>=4.0
 fastapi
 uvicorn[standard]
 python-dotenv
+openai
