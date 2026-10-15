@@ -1,15 +1,15 @@
 # RepeatFix — Hackathon Build Plan (AMD Developer Hackathon: ACT III)
 
 ## Context
-Shamveel is entering **AMD Developer Hackathon: ACT III** (lablab.ai, online build 12–17 Oct 2026, on-site in Italy 17–18 Oct, **submissions close Sun 18 Oct 15:00 UTC**; aim to submit by 10:00 UTC). The project is **RepeatFix**, an AI tool that finds repeat failures hidden in messy maintenance logs and helps technicians fix the next breakdown faster, using past fixes and cited procedures, all running on AMD MI300X. The earlier research PDF ("RepeatFix_ Repeat-Failure Hunter…") picked this idea (scored 32/35) and set the stack: Qwen2.5-VL-7B on vLLM-ROCm on MI300X, FastAPI, pandas stats, Evolus for the partner prize.
+We're entering **AMD Developer Hackathon: ACT III** (lablab.ai, online build 12–17 Oct 2026, on-site in Italy 17–18 Oct, **submissions close Sun 18 Oct 15:00 UTC**; aim to submit by 10:00 UTC). Our project is **RepeatFix**, an AI tool that finds repeat failures hidden in messy maintenance logs and helps technicians fix the next breakdown faster, using past fixes and cited procedures, all running on AMD MI300X. My earlier research write-up ("RepeatFix_ Repeat-Failure Hunter…") picked this idea (scored 32/35) and set the stack: Qwen2.5-VL-7B on vLLM-ROCm on MI300X, FastAPI, pandas stats, Evolus for the partner prize.
 
-**Decisions taken in this session:**
-- **Domain is aviation maintenance, using real public data.** This replaces the PDF's synthetic plant/bus cards. Real data counts for more with judges and removes the "synthetic data looks fake" risk.
-- **Frontend is Next.js + Tailwind on Vercel.** Shamveel owns it. The style is minimal and plain-language, built for technicians.
-- **Team:** Nida Amir (github.com/Nidaamir083) owns the Python backend (vLLM, FastAPI, pipelines). Shamveel owns everything else.
-- **Repo:** `shamveelmazhar/RepeatFix` already exists and is cloned at `/home/user/RepeatFix`. It has only a README and a single "Initial commit", so no new repo is needed.
+**Decisions we've made:**
+- **Domain is aviation maintenance, using real public data.** This replaces the synthetic plant/bus cards from the research write-up. Real data counts for more with judges and removes the "synthetic data looks fake" risk.
+- **Frontend is Next.js + Tailwind on Vercel.** I (Shamveel) own it. The style is minimal and plain-language, built for technicians.
+- **Team:** Nida Amir (github.com/Nidaamir083) owns the Python backend (vLLM, FastAPI, pipelines). I own everything else.
+- **Repo:** we use the existing `shamveelmazhar/RepeatFix` repo; no new repo is needed.
 
-## Hackathon requirements (verified via web search; lablab.ai itself is blocked from this container, so re-check the event page)
+## Hackathon requirements (re-check against the event page before submitting)
 - **Intelligent Industry track:** "a real manufacturing problem and a working product, not just a dashboard or slides". Its idea list includes "helping technicians search manuals and maintenance records". Strong entries "deliver results that operators can understand". This backs the technician-friendly UI requirement.
 - **AMD:** AMD tech must be part of the working product (AMD Developer Cloud + ROCm, here vLLM on MI300X).
 - **Evolus partner track ("Evolus Business Agents on AMD"):** the main agent must run on an open model served on AMD infrastructure (our vLLM endpoint), and use at least 2 Evolus building blocks (we use 3: library, extractor, workflow).
@@ -26,12 +26,12 @@ Shamveel is entering **AMD Developer Hackathon: ACT III** (lablab.ai, online bui
 ## Data plan (all public, licence-clean)
 | Source | Use | Licence |
 |---|---|---|
-| **NASA ASRS** maintenance report set (Shamveel's "mechanic" file) | Messy free-text narratives → JobCard JSON; fleet-type repeats (aircraft model + component/ATA) | US Gov public |
-| **FAA Service Difficulty Reports (SDR)**, yearly CSVs at faa.gov/av-info/download_SDR | **Best addition:** has aircraft registration + part + ATA, so per-tail repeat failures are *real*, not seeded. Note: a 2026 AIN report said the database was down for maintenance, so check availability day 1; fall back to ASRS only. | US Gov public |
+| **NASA ASRS** maintenance report set (the "mechanic" report set I downloaded) | Messy free-text narratives → JobCard JSON; fleet-type repeats (aircraft model + component/ATA) | US Gov public |
+| **FAA Service Difficulty Reports (SDR)**, yearly CSVs at faa.gov/av-info/download_SDR | **Best addition:** has aircraft registration + part + ATA, so per-tail repeat failures are *real*, not seeded. Note: a 2026 AIN report said the database was down for maintenance, so we check availability on day 1 and fall back to ASRS only. | US Gov public |
 | **FAA AC 43.13-1B** (the two "AC…" files; documentID 99861 looks like AC 43.13-1B, to confirm) | Cited procedures (knowledge library) | US Gov public |
 | **FAA Aviation Maintenance Technician Handbook** (FAA-H-8083-30B/31B) | More cited procedures | US Gov public |
 | MaintNet aviation logbook (6,169 UND records) | Optional, messy abbreviations; **only if a licence is confirmed** | unclear |
-| 15–20 handwritten logbook entries, photographed by Shamveel | VLM extraction accuracy ground truth ("beta") | own |
+| 15–20 handwritten logbook entries I photograph myself | VLM extraction accuracy ground truth ("beta") | own |
 
 Raw files go in `data/raw/` (git-ignored). Commit only small samples to `data/samples/`. Source links are in `scripts/download_data.md`.
 
@@ -47,7 +47,7 @@ Next.js UI (Vercel) ──REST──> FastAPI (Docker, AMD Developer Cloud dropl
 ```
 The UI has a **mock mode** (`NEXT_PUBLIC_USE_MOCKS=true`) that reads JSON fixtures. This lets the frontend move forward before the backend is ready, and it doubles as the "cached demo mode" fallback during judging.
 
-### API contract (agree on day 1 so both people can work in parallel; lives in `docs/API.md`)
+### API contract (agreed on day 1 so we can both work in parallel; lives in `docs/API.md`)
 - `JobCard`: `id, source(asrs|sdr|photo|text), date, aircraft_type, registration?, ata_chapter, component, symptom, failure_mode, action_taken, parts[], downtime_hours?, raw_text`
 - `POST /api/ingest` (CSV / image / text) → `{cards: JobCard[]}`
 - `GET /api/repeats?group_by=aircraft|component` → `[{asset, failure_mode, count, mtbf_days, downtime_hours, card_ids}]`
@@ -84,7 +84,7 @@ The UI has a **mock mode** (`NEXT_PUBLIC_USE_MOCKS=true`) that reads JSON fixtur
 - Dockerfile
 - benchmark script (latency, tokens/s)
 
-**Shamveel (everything else):**
+**Shamveel (me; everything else):**
 - data acquisition and licence checks
 - 20 hand-labelled ground-truth cards, plus the photographed handwritten set
 - the Next.js UI with mock fixtures, then wiring it to the real API; Vercel deploy
@@ -94,18 +94,16 @@ The UI has a **mock mode** (`NEXT_PUBLIC_USE_MOCKS=true`) that reads JSON fixtur
 - lablab submission and final testing while logged out
 
 ## Repo setup
-1. On `claude/repeatfix-hackathon-planning-c92k3h`: add `PLAN.md` (this plan, expanded with the day-by-day schedule), `CLAUDE.md`, `docs/API.md`, `.gitignore`, and the skeleton folders:
+1. Add `PLAN.md` (this plan, with the day-by-day schedule), `CLAUDE.md` (our contributor guide), `docs/API.md`, `.gitignore`, and the skeleton folders:
    - `frontend/`: Shamveel
    - `backend/`: Nida
    - `data/samples/`
    - `docs/`
    - `scripts/`
+2. Create **`shamveel/frontend`** and **`nida/backend`** from that commit. Both are merged at the end through PRs.
+3. I invite `Nidaamir083` as a collaborator under Settings → Collaborators.
 
-   Commit and push.
-2. Create **`shamveel/frontend`** and **`nida/backend`** from that commit via the GitHub MCP `create_branch`. Both are merged at the end through PRs.
-3. GitHub's MCP tools can't add collaborators, so **Shamveel must invite `Nidaamir083`** under Settings → Collaborators.
-
-**`CLAUDE.md` contents:**
+**What the contributor guide (`CLAUDE.md`) covers:**
 - one-paragraph project summary and the demo storyline
 - repo layout and ownership
 - branch workflow (own branch, small PRs into `main`, no force-push on others' branches)
@@ -119,15 +117,15 @@ The UI has a **mock mode** (`NEXT_PUBLIC_USE_MOCKS=true`) that reads JSON fixtur
 ## Day-by-day (today is Wed 14 Oct)
 | Day | Nida | Shamveel | Done when |
 |---|---|---|---|
-| Wed 14 | Droplet up with vLLM + Qwen2.5-VL; FastAPI skeleton; ASRS parser | Repo/branches/CLAUDE.md; agree on API contract; download ASRS/SDR/AC/AMT; Next.js scaffold with mock fixtures | One ASRS narrative comes back as valid JobCard JSON from the MI300X endpoint |
+| Wed 14 | Droplet up with vLLM + Qwen2.5-VL; FastAPI skeleton; ASRS parser | Repo, branches and contributor guide; agree on API contract; download ASRS/SDR/AC/AMT; Next.js scaffold with mock fixtures | One ASRS narrative comes back as valid JobCard JSON from the MI300X endpoint |
 | Thu 15 | Extraction on ~500 records; normalisation; repeat engine; retrieval | Label 20 ground-truth cards; photograph 15 handwritten entries; build the 3 screens on mocks; Evolus workspace + library | Repeats table from real data; extraction accuracy measured |
 | Fri 16 | `/assist` (hypotheses + citations + work order); Evolus workflow; Docker; benchmark | Wire UI to the live API; deploy to Vercel; README; **feature freeze by evening** | End-to-end: new fault → cited draft → approve, at a public URL |
 | Sat 17 | Fixes; keep the endpoint stable; cached demo responses | Cover image, slides, 3-min video, 2 dry runs | MP4 + PDF exported |
 | Sun 18 | Keep the endpoint up during judging | Submit on lablab by ~10:00 UTC; test links logged out | Submitted |
 
-**Cut list (per the PDF):** model training, live sensors, mobile app, voice, auth, multi-site, fine-tuning. If Evolus isn't working by Thu night, drop that prize.
+**Cut list (from the research write-up):** model training, live sensors, mobile app, voice, auth, multi-site, fine-tuning. If Evolus isn't working by Thu night, drop that prize.
 
 ## Verification
-- `git log` and the GitHub `list_branches` call show `main`, the planning branch, `shamveel/frontend` and `nida/backend`.
+- The repo has `main`, `shamveel/frontend` and `nida/backend` branches.
 - `CLAUDE.md`, `PLAN.md` and `docs/API.md` render on GitHub.
 - Later: `npm run build` passes in `frontend/` (mock mode); `curl /api/assist` returns cited results; the measured numbers appear on the Results screen.

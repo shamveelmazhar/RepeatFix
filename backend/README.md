@@ -23,7 +23,7 @@ python -m app.sdr repeats ../data/raw/sdr_cards.jsonl --top 20
 ```
 `repeat_groups(cards, min_count, min_gap_days)` groups by tail + ATA chapter + failure mode. Use `min_gap_days=7` so that a heavy check filing 30 corrosion findings on one day counts once. It is there for reporting; the `/api/repeats` engine can reuse it or compute its own.
 
-The full 2024–2026 build (179,962 cards) is in the project's shared files as `sdr/sdr_cards_2024_2026.jsonl.gz`; only the 1,812-card demo subset is committed.
+The full 2024–2026 build (179,962 cards) is in our shared project files as `sdr/sdr_cards_2024_2026.jsonl.gz`; only the 1,812-card demo subset is committed.
 
 ## Cited procedures (FAA AC 43.13-1B and AMT Handbooks)
 

@@ -1,6 +1,6 @@
 # RepeatFix frontend
 
-Owner: Shamveel (branch `shamveel/frontend`). Next.js 15 + Tailwind CSS 4. Deployed on Vercel.
+I (Shamveel) own the frontend, on branch `shamveel/frontend`. Next.js 15 + Tailwind CSS 4. Deployed on Vercel.
 
 ## Screens
 | Route | Screen | What it does |
@@ -28,4 +28,4 @@ npm run build && npm run lint
 3. The backend must allow CORS from the Vercel domain.
 
 ## Design rules
-See `../CLAUDE.md` → "UI style rules" and "Colour palette". Colours are CSS variables in `app/globals.css`; use the Tailwind names (`glass`, `bg-surface`, `text-muted`, `bg-accent-gradient`, `text-critical`, …), never raw hex values.
+See the contributor guide, `../CLAUDE.md` → "UI style rules" and "Colour palette". Colours are CSS variables in `app/globals.css`; use the Tailwind names (`glass`, `bg-surface`, `text-muted`, `bg-accent-gradient`, `text-critical`, …), never raw hex values.
