@@ -26,6 +26,9 @@ export default function RepeatFailuresPage() {
   }, [groupBy]);
 
   const totalDowntime = rows?.reduce((s, r) => s + r.downtime_hours, 0) ?? 0;
+  // FAA SDR reports don't record downtime. Without it, rank and chart by how often a problem came back.
+  const hasDowntime = totalDowntime > 0;
+  const totalReports = rows?.reduce((s, r) => s + r.card_ids.length, 0) ?? 0;
   const top = rows?.[0];
   const assetHeading = groupBy === "aircraft" ? "Aircraft" : "Component";
 
@@ -36,7 +39,7 @@ export default function RepeatFailuresPage() {
           <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Repeat failures</h1>
           <p className="mt-2 max-w-2xl text-lg text-muted">
             The same problem on the same {groupBy === "aircraft" ? "aircraft" : "component"}, logged more than once.
-            Worst first, by total downtime.
+            Worst first, by {hasDowntime || !rows ? "total downtime" : "how often it came back"}.
           </p>
         </div>
         <div role="group" aria-label="Group by" className="glass inline-flex rounded-xl p-1">
@@ -72,9 +75,10 @@ export default function RepeatFailuresPage() {
         <StatTile
           tint="sand"
           icon={<ClockIcon />}
-          label="Downtime from repeats"
+          label={hasDowntime || !rows ? "Downtime from repeats" : "Reports behind these repeats"}
           loading={!rows}
-          value={rows ? `${totalDowntime.toFixed(1)} h` : null}
+          value={rows ? (hasDowntime ? `${totalDowntime.toFixed(1)} h` : totalReports.toLocaleString()) : null}
+          sub={rows && !hasDowntime ? "Downtime is not recorded in these reports" : undefined}
         />
         <StatTile
           tint="slate"
@@ -86,7 +90,7 @@ export default function RepeatFailuresPage() {
         />
       </div>
 
-      {rows && rows.length > 0 && <DowntimeChart rows={rows.slice(0, 8)} />}
+      {rows && rows.length > 0 && <DowntimeChart rows={rows.slice(0, 8)} byCount={!hasDowntime} />}
 
       <Panel title={`All repeat problems by ${groupBy}`}>
         {!rows ? (
@@ -129,7 +133,7 @@ export default function RepeatFailuresPage() {
                     </div>
                     <div className="rounded-lg bg-white/40 py-2 dark:bg-white/5">
                       <dt className="text-xs text-muted">Downtime</dt>
-                      <dd className="text-lg font-semibold">{r.downtime_hours.toFixed(1)} h</dd>
+                      <dd className="text-lg font-semibold">{hasDowntime ? `${r.downtime_hours.toFixed(1)} h` : "—"}</dd>
                     </div>
                   </dl>
                   <div className="mt-3 flex flex-wrap gap-2">
@@ -185,7 +189,7 @@ export default function RepeatFailuresPage() {
                         </td>
                         <td className="tabular px-3 py-3 text-right text-lg font-semibold">{r.count}</td>
                         <td className="tabular px-3 py-3 text-right">{r.mtbf_days !== null ? Math.round(r.mtbf_days) : "—"}</td>
-                        <td className="tabular px-3 py-3 text-right">{r.downtime_hours.toFixed(1)} h</td>
+                        <td className="tabular px-3 py-3 text-right">{hasDowntime ? `${r.downtime_hours.toFixed(1)} h` : "—"}</td>
                         <td className="px-5 py-3 sm:px-6">
                           <StatusBadge severity={sev.severity}>{sev.label}</StatusBadge>
                         </td>
@@ -221,12 +225,13 @@ export default function RepeatFailuresPage() {
   );
 }
 
-/** Single-series horizontal bars: downtime per repeat problem. The table below is the full data view. */
-function DowntimeChart({ rows }: { rows: RepeatRow[] }) {
-  const max = Math.max(...rows.map((r) => r.downtime_hours), 1);
+/** Single-series horizontal bars: downtime per repeat problem (or times logged, when downtime isn't recorded). The table below is the full data view. */
+function DowntimeChart({ rows, byCount = false }: { rows: RepeatRow[]; byCount?: boolean }) {
+  const value = (r: RepeatRow) => (byCount ? r.count : r.downtime_hours);
+  const max = Math.max(...rows.map(value), 1);
   const [hover, setHover] = useState<number | null>(null);
   return (
-    <Panel title="Downtime from each repeat problem (hours)">
+    <Panel title={byCount ? "Times each repeat problem was logged" : "Downtime from each repeat problem (hours)"}>
       <ul className="space-y-1">
         {rows.map((r, i) => (
           <li
@@ -242,9 +247,9 @@ function DowntimeChart({ rows }: { rows: RepeatRow[] }) {
             <div className="flex items-center gap-2">
               <div
                 className={`h-6 rounded-r-[4px] bg-brand-gradient transition-opacity ${hover !== null && hover !== i ? "opacity-40" : ""}`}
-                style={{ width: `${(r.downtime_hours / max) * 85}%`, minWidth: 4 }}
+                style={{ width: `${(value(r) / max) * 85}%`, minWidth: 4 }}
               />
-              <span className="tabular text-sm font-medium">{r.downtime_hours.toFixed(1)}</span>
+              <span className="tabular text-sm font-medium">{byCount ? r.count : r.downtime_hours.toFixed(1)}</span>
             </div>
             {hover === i && (
               <div className="glass glass-strong pointer-events-none absolute left-1/2 top-full z-10 mt-1 rounded-xl px-3 py-2 text-sm">
@@ -252,7 +257,8 @@ function DowntimeChart({ rows }: { rows: RepeatRow[] }) {
                   {r.asset} · {failureModeLabel(r.failure_mode)}
                 </p>
                 <p className="text-muted">
-                  {r.count} times · every {r.mtbf_days !== null ? Math.round(r.mtbf_days) : "—"} days on average · {r.downtime_hours.toFixed(1)} h down
+                  {r.count} times · every {r.mtbf_days !== null ? Math.round(r.mtbf_days) : "—"} days on average
+                  {byCount ? "" : ` · ${r.downtime_hours.toFixed(1)} h down`}
                 </p>
               </div>
             )}

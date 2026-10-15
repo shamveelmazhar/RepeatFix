@@ -19,8 +19,9 @@ npm run build && npm run lint
 
 ## Mock mode vs real backend
 - `lib/api.ts` is the only place that fetches data. It calls the FastAPI backend (`docs/API.md`) when `NEXT_PUBLIC_API_URL` is set and `NEXT_PUBLIC_USE_MOCKS` is not `true`.
-- In mock mode, `lib/mock.ts` answers from `mocks/cards.json`, `mocks/knowledge.json` and `mocks/metrics.json`, using the same response shapes. A yellow "sample data" banner shows on every screen, so mock data is never passed off as real.
-- Mock fixtures are **illustrative sample records**: tail numbers and part numbers are made up. Procedure citations are chapter-level only. The backend supplies the exact section and page.
+- In mock mode, `lib/mock.ts` answers from `mocks/cards.json`, `mocks/knowledge.json` and `mocks/metrics.json`, using the same response shapes. A yellow "saved demo data" banner shows on every screen, so the saved demo is never passed off as live model output.
+- The fixtures hold **real records**: the 1,812 FAA SDR job cards for 40 tails in `data/samples/sdr_demo.jsonl`, the 50 NASA ASRS reports, and cited sections of AC 43.13-1B and the AMT Handbooks for each ATA chapter + failure mode. Repeats use the backend's rule (same tail + ATA chapter + failure mode, at least 7 days apart). Likely causes are the parts named most often in past reports of the same problem. No model runs in mock mode, and the Results screen shows only counts measured on the data; model numbers read "Not measured yet".
+- Rebuild the fixtures with `python scripts/build_mock_fixtures.py --full /path/to/sdr_cards_2024_2026.jsonl.gz` from the repo root (without `--full`, Results counts come from the demo slice).
 
 ## Deploy (Vercel)
 1. Import the GitHub repo in Vercel and set **Root Directory** to `frontend`.

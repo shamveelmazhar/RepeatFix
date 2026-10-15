@@ -9,10 +9,11 @@ import { USE_MOCKS, api } from "@/lib/api";
 import { failureModeLabel } from "@/lib/mock";
 import type { AssistResponse, WorkOrder } from "@/lib/types";
 
+// Real write-ups from the FAA SDR records: N926NK fume events, N2193J fire loop faults, N3760C exit lights.
 const EXAMPLES = [
-  "#2 brake temp high after taxi-in, brake slow to release",
-  "Hydraulic fluid leak at system A pump, low pressure light",
-  "CAB PR SYS 1 FAULT on climb, comes and goes",
+  "FUME EVENT ON DESCENT IN COCKPIT",
+  "ENG 2 FIRE LOOP B FAULT",
+  "FOUND FWD LH EMERG EXIT LIGHTS INOP",
 ];
 
 export default function FixAFaultPage() {
@@ -254,11 +255,11 @@ function Results({ result, onReset }: { result: AssistResponse; onReset: () => v
                     <span className="mb-1.5 inline-block rounded-full bg-accent-soft px-2 py-0.5 text-xs font-semibold text-accent">
                       {matchLabel(score)}
                     </span>
-                    <p className="font-medium">{card.symptom}</p>
+                    <p className="line-clamp-3 font-medium">{card.symptom}</p>
                     <p className="text-sm text-muted">
                       {card.registration ?? card.aircraft_type} · {formatDate(card.date)}
                     </p>
-                    <p className="mt-1 text-sm text-muted">
+                    <p className="mt-1 line-clamp-3 text-sm text-muted">
                       <span className="font-medium text-ink">Fix:</span> {card.action_taken || "Not recorded"}
                     </p>
                   </button>
@@ -326,9 +327,15 @@ function Results({ result, onReset }: { result: AssistResponse; onReset: () => v
       <WorkOrderPanel key={result.id} id={result.id} initial={result.work_order} onReset={onReset} />
 
       <p className="text-sm text-muted">
-        Answered in {(result.timing.total_ms / 1000).toFixed(1)} s
-        {result.timing.tokens_per_s ? ` · ${Math.round(result.timing.tokens_per_s)} tokens/s` : ""}
-        {USE_MOCKS ? " · sample data" : " · on AMD Instinct MI300X"}
+        {USE_MOCKS ? (
+          "Saved demo: matched by wording against real FAA records, without the model."
+        ) : (
+          <>
+            Answered in {(result.timing.total_ms / 1000).toFixed(1)} s
+            {result.timing.tokens_per_s ? ` · ${Math.round(result.timing.tokens_per_s)} tokens/s` : ""} · on AMD Instinct
+            MI300X
+          </>
+        )}
       </p>
     </div>
   );
