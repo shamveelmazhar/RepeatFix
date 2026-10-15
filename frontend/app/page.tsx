@@ -17,25 +17,41 @@ const EXAMPLES = [
 ];
 
 export default function FixAFaultPage() {
-  const [aircraft, setAircraft] = useState<string[]>([]);
+  const [fleet, setFleet] = useState<{ tail: string; type: string }[]>([]);
+  const [aircraftType, setAircraftType] = useState("");
   const [asset, setAsset] = useState("");
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const [reading, setReading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<AssistResponse | null>(null);
+  const [askedType, setAskedType] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     api
       .getCards()
-      .then((cards) =>
-        setAircraft(
-          Array.from(new Set(cards.map((c) => c.registration).filter((r): r is string => !!r))).sort(),
-        ),
-      )
-      .catch(() => setAircraft([]));
+      .then((cards) => {
+        const typeOf = new Map<string, string>();
+        for (const c of cards) if (c.registration) typeOf.set(c.registration, c.aircraft_type);
+        setFleet([...typeOf].map(([tail, type]) => ({ tail, type })).sort((a, b) => a.tail.localeCompare(b.tail)));
+      })
+      .catch(() => setFleet([]));
   }, []);
+
+  const types = Array.from(new Set(fleet.map((a) => a.type))).sort();
+  const tails = fleet.filter((a) => !aircraftType || a.type === aircraftType);
+
+  function pickTail(tail: string) {
+    setAsset(tail);
+    const type = fleet.find((a) => a.tail === tail)?.type;
+    if (type) setAircraftType(type);
+  }
+
+  function pickType(type: string) {
+    setAircraftType(type);
+    if (asset && fleet.find((a) => a.tail === asset)?.type !== type) setAsset("");
+  }
 
   async function submit(e?: React.FormEvent) {
     e?.preventDefault();
@@ -44,7 +60,8 @@ export default function FixAFaultPage() {
     setError(null);
     setResult(null);
     try {
-      setResult(await api.assist(text, asset || null));
+      setResult(await api.assist(text, asset || null, aircraftType || null));
+      setAskedType(aircraftType || null);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong.");
     } finally {
@@ -59,7 +76,7 @@ export default function FixAFaultPage() {
     try {
       const card = await api.ingestImage(file);
       setText(card.raw_text || card.symptom);
-      if (card.registration) setAsset(card.registration);
+      if (card.registration) pickTail(card.registration);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not read the photo.");
     } finally {
@@ -72,6 +89,7 @@ export default function FixAFaultPage() {
     setResult(null);
     setText("");
     setAsset("");
+    setAircraftType("");
   }
 
   return (
@@ -87,23 +105,43 @@ export default function FixAFaultPage() {
       <Panel>
         <form onSubmit={submit} className="space-y-5">
           <div className="grid gap-5 sm:grid-cols-[220px_1fr]">
-            <div>
-              <label htmlFor="asset" className="mb-1.5 block font-medium">
-                Aircraft
-              </label>
-              <select
-                id="asset"
-                value={asset}
-                onChange={(e) => setAsset(e.target.value)}
-                className="min-h-11 w-full rounded-xl border border-line bg-surface px-3 text-ink focus:border-accent focus:outline-none focus:ring-4 focus:ring-accent/15"
-              >
-                <option value="">Not sure / any</option>
-                {aircraft.map((a) => (
-                  <option key={a} value={a}>
-                    {a}
-                  </option>
-                ))}
-              </select>
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="aircraft-type" className="mb-1.5 block font-medium">
+                  Aircraft type
+                </label>
+                <select
+                  id="aircraft-type"
+                  value={aircraftType}
+                  onChange={(e) => pickType(e.target.value)}
+                  className="min-h-11 w-full rounded-xl border border-line bg-surface px-3 text-ink focus:border-accent focus:outline-none focus:ring-4 focus:ring-accent/15"
+                >
+                  <option value="">Any type</option>
+                  {types.map((t) => (
+                    <option key={t} value={t}>
+                      {t}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label htmlFor="asset" className="mb-1.5 block font-medium">
+                  Tail number
+                </label>
+                <select
+                  id="asset"
+                  value={asset}
+                  onChange={(e) => pickTail(e.target.value)}
+                  className="min-h-11 w-full rounded-xl border border-line bg-surface px-3 text-ink focus:border-accent focus:outline-none focus:ring-4 focus:ring-accent/15"
+                >
+                  <option value="">{aircraftType ? `Any ${aircraftType}` : "Not sure / any"}</option>
+                  {tails.map((a) => (
+                    <option key={a.tail} value={a.tail}>
+                      {a.tail}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
             <div>
               <label htmlFor="fault" className="mb-1.5 block font-medium">
@@ -113,7 +151,7 @@ export default function FixAFaultPage() {
                 id="fault"
                 value={text}
                 onChange={(e) => setText(e.target.value)}
-                rows={3}
+                rows={5}
                 placeholder="Type it the way you would write it in the logbook"
                 className="w-full rounded-xl border border-line bg-surface px-3 py-2.5 text-ink placeholder:text-muted focus:border-accent focus:outline-none focus:ring-4 focus:ring-accent/15"
               />
@@ -169,7 +207,7 @@ export default function FixAFaultPage() {
       )}
 
       {loading && <LoadingResults />}
-      {result && <Results result={result} onReset={reset} />}
+      {result && <Results result={result} fleetType={askedType} onReset={reset} />}
     </div>
   );
 }
@@ -196,7 +234,16 @@ function matchLabel(score: number) {
 
 const CONFIDENCE_LABEL = { high: "Most likely", medium: "Possible", low: "Less likely" } as const;
 
-function Results({ result, onReset }: { result: AssistResponse; onReset: () => void }) {
+function Results({
+  result,
+  fleetType,
+  onReset,
+}: {
+  result: AssistResponse;
+  /** The aircraft type the search was narrowed to, if any. */
+  fleetType: string | null;
+  onReset: () => void;
+}) {
   const openCard = useOpenCard();
   const s = result.structured;
   const history = result.repeat_history;
@@ -217,7 +264,7 @@ function Results({ result, onReset }: { result: AssistResponse; onReset: () => v
             <div>
               <p className="text-lg font-semibold">
                 Repeat failure: logged {history.count} times before
-                {s.registration ? ` on ${s.registration}` : " across the fleet"}
+                {s.registration ? ` on ${s.registration}` : fleetType ? ` across the ${fleetType} fleet` : " across the fleet"}
               </p>
               <p className="text-ink">
                 {failureModeLabel(s.failure_mode)}, {formatDate(history.first_date)} to {formatDate(history.last_date)}.
@@ -236,7 +283,7 @@ function Results({ result, onReset }: { result: AssistResponse; onReset: () => v
         <AtaTag chapter={s.ata_chapter} name={s.ata_name} />
         <span className="rounded-md border border-line px-2 py-0.5 text-sm text-ink">{failureModeLabel(s.failure_mode)}</span>
         <span className="text-sm">
-          {s.registration ?? "Any aircraft"} · {s.aircraft_type}
+          {s.registration ?? (fleetType ? "Any tail" : "Any aircraft")} · {s.aircraft_type}
         </span>
       </div>
 
