@@ -64,9 +64,9 @@ export const api = {
     return r.cards[0];
   },
 
-  assist(faultText: string, asset: string | null): Promise<AssistResponse> {
-    if (USE_MOCKS) return mockApi.assist(faultText, asset);
-    return request<AssistResponse>("/api/assist", json({ fault_text: faultText, asset }));
+  assist(faultText: string, asset: string | null, aircraftType: string | null = null): Promise<AssistResponse> {
+    if (USE_MOCKS) return mockApi.assist(faultText, asset, aircraftType);
+    return request<AssistResponse>("/api/assist", json({ fault_text: faultText, asset, aircraft_type: aircraftType }));
   },
 
   approve(id: string, workOrder: WorkOrder, approvedBy: string): Promise<{ id: string; status: "approved" }> {

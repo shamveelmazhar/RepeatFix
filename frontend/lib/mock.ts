@@ -185,7 +185,8 @@ export const mockApi = {
     return { ...example, id: "photo-0001", source: "photo", action_taken: "", parts: [], raw_text: example.symptom };
   },
 
-  async assist(faultText: string, asset: string | null): Promise<AssistResponse> {
+  /** `asset` narrows to one tail; `aircraftType` (when no tail is picked) narrows to that type's fleet. */
+  async assist(faultText: string, asset: string | null, aircraftType: string | null = null): Promise<AssistResponse> {
     const started = performance.now();
     const cards = await loadCards();
     const weights = idf(cards);
@@ -211,6 +212,7 @@ export const mockApi = {
         let s = score;
         if (groupKey(card) === key) s += 0.25;
         if (asset && card.registration === asset) s += 0.15;
+        else if (aircraftType && card.aircraft_type === aircraftType) s += 0.1;
         return { card, score: s };
       })
       .sort((a, b) => b.score - a.score || (b.card.date ?? "").localeCompare(a.card.date ?? ""))
@@ -218,16 +220,22 @@ export const mockApi = {
       .map(({ card, score }) => ({ card, score: Math.min(0.97, Math.round(score * 100) / 100) }));
 
     const top = scored[0]?.card;
-    const assetCards = asset ? cards.filter((c) => c.registration === asset) : [];
-    const aircraftType = assetCards[0]?.aircraft_type ?? top?.aircraft_type ?? "Unknown";
+    const scopeCards = asset
+      ? cards.filter((c) => c.registration === asset)
+      : aircraftType
+        ? cards.filter((c) => c.aircraft_type === aircraftType)
+        : [];
+    const scopeName = asset ? `on ${asset}` : aircraftType ? `on ${aircraftType} aircraft` : "across the fleet";
+    const readType = asset ? (scopeCards[0]?.aircraft_type ?? aircraftType) : aircraftType;
     const fleetGroup = cards.filter((c) => groupKey(c) === key);
-    const assetGroup = assetCards.filter((c) => groupKey(c) === key);
-    const useAsset = asset !== null && assetGroup.length >= 3;
-    const causeGroup = useAsset ? assetGroup : fleetGroup;
+    const scopeGroup = scopeCards.filter((c) => groupKey(c) === key);
+    const scoped = asset !== null || aircraftType !== null;
+    const useScope = scoped && scopeGroup.length >= 3;
+    const causeGroup = useScope ? scopeGroup : fleetGroup;
 
-    const hypotheses = likelyCauses(causeGroup, useAsset ? `on ${asset}` : "across the fleet");
+    const hypotheses = likelyCauses(causeGroup, useScope ? scopeName : "across the fleet");
     const procedures = (key && knowledge.procedures[key]) || knowledge.default_procedures;
-    const history = spacedEvents(asset ? assetGroup : fleetGroup);
+    const history = spacedEvents(scoped ? scopeGroup : fleetGroup);
     const label = failureModeLabel(mode);
 
     const steps = [
@@ -240,7 +248,7 @@ export const mockApi = {
     ];
 
     const workOrder: WorkOrder = {
-      title: `Troubleshoot: ${label}${asset ? ` — ${asset}` : ""}`,
+      title: `Troubleshoot: ${label}${asset || aircraftType ? ` — ${asset ?? aircraftType}` : ""}`,
       asset,
       steps,
       parts: Array.from(new Set(scored.flatMap((s) => s.card.parts))).slice(0, 3),
@@ -257,7 +265,7 @@ export const mockApi = {
         id: "new",
         source: "text",
         date: new Date().toISOString().slice(0, 10),
-        aircraft_type: aircraftType,
+        aircraft_type: readType ?? top?.aircraft_type ?? "Unknown",
         registration: asset,
         ata_chapter: chapter,
         ata_name: ataName(chapter),
