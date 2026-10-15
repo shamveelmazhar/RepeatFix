@@ -26,10 +26,10 @@ const STEPS = [
 ];
 
 const SOURCES = [
-  "FAA Service Difficulty Reports (malfunction and defect reports)",
-  "NASA ASRS maintenance reports",
-  "FAA AC 43.13-1B: Acceptable Methods, Techniques, and Practices",
-  "FAA Aviation Maintenance Technician Handbook",
+  "FAA Service Difficulty Reports, Jan 2024 to Oct 2026 (malfunction and defect reports)",
+  "NASA ASRS maintenance reports, 2022 to 2024",
+  "FAA AC 43.13-1B CHG 1: Acceptable Methods, Techniques, and Practices",
+  "FAA Aviation Maintenance Technician Handbooks: General, Airframe, Powerplant",
 ];
 
 export default function ResultsPage() {
@@ -68,7 +68,12 @@ export default function ResultsPage() {
           sub={m ? `Fields read correctly on ${m.labelled_cards} hand-checked job cards` : ""}
         />
         <StatTile tint="sand" icon={<FileIcon />} loading={!m} label="Job cards processed" value={m && m.cards_processed.toLocaleString()} />
-        <StatTile tint="slate" icon={<RepeatIcon />} loading={!m} label="Repeat problems found" value={m && String(m.repeat_groups_found)} />
+        <StatTile tint="slate" icon={<RepeatIcon />}
+          loading={!m}
+          label="Repeat problems found"
+          value={m && m.repeat_groups_found.toLocaleString()}
+          sub="Same aircraft, ATA chapter and problem, 7+ days apart"
+        />
         <StatTile tint="sand" icon={<ClockIcon />}
           loading={!m}
           label="Time to answer a fault"

@@ -137,7 +137,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         <main className="min-w-0 flex-1 md:py-4 md:pr-4">
           {USE_MOCKS && (
             <div className="mx-4 mt-4 rounded-xl border border-warning/30 bg-warning-soft px-4 py-2 text-center text-sm text-warning md:mx-0 md:mt-0">
-              Showing <strong>sample data</strong>. Connect the backend to see real FAA and NASA records.
+              Showing <strong>saved demo data</strong>: real FAA and NASA records, without the live model. Connect the backend for answers from the MI300X.
             </div>
           )}
           <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10 lg:px-8">{children}</div>

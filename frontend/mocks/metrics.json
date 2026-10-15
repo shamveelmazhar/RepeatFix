@@ -1,8 +1,8 @@
 {
-  "cards_processed": 16,
+  "cards_processed": 180012,
   "extraction_field_accuracy": null,
   "labelled_cards": 0,
-  "repeat_groups_found": 5,
+  "repeat_groups_found": 17746,
   "p50_latency_ms": null,
   "tokens_per_s": null,
   "cost_per_100_cards_usd": null,
