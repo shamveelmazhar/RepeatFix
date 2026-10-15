@@ -106,7 +106,7 @@ export default function RepeatFailuresPage() {
           {/* Phone and tablet: one card per repeat problem */}
           <ul className="space-y-3 lg:hidden">
             {rows.map((r) => {
-              const key = `${r.asset}|${r.failure_mode}`;
+              const key = `${r.asset}|${r.ata_chapter}|${r.failure_mode}`;
               const sev = repeatSeverity(r.count);
               return (
                 <li key={key} className="glass-inset lift rounded-xl p-4">
@@ -167,7 +167,7 @@ export default function RepeatFailuresPage() {
               </thead>
               <tbody>
                 {rows.map((r) => {
-                  const key = `${r.asset}|${r.failure_mode}`;
+                  const key = `${r.asset}|${r.ata_chapter}|${r.failure_mode}`;
                   const sev = repeatSeverity(r.count);
                   const expanded = open === key;
                   return (
@@ -235,7 +235,7 @@ function DowntimeChart({ rows, byCount = false }: { rows: RepeatRow[]; byCount?:
       <ul className="space-y-1">
         {rows.map((r, i) => (
           <li
-            key={`${r.asset}|${r.failure_mode}`}
+            key={`${r.asset}|${r.ata_chapter}|${r.failure_mode}`}
             className="relative grid grid-cols-[minmax(0,10rem)_1fr] items-center gap-3 rounded-md py-1.5 sm:grid-cols-[minmax(0,16rem)_1fr]"
             onMouseEnter={() => setHover(i)}
             onMouseLeave={() => setHover(null)}

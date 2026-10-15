@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { BoltIcon, ChipIcon, ClockIcon, CoinIcon, FileIcon, RepeatIcon, TargetIcon } from "@/components/icons";
 import { Panel, StatTile } from "@/components/ui";
-import { USE_MOCKS, api } from "@/lib/api";
+import { USE_MOCKS, api, useSampleFeatures } from "@/lib/api";
 import type { Metrics } from "@/lib/types";
 
 const STEPS = [
@@ -35,6 +35,8 @@ const SOURCES = [
 export default function ResultsPage() {
   const [m, setM] = useState<Metrics | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const onSample = useSampleFeatures();
+  const sample = USE_MOCKS || onSample.has("metrics");
 
   useEffect(() => {
     api
@@ -89,7 +91,7 @@ export default function ResultsPage() {
         />
       </div>
 
-      {USE_MOCKS && (
+      {sample && (
         <p className="text-sm text-muted">
           Numbers marked &ldquo;Not measured yet&rdquo; will be filled in by the benchmark run on the MI300X.
         </p>

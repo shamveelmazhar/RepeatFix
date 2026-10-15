@@ -3,11 +3,21 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
-import { USE_MOCKS } from "@/lib/api";
+import { type Feature, USE_MOCKS, useSampleFeatures } from "@/lib/api";
 import { Backdrop } from "./Backdrop";
 import { CardViewerProvider } from "./CardViewer";
 import { ChipIcon, GaugeIcon, MoonIcon, RepeatIcon, SunIcon, WrenchIcon } from "./icons";
 import { LogoMark } from "./Logo";
+
+const FEATURE_NAMES: Record<Feature, string> = {
+  cards: "job cards",
+  repeats: "repeat failures",
+  "failure-modes": "failure modes",
+  metrics: "results",
+  ingest: "photo reading",
+  assist: "fault answers",
+  approve: "approvals",
+};
 
 const NAV = [
   { href: "/", label: "Fix a fault", icon: WrenchIcon },
@@ -67,6 +77,7 @@ function AmdBadge() {
 }
 
 export function AppShell({ children }: { children: ReactNode }) {
+  const sampleFeatures = useSampleFeatures();
   const pathname = usePathname();
   return (
     <CardViewerProvider>
@@ -135,10 +146,16 @@ export function AppShell({ children }: { children: ReactNode }) {
         </header>
 
         <main className="min-w-0 flex-1 md:py-4 md:pr-4">
-          {USE_MOCKS && (
+          {USE_MOCKS ? (
             <div className="mx-4 mt-4 rounded-xl border border-warning/30 bg-warning-soft px-4 py-2 text-center text-sm text-warning md:mx-0 md:mt-0">
               Showing <strong>saved demo data</strong>: real FAA and NASA records, without the live model. Connect the backend for answers from the MI300X.
             </div>
+          ) : (
+            sampleFeatures.size > 0 && (
+              <div className="mx-4 mt-4 rounded-xl border border-warning/30 bg-warning-soft px-4 py-2 text-center text-sm text-warning md:mx-0 md:mt-0">
+                Connected to the backend. Parts it can&rsquo;t answer yet show <strong>saved demo data</strong>: {[...sampleFeatures].map((f) => FEATURE_NAMES[f]).join(", ")}.
+              </div>
+            )
           )}
           <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10 lg:px-8">{children}</div>
         </main>

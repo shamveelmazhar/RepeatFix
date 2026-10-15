@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { useOpenCard } from "@/components/CardViewer";
 import { AlertIcon, BookIcon, CameraIcon, CheckIcon, HistoryIcon, SearchIcon } from "@/components/icons";
 import { AtaTag, Button, Panel, Skeleton, StatusBadge, formatDate } from "@/components/ui";
-import { USE_MOCKS, api } from "@/lib/api";
+import { USE_MOCKS, api, useSampleFeatures } from "@/lib/api";
 import { failureModeLabel } from "@/lib/mock";
 import type { AssistResponse, WorkOrder } from "@/lib/types";
 
@@ -197,6 +197,8 @@ function matchLabel(score: number) {
 const CONFIDENCE_LABEL = { high: "Most likely", medium: "Possible", low: "Less likely" } as const;
 
 function Results({ result, onReset }: { result: AssistResponse; onReset: () => void }) {
+  const onSample = useSampleFeatures();
+  const sample = USE_MOCKS || onSample.has("assist");
   const openCard = useOpenCard();
   const s = result.structured;
   const history = result.repeat_history;
@@ -327,7 +329,7 @@ function Results({ result, onReset }: { result: AssistResponse; onReset: () => v
       <WorkOrderPanel key={result.id} id={result.id} initial={result.work_order} onReset={onReset} />
 
       <p className="text-sm text-muted">
-        {USE_MOCKS ? (
+        {sample ? (
           "Saved demo: matched by wording against real FAA records, without the model."
         ) : (
           <>
