@@ -5,9 +5,9 @@ import { useEffect, useRef, useState } from "react";
 import { useOpenCard } from "@/components/CardViewer";
 import { AlertIcon, BookIcon, CameraIcon, CheckIcon, HistoryIcon, SearchIcon } from "@/components/icons";
 import { AtaTag, Button, Panel, Skeleton, StatusBadge, formatDate } from "@/components/ui";
-import { USE_MOCKS, api } from "@/lib/api";
+import { type AssistResult, USE_MOCKS, api } from "@/lib/api";
 import { failureModeLabel } from "@/lib/mock";
-import type { AssistResponse, WorkOrder } from "@/lib/types";
+import type { WorkOrder } from "@/lib/types";
 
 // Real write-ups from the FAA SDR records: N926NK fume events, N2193J fire loop faults, N3760C exit lights.
 const EXAMPLES = [
@@ -24,7 +24,7 @@ export default function FixAFaultPage() {
   const [loading, setLoading] = useState(false);
   const [reading, setReading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [result, setResult] = useState<AssistResponse | null>(null);
+  const [result, setResult] = useState<AssistResult | null>(null);
   const [askedType, setAskedType] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -239,7 +239,7 @@ function Results({
   fleetType,
   onReset,
 }: {
-  result: AssistResponse;
+  result: AssistResult;
   /** The aircraft type the search was narrowed to, if any. */
   fleetType: string | null;
   onReset: () => void;
@@ -247,9 +247,26 @@ function Results({
   const openCard = useOpenCard();
   const s = result.structured;
   const history = result.repeat_history;
+  // A live backend answered from its saved answers, or couldn't answer and we used the saved demo.
+  const savedNote = USE_MOCKS
+    ? null
+    : result.savedDemo
+      ? "The live model is busy or can't be reached, so this answer comes from the saved demo. Try again in a minute for a live answer."
+      : result.cached
+        ? "This fault was answered before, so this is the saved answer from that live run."
+        : null;
 
   return (
     <div className="space-y-6">
+      {savedNote && (
+        <div
+          role="status"
+          className="flex flex-col gap-2 rounded-2xl border border-warning/30 bg-warning-soft p-4 text-warning sm:flex-row sm:items-center sm:gap-3"
+        >
+          <StatusBadge severity="warning">Saved answer</StatusBadge>
+          <p className="text-sm">{savedNote}</p>
+        </div>
+      )}
       {history && history.count >= 2 && (
         <div
           role="status"
@@ -374,8 +391,10 @@ function Results({
       <WorkOrderPanel key={result.id} id={result.id} initial={result.work_order} onReset={onReset} />
 
       <p className="text-sm text-muted">
-        {USE_MOCKS ? (
+        {USE_MOCKS || result.savedDemo ? (
           "Saved demo: matched by wording against real FAA records, without the model."
+        ) : result.cached ? (
+          <>Saved answer from an earlier live run (answered then in {(result.timing.total_ms / 1000).toFixed(1)} s)</>
         ) : (
           <>
             Answered in {(result.timing.total_ms / 1000).toFixed(1)} s
