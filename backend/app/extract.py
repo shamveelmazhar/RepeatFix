@@ -1,6 +1,7 @@
 import json
 import os
 import time
+import uuid
 
 from dotenv import load_dotenv
 from openai import OpenAI
@@ -77,13 +78,15 @@ def normalise(data, raw_text, source):
     chapter = str(chapter).strip() if chapter is not None else None
     if not chapter or not chapter.isdigit():
         chapter = None
+    else:
+        chapter = chapter.zfill(2)  # "5" becomes "05"
 
     parts = data.get("parts")
     if not isinstance(parts, list):
         parts = []
 
     return {
-        "id": f"{source}-{int(time.time() * 1000)}",
+        "id": f"{source}-{uuid.uuid4().hex[:12]}",
         "source": source,
         "date": data.get("date"),
         "aircraft_type": data.get("aircraft_type"),
@@ -104,15 +107,23 @@ def extract_card(text, source="text", client=None):
     """Text in, JobCard out. Also returns how long the model took (in ms)."""
     client = client or get_client()
     started = time.time()
-    reply = client.chat.completions.create(
-        model=MODEL,
-        messages=[
-            {"role": "system", "content": build_system_prompt()},
-            {"role": "user", "content": text},
-        ],
-        temperature=0,  # 0 means steady, repeatable answers
-        max_tokens=600,
-    )
+    reply = None
+    for attempt in range(3):  # try up to 3 times if the service is busy
+        try:
+            reply = client.chat.completions.create(
+                model=MODEL,
+                messages=[
+                    {"role": "system", "content": build_system_prompt()},
+                    {"role": "user", "content": text},
+                ],
+                temperature=0,
+                max_tokens=1500,
+            )
+            break
+        except Exception:
+            if attempt == 2:
+                raise
+            time.sleep(2)
     model_ms = int((time.time() - started) * 1000)
     data = clean_json(reply.choices[0].message.content)
     return normalise(data, text, source), model_ms

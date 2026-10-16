@@ -2,4 +2,8 @@ pypdf>=4.0
 fastapi
 uvicorn[standard]
 python-dotenv
+pydantic>=2.9
 openai
+pandas
+numpy
+scikit-learn
