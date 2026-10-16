@@ -19,7 +19,7 @@ def get_client():
     )
 
 
-MODEL = os.getenv("VLLM_MODEL", "Qwen/Qwen2.5-VL-7B-Instruct")
+MODEL = os.getenv("VLLM_MODEL", "DeepSeek-V4-Flash")
 
 
 def build_system_prompt():
@@ -107,15 +107,23 @@ def extract_card(text, source="text", client=None):
     """Text in, JobCard out. Also returns how long the model took (in ms)."""
     client = client or get_client()
     started = time.time()
-    reply = client.chat.completions.create(
-        model=MODEL,
-        messages=[
-            {"role": "system", "content": build_system_prompt()},
-            {"role": "user", "content": text},
-        ],
-        temperature=0,  # 0 means steady, repeatable answers
-        max_tokens=600,
-    )
+    reply = None
+    for attempt in range(3):  # try up to 3 times if the service is busy
+        try:
+            reply = client.chat.completions.create(
+                model=MODEL,
+                messages=[
+                    {"role": "system", "content": build_system_prompt()},
+                    {"role": "user", "content": text},
+                ],
+                temperature=0,
+                max_tokens=1500,
+            )
+            break
+        except Exception:
+            if attempt == 2:
+                raise
+            time.sleep(2)
     model_ms = int((time.time() - started) * 1000)
     data = clean_json(reply.choices[0].message.content)
     return normalise(data, text, source), model_ms

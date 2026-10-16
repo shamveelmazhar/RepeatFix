@@ -1,7 +1,9 @@
 import json
 import os
 from pathlib import Path
-
+import statistics
+import traceback
+import app.extract as extract_module
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.exceptions import RequestValidationError
@@ -10,8 +12,9 @@ from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from app.vocab import failure_mode_list
 from typing import Literal
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from app.repeats import repeat_rows
+from app.assist import run_assist
 load_dotenv()
 
 # The project folder (RepeatFix) and where the sample data lives
@@ -128,17 +131,42 @@ def approve_work_order(work_order_id: str, body: ApproveRequest):
     return {"id": work_order_id, "status": "approved"}
 
 
+ASSIST_TIMINGS = []  # one entry per /api/assist call (resets when the server restarts)
+
+
+def median_of(values):
+    values = [v for v in values if v is not None]
+    return round(statistics.median(values), 1) if values else None
+
+
 @app.get("/api/metrics")
 def metrics():
-    # Only real, measured numbers. Everything else stays null until we measure it.
+    # Only measured numbers. Everything else stays null until we measure it.
     return {
         "cards_processed": len(CARDS),
         "extraction_field_accuracy": None,
         "labelled_cards": 0,
         "repeat_groups_found": len(repeat_rows(CARDS, "aircraft", 2)),
-        "p50_latency_ms": None,
-        "tokens_per_s": None,
+        "p50_latency_ms": median_of([t["total_ms"] for t in ASSIST_TIMINGS]),
+        "tokens_per_s": median_of([t["tokens_per_s"] for t in ASSIST_TIMINGS]),
         "cost_per_100_cards_usd": None,
         "gpu": None,
-        "model": None,
+        "model": extract_module.MODEL if ASSIST_TIMINGS else None,
     }
+
+
+class AssistRequest(BaseModel):
+    fault_text: str = Field(min_length=3, max_length=5000)
+    asset: str | None = None
+    aircraft_type: str | None = None
+
+
+@app.post("/api/assist")
+def assist(body: AssistRequest):
+    try:
+        result = run_assist(CARDS, body.fault_text, body.asset, body.aircraft_type)
+    except Exception:
+        traceback.print_exc()  # the real error shows in your terminal
+        raise HTTPException(status_code=502, detail="The model call failed. Please try again.")
+    ASSIST_TIMINGS.append(result["timing"])
+    return result

@@ -56,3 +56,20 @@ def repeat_rows(cards, group_by="aircraft", min_count=2):
     # Biggest downtime first, then highest count (this is the Pareto order)
     rows.sort(key=lambda r: (r["downtime_hours"], r["count"]), reverse=True)
     return rows
+
+def repeat_history(cards, failure_mode, asset=None):
+    """Earlier cards with the same failure mode on this asset (or the whole fleet)."""
+    if failure_mode == "other":
+        return None
+    same = [c for c in cards if c.get("failure_mode") == failure_mode]
+    if asset:
+        same = [c for c in same if c.get("registration") == asset]
+    if not same:
+        return None
+    dates = sorted(c["date"] for c in same if c.get("date"))
+    return {
+        "count": len(same),
+        "first_date": dates[0] if dates else None,
+        "last_date": dates[-1] if dates else None,
+        "card_ids": [c["id"] for c in same][:50],  # the list is capped at 50, count is the full number
+    }

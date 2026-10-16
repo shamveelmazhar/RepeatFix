@@ -1,5 +1,6 @@
 from app.extract import normalise
 from app.repeats import repeat_rows
+from app.repeats import repeat_history, repeat_rows
 
 
 def test_single_digit_chapter_gets_leading_zero():
@@ -41,3 +42,20 @@ def test_repeat_group_numbers():
 
 def test_single_failure_is_not_a_repeat():
     assert repeat_rows([make_card(1, "2026-01-01", 1.0)], "aircraft", 2) == []
+
+
+def test_repeat_history_for_one_asset():
+    cards = [
+        make_card(1, "2026-01-01", 1.0),
+        make_card(2, "2026-03-01", 1.0),
+        dict(make_card(3, "2026-02-01", 1.0), registration="N2"),
+    ]
+    history = repeat_history(cards, "brake_overheat", "N1")
+    assert history["count"] == 2
+    assert history["first_date"] == "2026-01-01"
+    assert history["last_date"] == "2026-03-01"
+
+
+def test_repeat_history_none_when_nothing_matches():
+    assert repeat_history([make_card(1, "2026-01-01", 1.0)], "fuel_leak", "N1") is None
+    assert repeat_history([make_card(1, "2026-01-01", 1.0)], "other", "N1") is None
