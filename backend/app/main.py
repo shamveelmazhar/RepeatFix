@@ -154,8 +154,8 @@ def metrics():
         "p50_latency_ms": median_of([t["total_ms"] for t in ASSIST_TIMINGS]),
         "tokens_per_s": median_of([t["tokens_per_s"] for t in ASSIST_TIMINGS]),
         "cost_per_100_cards_usd": None,
-        "gpu": None,
-        "model": extract_module.MODEL if ASSIST_TIMINGS else None,
+        "gpu": "AMD GPU via AMD Token Factory",
+        "model": extract_module.MODEL,
     }
 
 

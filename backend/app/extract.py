@@ -19,7 +19,7 @@ def get_client():
     )
 
 
-MODEL = os.getenv("VLLM_MODEL", "DeepSeek-V4-Flash")
+MODEL = os.getenv("VLLM_MODEL", "Qwen/Qwen2.5-VL-7B-Instruct")
 
 
 def build_system_prompt():
