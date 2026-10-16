@@ -1,5 +1,5 @@
 import pandas as pd
-
+from app.aircraft import same_aircraft_type
 from app.vocab import ata_name
 
 
@@ -57,13 +57,15 @@ def repeat_rows(cards, group_by="aircraft", min_count=2):
     rows.sort(key=lambda r: (r["downtime_hours"], r["count"]), reverse=True)
     return rows
 
-def repeat_history(cards, failure_mode, asset=None):
-    """Earlier cards with the same failure mode on this asset (or the whole fleet)."""
+def repeat_history(cards, failure_mode, asset=None, aircraft_type=None):
+    """Earlier cards with the same failure mode on this asset, or on this aircraft type, or the fleet."""
     if failure_mode == "other":
         return None
     same = [c for c in cards if c.get("failure_mode") == failure_mode]
     if asset:
         same = [c for c in same if c.get("registration") == asset]
+    elif aircraft_type:
+        same = [c for c in same if same_aircraft_type(c.get("aircraft_type"), aircraft_type)]
     if not same:
         return None
     dates = sorted(c["date"] for c in same if c.get("date"))
@@ -71,5 +73,5 @@ def repeat_history(cards, failure_mode, asset=None):
         "count": len(same),
         "first_date": dates[0] if dates else None,
         "last_date": dates[-1] if dates else None,
-        "card_ids": [c["id"] for c in same][:50],  # the list is capped at 50, count is the full number
+        "card_ids": [c["id"] for c in same][:50],
     }

@@ -5,6 +5,7 @@ import statistics
 import traceback
 import app.extract as extract_module
 from dotenv import load_dotenv
+from app.aircraft import same_aircraft_type
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
@@ -84,12 +85,15 @@ def list_cards(
     offset: int = Query(0, ge=0),
     ata: str | None = None,
     asset: str | None = None,
+    aircraft_type: str | None = None,
 ):
     found = CARDS
     if ata:
         found = [c for c in found if c.get("ata_chapter") == ata]
     if asset:
         found = [c for c in found if c.get("registration") == asset]
+    if aircraft_type:
+        found = [c for c in found if same_aircraft_type(c.get("aircraft_type"), aircraft_type)]
     return {"total": len(found), "cards": found[offset : offset + limit]}
 
 

@@ -1,6 +1,13 @@
 from app.extract import normalise
 from app.repeats import repeat_rows
 from app.repeats import repeat_history, repeat_rows
+from app.aircraft import same_aircraft_type
+
+def test_aircraft_type_matching():
+    assert same_aircraft_type("A320-200", "A320")
+    assert same_aircraft_type("A320-200", "a320 200")
+    assert not same_aircraft_type("A320-200", "A320neo")
+    assert not same_aircraft_type(None, "A320")
 
 
 def test_single_digit_chapter_gets_leading_zero():

@@ -7,6 +7,7 @@ from app.procedures import ProcedureIndex, to_procedure
 from app.repeats import repeat_history
 from app.retrieval import similar_cards
 from app.workorder import make_work_order
+from app.aircraft import same_aircraft_type
 
 _procedure_index = None
 
@@ -29,12 +30,13 @@ def run_assist(cards, fault_text, asset=None, aircraft_type=None):
     if aircraft_type:
         card["aircraft_type"] = aircraft_type
 
-    # 2. Find similar past cards and AC 43.13 procedures
-    query = f"{fault_text} {card.get('component') or ''}"
-    similar = similar_cards(cards, query, k=5)
-    hits = get_procedure_index().search(
-        f"{query} {card.get('symptom') or ''}", k=3, docs={"AC 43.13-1B"}
-    )
+        candidates = similar_cards(cards, query, k=30)
+    if aircraft_type:
+        typed = [c for c in candidates if same_aircraft_type(c["card"].get("aircraft_type"), aircraft_type)]
+        candidates = typed if len(typed) >= 3 else typed + [c for c in candidates if c not in typed]
+    same = [c for c in candidates if c["card"].get("ata_chapter") == card.get("ata_chapter")]
+    other = [c for c in candidates if c not in same]
+    similar = same[:5] if len(same) >= 3 else (same + other)[:5]
 
     # 3. Causes and a draft work order
     hypotheses, h_stats = make_hypotheses(fault_text, similar)
@@ -57,6 +59,8 @@ def run_assist(cards, fault_text, asset=None, aircraft_type=None):
         "hypotheses": hypotheses,
         "procedures": [to_procedure(h.chunk, query) for h in hits],
         "work_order": work_order,
-        "repeat_history": repeat_history(cards, card["failure_mode"], asset or card.get("registration")),
+        "repeat_history": repeat_history(
+            cards, card["failure_mode"], asset or card.get("registration"), aircraft_type
+        ),
         "timing": {"total_ms": total_ms, "tokens_per_s": tokens_per_s},
     }
