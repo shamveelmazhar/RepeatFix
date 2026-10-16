@@ -74,6 +74,8 @@ export interface AssistResponse {
   work_order: WorkOrder;
   repeat_history?: RepeatHistory | null;
   timing: { total_ms: number; tokens_per_s: number | null };
+  /** True when the backend returned a saved answer instead of calling the model. */
+  cached?: boolean;
 }
 
 export interface FailureMode {

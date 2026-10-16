@@ -7,6 +7,28 @@ import type { AssistResponse, FailureMode, GroupBy, JobCard, Metrics, RepeatRow,
 const API_URL = (process.env.NEXT_PUBLIC_API_URL ?? "").replace(/\/$/, "");
 export const USE_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS === "true" || !API_URL;
 
+/** An error the backend answered with. `status` is the HTTP status code. */
+export class ApiError extends Error {
+  constructor(
+    message: string,
+    readonly status: number,
+  ) {
+    super(message);
+  }
+}
+
+/** A fault answer, plus whether it came from the saved demo in this app because the backend couldn't answer. */
+export type AssistResult = AssistResponse & { savedDemo?: boolean };
+
+// The longest we wait for a live fault answer before showing the saved demo answer instead.
+const ASSIST_TIMEOUT_MS = 40_000;
+
+/** Busy, broken or unreachable: worth showing a saved answer instead of an error. */
+function backendUnavailable(err: unknown): boolean {
+  if (err instanceof ApiError) return err.status === 429 || err.status >= 500;
+  return true; // network failure or timeout: fetch never got an answer
+}
+
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${API_URL}${path}`, init);
   if (!res.ok) {
@@ -17,7 +39,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     } catch {
       // keep default message
     }
-    throw new Error(message);
+    throw new ApiError(message, res.status);
   }
   return res.json() as Promise<T>;
 }
@@ -64,9 +86,22 @@ export const api = {
     return r.cards[0];
   },
 
-  assist(faultText: string, asset: string | null, aircraftType: string | null = null): Promise<AssistResponse> {
+  /**
+   * Live answer from the backend. If the backend is rate-limited, failing, unreachable or too slow,
+   * falls back to the saved demo answer and marks it `savedDemo` so the screen can say so.
+   */
+  async assist(faultText: string, asset: string | null, aircraftType: string | null = null): Promise<AssistResult> {
     if (USE_MOCKS) return mockApi.assist(faultText, asset, aircraftType);
-    return request<AssistResponse>("/api/assist", json({ fault_text: faultText, asset, aircraft_type: aircraftType }));
+    try {
+      return await request<AssistResponse>("/api/assist", {
+        ...json({ fault_text: faultText, asset, aircraft_type: aircraftType }),
+        signal: AbortSignal.timeout(ASSIST_TIMEOUT_MS),
+      });
+    } catch (err) {
+      if (!backendUnavailable(err)) throw err;
+      const saved = await mockApi.assist(faultText, asset, aircraftType);
+      return { ...saved, savedDemo: true };
+    }
   },
 
   approve(id: string, workOrder: WorkOrder, approvedBy: string): Promise<{ id: string; status: "approved" }> {

@@ -61,9 +61,11 @@ Request: `{ "fault_text": "...", "asset": "N12345" | null, "aircraft_type": "B73
   "repeat_history": { "count": 4, "first_date": "2026-01-08", "last_date": "2026-05-19",
                       "card_ids": ["sdr-..."] },   // optional/null: earlier cards with the same failure_mode
                                                      // on this asset (or fleet if no asset); drives the repeat alert
-  "timing": { "total_ms": 2100, "tokens_per_s": 95.0 }  // tokens_per_s may be null
+  "timing": { "total_ms": 2100, "tokens_per_s": 95.0 },  // tokens_per_s may be null
+  "cached": false                                       // optional; true = a saved answer, not a fresh model call
 }
 ```
+`cached` is optional and defaults to `false`. The backend sets it to `true` when it returns a saved answer instead of calling the model: the same fault text was answered before, or the live call failed (rate limit, timeout, model error) and it fell back to the saved answer for the closest demo fault. The UI labels these answers "Saved answer". If the backend itself is unreachable, or answers 429 or 5xx, the UI falls back to its own saved demo answer.
 `procedures[].page` may be `null` when only the section is known. Two optional fields may also be present: `page_label`, the page number printed in the document (e.g. `"9-12"`; `page` is the PDF page, for links), and `citation`, the full reference string, e.g. `"AC 43.13-1B, Chapter 9, Section 1, par. 9-14 (Tire Inspection and Repair), page 9-12"`. AC excerpts come from `data/procedures/ac_43-13-1b.jsonl` (see `backend/README.md`). `ata_name` is optional on any JobCard or repeat row; the UI falls back to its own ATA chapter table.
 
 ### `POST /api/work-orders/{id}/approve`
