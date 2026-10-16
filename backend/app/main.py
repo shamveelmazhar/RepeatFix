@@ -9,6 +9,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from app.vocab import failure_mode_list
+from typing import Literal
+from pydantic import BaseModel
+from app.repeats import repeat_rows
 load_dotenv()
 
 # The project folder (RepeatFix) and where the sample data lives
@@ -98,3 +101,44 @@ def get_card(card_id: str):
 @app.get("/api/failure-modes")
 def failure_modes():
     return failure_mode_list()
+
+@app.get("/api/repeats")
+def repeats(
+    group_by: Literal["aircraft", "component"] = "aircraft",
+    min_count: int = Query(2, ge=1),
+):
+    return repeat_rows(CARDS, group_by, min_count)
+
+
+# Approved work orders are kept in memory (they reset when the server restarts)
+APPROVED = {}
+
+
+class ApproveRequest(BaseModel):
+    work_order: dict
+    approved_by: str
+
+
+@app.post("/api/work-orders/{work_order_id}/approve")
+def approve_work_order(work_order_id: str, body: ApproveRequest):
+    APPROVED[work_order_id] = {
+        "work_order": body.work_order,
+        "approved_by": body.approved_by,
+    }
+    return {"id": work_order_id, "status": "approved"}
+
+
+@app.get("/api/metrics")
+def metrics():
+    # Only real, measured numbers. Everything else stays null until we measure it.
+    return {
+        "cards_processed": len(CARDS),
+        "extraction_field_accuracy": None,
+        "labelled_cards": 0,
+        "repeat_groups_found": len(repeat_rows(CARDS, "aircraft", 2)),
+        "p50_latency_ms": None,
+        "tokens_per_s": None,
+        "cost_per_100_cards_usd": None,
+        "gpu": None,
+        "model": None,
+    }

@@ -1,6 +1,7 @@
 import json
 import os
 import time
+import uuid
 
 from dotenv import load_dotenv
 from openai import OpenAI
@@ -77,13 +78,15 @@ def normalise(data, raw_text, source):
     chapter = str(chapter).strip() if chapter is not None else None
     if not chapter or not chapter.isdigit():
         chapter = None
+    else:
+        chapter = chapter.zfill(2)  # "5" becomes "05"
 
     parts = data.get("parts")
     if not isinstance(parts, list):
         parts = []
 
     return {
-        "id": f"{source}-{int(time.time() * 1000)}",
+        "id": f"{source}-{uuid.uuid4().hex[:12]}",
         "source": source,
         "date": data.get("date"),
         "aircraft_type": data.get("aircraft_type"),
