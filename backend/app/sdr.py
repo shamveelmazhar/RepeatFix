@@ -15,7 +15,7 @@ This module only does the deterministic part:
 - ``failure_mode`` is picked from ``vocab.FAILURE_MODES`` using the coded
   ``PartCondition`` first, then keyword rules on the text.
 
-The LLM step on the MI300X can refine symptom, action and failure mode later.
+An LLM step on the model API can refine symptom, action and failure mode later.
 
 Usage:
     python -m app.sdr build SDR-2024.csv SDR-2025.csv SDR-2026.csv \\
