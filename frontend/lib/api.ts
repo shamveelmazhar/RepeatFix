@@ -53,30 +53,56 @@ const json = (body: unknown): RequestInit => ({
   body: JSON.stringify(body),
 });
 
+// How long a page waits for the backend's data before showing the saved copy instead.
+// Render's free plan takes up to a minute to wake, so don't keep people looking at empty boxes.
+const READ_TIMEOUT_MS = 15_000;
+
+/** Reads from the backend, or from the saved demo data when the backend is asleep, down or busy. */
+async function readOr<T>(path: string, saved: () => Promise<T>): Promise<T> {
+  try {
+    return await request<T>(path, { signal: AbortSignal.timeout(READ_TIMEOUT_MS) });
+  } catch (err) {
+    if (!backendUnavailable(err)) throw err;
+    return saved();
+  }
+}
+
+// The backend hands out at most 500 cards per request.
+const CARD_PAGE = 500;
+
 export const api = {
-  getCards(): Promise<JobCard[]> {
+  async getCards(): Promise<JobCard[]> {
     if (USE_MOCKS) return mockApi.getCards();
-    return request<{ cards: JobCard[] }>("/api/cards?limit=500").then((r) => r.cards);
+    const cards: JobCard[] = [];
+    for (let offset = 0; ; offset += CARD_PAGE) {
+      const page = await readOr<{ total: number; cards: JobCard[] } | null>(
+        `/api/cards?limit=${CARD_PAGE}&offset=${offset}`,
+        async () => null,
+      );
+      if (!page) return mockApi.getCards();
+      cards.push(...page.cards);
+      if (page.cards.length < CARD_PAGE || cards.length >= page.total) return cards;
+    }
   },
 
   getCard(id: string): Promise<JobCard | undefined> {
     if (USE_MOCKS) return mockApi.getCard(id);
-    return request<JobCard>(`/api/cards/${encodeURIComponent(id)}`);
+    return readOr(`/api/cards/${encodeURIComponent(id)}`, () => mockApi.getCard(id));
   },
 
   getRepeats(groupBy: GroupBy): Promise<RepeatRow[]> {
     if (USE_MOCKS) return mockApi.getRepeats(groupBy);
-    return request<RepeatRow[]>(`/api/repeats?group_by=${groupBy}&min_count=2`);
+    return readOr(`/api/repeats?group_by=${groupBy}&min_count=2`, () => mockApi.getRepeats(groupBy));
   },
 
   getFailureModes(): Promise<FailureMode[]> {
     if (USE_MOCKS) return mockApi.getFailureModes();
-    return request<FailureMode[]>("/api/failure-modes");
+    return readOr("/api/failure-modes", () => mockApi.getFailureModes());
   },
 
   getMetrics(): Promise<Metrics> {
     if (USE_MOCKS) return mockApi.getMetrics();
-    return request<Metrics>("/api/metrics");
+    return readOr("/api/metrics", () => mockApi.getMetrics());
   },
 
   /** Reads a photographed or scanned log entry and returns it as a job card. */
