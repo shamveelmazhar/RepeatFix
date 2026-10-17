@@ -230,6 +230,57 @@ SDR_GENERIC_TEXT_MODES = [
 ]
 
 
+# When a report only says the part "failed", name the fault after the part.
+# Matched against the reported part name, in this order (first hit wins), so
+# "door warning light" is an indicator fault and "fire detector" is fire detection.
+COMPONENT_MODES: list[tuple[str, str]] = [
+    ("fire_detection_fault", r"fire (loop|det|warn|sens|alarm)|overheat|smoke det|(?<!hook and )\bloops?\b"
+                             r"|(?<!chip )detector|\bfdu\b"),
+    ("warning_indication_fault", r"warning|indicat|annunciat|display|gauge|\becam\b|eicas|message"),
+    ("battery_power_fault", r"batter|power supply|\bepsu\b|charger|inverter|transformer|\btru\b"),
+    ("lighting_fault", r"(?<!f)light|\blamps?\b|bulb|lens|\bsigns?\b|strobe|beacon"),
+    ("door_latch_fault", r"door|latch|handle|hinge|\block\b"),
+    ("floor_panel_fault", r"floor|seat track"),
+    ("window_fault", r"window|windshield|windscreen"),
+    ("skin_frame_fault", r"skin|frame|stringer|structure|fuselage|doubler|longeron|bulkhead|\bribs?\b|spar"
+                         r"|former|intercostal|\bbeam|fitting|bracket|gusset|\blug\b|access panel|fairing"),
+    ("valve_fault", r"valve"),
+    ("sensor_switch_fault", r"sensor|switch|probe|pitot|transducer|transmitter|thermostat"),
+    ("computer_controller_fault", r"computer|controller|control (unit|panel)|module|\bunit\b|transceiver"
+                                  r"|receiver|radio|antenna|\bfmc\b|\bfmgc\b|\badiru\b|\belac\b|\bsec\b"),
+    ("actuator_pump_motor_fault", r"actuator|pump|motor|\bjack\b|\bservo"),
+    ("wiring_relay_fault", r"wir(e|ing)|connector|harness|relay|circuit breaker|cable"),
+    ("seal_bearing_fault", r"seal|bearing|bushing|\bpins?\b|bolt|\bnuts?\b|snubber|roller|spring|washer"
+                           r"|fastener|rivet|clamp|hose|duct|tube"),
+    ("landing_gear_part_fault", r"landing gear|(?<!turbine )wheel|(?<!speed )brake|\btires?\b|\bstrut"),
+    ("engine_apu_fault", r"engine|\bapu\b|\beec\b|fadec|starter|igniter|ignition"),
+]
+
+
+# With no part name, the JASC chapter alone says which part it was in these chapters.
+CHAPTER_MODES: dict[str, str] = {
+    "31": "warning_indication_fault",
+    "33": "lighting_fault",
+    "49": "engine_apu_fault",
+    "51": "skin_frame_fault",
+    "52": "door_latch_fault",
+    "53": "skin_frame_fault",
+    "56": "window_fault",
+    "57": "skin_frame_fault",
+    "72": "engine_apu_fault",
+}
+
+
+def component_mode(part_name: str | None, ata: str | None = None) -> str | None:
+    """Name a "failed" report after the part, e.g. "Fire loop" -> fire_detection_fault."""
+    if not part_name:
+        return CHAPTER_MODES.get(ata or "")
+    for code, pattern in COMPONENT_MODES:
+        if re.search(pattern, part_name, re.I):
+            return code
+    return None
+
+
 def _sdr_pattern(mode: vocab.FailureMode) -> str:
     return SDR_PATTERN_OVERRIDES.get(mode.code, mode.pattern)
 
@@ -242,8 +293,19 @@ def _mode(code: str, ata: str) -> str:
     return "component_malfunction"
 
 
-def failure_mode(ata: str, text: str, condition: str | None) -> str:
-    """Pick one ``vocab.FAILURE_MODES`` code for an SDR record."""
+def failure_mode(ata: str, text: str, condition: str | None, part_name: str | None = None) -> str:
+    """Pick one ``vocab.FAILURE_MODES`` code for an SDR record.
+
+    A plain "failed" report is named after ``part_name`` when we know the part,
+    else after its chapter where the chapter names the part (52 Doors, 33 Lights).
+    """
+    code = _failure_mode(ata, text, condition)
+    if code == "component_malfunction":
+        return component_mode(part_name, ata) or code
+    return code
+
+
+def _failure_mode(ata: str, text: str, condition: str | None) -> str:
     condition = (condition or "").strip().upper()
     if condition in PHYSICAL_CONDITIONS:
         return _mode(PHYSICAL_CONDITIONS[condition], ata)
@@ -294,6 +356,10 @@ def _parts(row: dict) -> list[str]:
     return parts
 
 
+def _part_name(row: dict) -> str | None:
+    return _clean(row.get("PartName")) or _clean(row.get("ComponentName"))
+
+
 def _component(row: dict, ata: str) -> str:
     for key in ("PartName", "ComponentName"):
         name = _clean(row.get(key))
@@ -319,7 +385,8 @@ def to_job_card(row: dict) -> dict:
         "ata_name": vocab.ata_name(ata),
         "component": _component(row, ata),
         "symptom": symptom or discrepancy,
-        "failure_mode": failure_mode(ata, f"{symptom} {_clean(row.get('PartName')) or ''}", condition),
+        "failure_mode": failure_mode(ata, f"{symptom} {_clean(row.get('PartName')) or ''}", condition,
+                                     _part_name(row)),
         "action_taken": action,
         "parts": _parts(row),
         "downtime_hours": None,  # SDR does not record downtime
