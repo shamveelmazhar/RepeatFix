@@ -1,0 +1,10 @@
+{
+  "_note": "Built by scripts/build_insights.py from the full FAA SDR build (2024-2026).",
+  "fix_did_not_stick": {
+    "fixes": 38937,
+    "came_back": 5010,
+    "share": 0.1287,
+    "window_days": 90,
+    "newest_report": "2026-10-12"
+  }
+}

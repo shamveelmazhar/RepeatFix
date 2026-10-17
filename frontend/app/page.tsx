@@ -11,10 +11,11 @@ import { failureModeLabel } from "@/lib/mock";
 import type { WorkOrder } from "@/lib/types";
 
 // Real write-ups from the FAA SDR records: N926NK fume events, N2193J fire loop faults, N3760C exit lights.
+// Picking one also picks its aircraft, so the repeat alert counts that tail's history.
 const EXAMPLES = [
-  "FUME EVENT ON DESCENT IN COCKPIT",
-  "ENG 2 FIRE LOOP B FAULT",
-  "FOUND FWD LH EMERG EXIT LIGHTS INOP",
+  { text: "FUME EVENT ON DESCENT IN COCKPIT", tail: "N926NK" },
+  { text: "ENG 2 FIRE LOOP B FAULT", tail: "N2193J" },
+  { text: "FOUND FWD LH EMERG EXIT LIGHTS INOP", tail: "N3760C" },
 ];
 
 export default function FixAFaultPage() {
@@ -166,12 +167,15 @@ export default function FixAFaultPage() {
             <span className="text-sm text-muted">Try:</span>
             {EXAMPLES.map((ex) => (
               <button
-                key={ex}
+                key={ex.text}
                 type="button"
-                onClick={() => setText(ex)}
+                onClick={() => {
+                  setText(ex.text);
+                  pickTail(ex.tail);
+                }}
                 className="glass-inset rounded-full px-3 py-1 text-sm text-muted transition-colors hover:border-accent hover:text-accent"
               >
-                {ex}
+                {ex.text}
               </button>
             ))}
           </div>
