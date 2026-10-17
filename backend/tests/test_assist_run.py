@@ -77,3 +77,18 @@ def test_assist_with_aircraft_type_and_asset(monkeypatch):
     assert result["structured"]["aircraft_type"] == "B737"
     assert all(s["card"]["aircraft_type"] == "B737-800" for s in result["similar"][:3])
     assert result["repeat_history"]["count"] == 3
+
+def test_ingest_adds_a_card(monkeypatch):
+    monkeypatch.setattr(extract, "get_client", lambda: FakeClient())
+    from app.main import CARDS, CARDS_BY_ID, IngestRequest, ingest
+
+    before = len(CARDS)
+    result = ingest(IngestRequest(text="Brake hot after taxi"))
+    card = result["cards"][0]
+    try:
+        assert card["failure_mode"] == "brake_overheat"
+        assert card["source"] == "text"
+        assert len(CARDS) == before + 1
+    finally:
+        CARDS.pop()
+        CARDS_BY_ID.pop(card["id"], None)

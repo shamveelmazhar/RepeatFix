@@ -16,6 +16,11 @@ from typing import Literal
 from pydantic import BaseModel, Field
 from app.repeats import repeat_rows
 from app.assist import run_assist
+import time
+
+from openai import OpenAIError
+
+import app.cache as assist_cache
 load_dotenv()
 
 # The project folder (RepeatFix) and where the sample data lives
@@ -154,7 +159,7 @@ def metrics():
         "p50_latency_ms": median_of([t["total_ms"] for t in ASSIST_TIMINGS]),
         "tokens_per_s": median_of([t["tokens_per_s"] for t in ASSIST_TIMINGS]),
         "cost_per_100_cards_usd": None,
-        "gpu": "AMD GPU via AMD Token Factory",
+         "gpu": os.getenv("GPU_LABEL", "AMD GPU via AMD Token Factory"),
         "model": extract_module.MODEL,
     }
 
@@ -167,10 +172,45 @@ class AssistRequest(BaseModel):
 
 @app.post("/api/assist")
 def assist(body: AssistRequest):
+    started = time.time()
+    key = assist_cache.make_key(body.fault_text, body.asset, body.aircraft_type)
+
+    # Same fault asked before: answer instantly, no model call
+    saved = assist_cache.get(key)
+    if saved:
+        return assist_cache.as_cached(saved, started)
+
     try:
         result = run_assist(CARDS, body.fault_text, body.asset, body.aircraft_type)
+    except (OpenAIError, ValueError):
+        # The model service failed (limit reached, timeout, bad answer). Use the closest saved answer.
+        traceback.print_exc()
+        fallback = assist_cache.closest(body.fault_text)
+        if fallback:
+            return assist_cache.as_cached(fallback, started, fallback=True)
+        raise HTTPException(status_code=502, detail="The model call failed. Please try again.")
+    except Exception:
+        # A bug in our own code. Show it, don't hide it behind a saved answer.
+        traceback.print_exc()
+        raise HTTPException(status_code=502, detail="The model call failed. Please try again.")
+
+    result["cached"] = False
+    ASSIST_TIMINGS.append(result["timing"])  # only live calls count as measurements
+    assist_cache.save(key, body.fault_text, result)
+    return result
+
+class IngestRequest(BaseModel):
+    text: str = Field(min_length=3, max_length=20000)
+
+
+@app.post("/api/ingest")
+def ingest(body: IngestRequest):
+    try:
+        card, model_ms = extract_module.extract_card(body.text, source="text")
     except Exception:
         traceback.print_exc()  # the real error shows in your terminal
         raise HTTPException(status_code=502, detail="The model call failed. Please try again.")
-    ASSIST_TIMINGS.append(result["timing"])
-    return result
+    # Keep the new card, so it shows in /api/cards and /api/repeats until the server restarts
+    CARDS.append(card)
+    CARDS_BY_ID[card["id"]] = card
+    return {"cards": [card], "model_ms": model_ms}

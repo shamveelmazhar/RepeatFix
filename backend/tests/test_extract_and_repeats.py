@@ -66,3 +66,7 @@ def test_repeat_history_for_one_asset():
 def test_repeat_history_none_when_nothing_matches():
     assert repeat_history([make_card(1, "2026-01-01", 1.0)], "fuel_leak", "N1") is None
     assert repeat_history([make_card(1, "2026-01-01", 1.0)], "other", "N1") is None
+
+def test_same_day_reports_are_one_event():
+    cards = [make_card(n, "2026-01-01", 1.0) for n in (1, 2, 3)]
+    assert repeat_rows(cards, "aircraft", 2) == []
