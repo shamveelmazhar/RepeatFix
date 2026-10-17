@@ -46,5 +46,7 @@ def make_hypotheses(fault_text, similar):
         ids = [i for i in (item.get("evidence_card_ids") or []) if i in valid_ids]
         if not ids:
             confidence = "low"  # no evidence means it can only be a guess
+        elif len(ids) < 3 and confidence == "high":
+            confidence = "medium"  # high needs at least 3 cards
         result.append({"cause": item["cause"], "confidence": confidence, "evidence_card_ids": ids})
     return result, stats

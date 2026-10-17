@@ -83,3 +83,13 @@ def test_card_with_partial_date_does_not_break_repeats():
     bad = normalise({"date": "2024-03", "failure_mode": "fuel_leak", "ata_chapter": "28"}, "t", "text")
     bad["registration"] = "N1"
     assert repeat_rows([bad, make_card(1, "2026-01-01", 1.0)], "aircraft", 2) == []
+
+def test_repeat_history_uses_7_day_rule_and_ata():
+    cards = [
+        make_card(1, "2026-01-01", 1.0),
+        make_card(2, "2026-01-01", 1.0),  # same day: one event
+        make_card(3, "2026-02-01", 1.0),
+        dict(make_card(4, "2026-03-01", 1.0), ata_chapter="21"),  # other chapter: not counted
+    ]
+    history = repeat_history(cards, "brake_overheat", "N1", None, "32")
+    assert history["count"] == 2

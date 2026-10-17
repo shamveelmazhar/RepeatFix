@@ -143,3 +143,31 @@ def test_assist_gives_an_error_when_no_saved_answer_is_close(monkeypatch, tmp_pa
     with pytest.raises(HTTPException) as error:
         m.assist(m.AssistRequest(fault_text="fume event in cockpit on descent", asset="N926NK"))
     assert error.value.status_code == 502
+
+def fake_chunk(paragraph, page_label):
+    return SimpleNamespace(
+        ac_number="AC 43.13-1B", doc="FAA AC 43.13-1B CHG 1", chapter="9", chapter_title="Landing Gear",
+        section="1", section_title="Inspection", paragraph=paragraph, title="Test paragraph",
+        part=1, page=501, page_label=page_label, text="Inspect the brake. Check for heat damage.", url="",
+    )
+
+
+def test_procedures_list_only_has_cited_paragraphs(monkeypatch):
+    import app.assist as assist_module
+    from app.procedures import Hit
+
+    cited, other = fake_chunk("9-14", "9-12"), fake_chunk("12-25", "12-10")
+    card = extract.normalise({"failure_mode": "brake_overheat", "ata_chapter": "32", "component": "Brake"}, "x", "text")
+    stats = {"ms": 10, "completion_tokens": 10}
+
+    monkeypatch.setattr(retrieval, "_card_index", None)
+    monkeypatch.setattr(assist_module, "extract_card", lambda text, source="text": (card, 1))
+    monkeypatch.setattr(assist_module, "find_procedures", lambda fault, c: ("q", [Hit(cited, 1.0), Hit(other, 1.0)]))
+    monkeypatch.setattr(assist_module, "make_hypotheses", lambda fault, similar: ([], stats))
+    monkeypatch.setattr(
+        assist_module, "make_work_order",
+        lambda *args: ({"title": "t", "steps": ["Inspect the brake [AC 43.13-1B par. 9-14]."], "parts": []}, stats),
+    )
+
+    result = assist_module.run_assist(make_cards(), "brake hot")
+    assert [p["page_label"] for p in result["procedures"]] == ["9-12"]

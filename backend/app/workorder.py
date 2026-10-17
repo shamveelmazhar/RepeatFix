@@ -13,9 +13,12 @@ Return ONLY this JSON, with no extra words:
 
 Rules:
 - 3 to 6 short steps, in the order a mechanic would do them.
-- Base the steps on the procedure excerpts and on what fixed the similar past cards.
-- Never invent torque values, limits or part numbers that are not in the text.
-- parts: only part numbers that appear in the past cards. Empty list if none.
+- Base the steps on the similar past cards and on the procedure excerpts, and use an excerpt only if it really matches this fault. Ignore an excerpt that is about something else.
+- Every step that uses a procedure excerpt must end with its citation in square brackets, like [AC 43.13-1B par. 9-14]. Put each citation in its own brackets and never write a paragraph number outside brackets.
+- Mention a manual task number (AMM, TSM, SRM) only if it appears in the similar past cards.
+- Do not use the word "torque" or give any number, limit or clearance unless it is written in the excerpts or the past cards.
+- If neither the excerpts nor the past cards say how this fault was fixed, write general troubleshooting steps (for example "troubleshoot using the aircraft's fault isolation manual") and do not invent a specific procedure.
+- Never invent part numbers. parts: only part numbers that appear in the past cards, else an empty list.
 - The last step must say that a certified person must inspect and approve the work.
 """
 

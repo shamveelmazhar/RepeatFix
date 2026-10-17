@@ -1,24 +1,37 @@
 import time
 import uuid
+from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
 
 from app.aircraft import same_aircraft_type
 from app.extract import extract_card
 from app.hypotheses import make_hypotheses
-from app.procedures import ProcedureIndex, to_procedure
-from app.repeats import repeat_history
+from app.procedures import ProcedureIndex, check_citations, cite_tag, to_procedure
+from app.repeats import GENERIC_MODES, repeat_history
 from app.retrieval import similar_cards
 from app.workorder import make_work_order
+
+AC_FILE = Path(__file__).resolve().parents[2] / "data" / "procedures" / "ac_43-13-1b.jsonl"
 
 _procedure_index = None
 
 
 def get_procedure_index():
-    """Load the AC 43.13 chunks once. The first request is slower because of this."""
+    """Load only AC 43.13-1B, the only document assist searches. Saves time and memory."""
     global _procedure_index
     if _procedure_index is None:
-        _procedure_index = ProcedureIndex.load()
+        _procedure_index = ProcedureIndex.load(AC_FILE)
     return _procedure_index
+
+
+def find_procedures(fault_text, card):
+    """Candidate AC 43.13 paragraphs. The work order decides which ones it really uses."""
+    query = f"{fault_text} {card.get('component') or ''}".strip()
+    hits = get_procedure_index().search(
+        f"{query} {card.get('symptom') or ''}", k=3, docs={"AC 43.13-1B"}
+    )
+    return query, hits
 
 
 def pick_similar(cards, query, card, aircraft_type):
@@ -38,6 +51,20 @@ def pick_similar(cards, query, card, aircraft_type):
     return same[:5] if len(same) >= 3 else (same + other)[:5]
 
 
+def refine_failure_mode(card, similar):
+    """If the model chose a catch-all code, use the specific code that at least 3 similar cards share."""
+    if card["failure_mode"] not in GENERIC_MODES:
+        return
+    votes = Counter(
+        s["card"]["failure_mode"] for s in similar
+        if s["card"].get("failure_mode") not in GENERIC_MODES
+    )
+    if votes:
+        mode, count = votes.most_common(1)[0]
+        if count >= 3:
+            card["failure_mode"] = mode
+
+
 def run_assist(cards, fault_text, asset=None, aircraft_type=None):
     t0 = time.time()
 
@@ -50,12 +77,10 @@ def run_assist(cards, fault_text, asset=None, aircraft_type=None):
     tail = card.get("registration")
     t1 = time.time()
 
-    # 2. Find similar past cards and AC 43.13 procedures (no model call)
-    query = f"{fault_text} {card.get('component') or ''}".strip()
+    # 2. Find candidate procedures and similar past cards (no model call)
+    query, hits = find_procedures(fault_text, card)
     similar = pick_similar(cards, query, card, aircraft_type)
-    hits = get_procedure_index().search(
-        f"{query} {card.get('symptom') or ''}", k=3, docs={"AC 43.13-1B"}
-    )
+    refine_failure_mode(card, similar)
     t2 = time.time()
 
     # 3. Causes and work order at the same time (two model calls)
@@ -66,7 +91,11 @@ def run_assist(cards, fault_text, asset=None, aircraft_type=None):
         work_order, w_stats = w_job.result()
     t3 = time.time()
 
-    # 4. Timing. tokens_per_s is the average speed of the two writing calls,
+    # 4. Show only the procedures the work order really cites (unknown citations were already removed)
+    cited, _ = check_citations(" ".join(work_order["steps"]), hits)
+    used = [h for h in hits if cite_tag(h.chunk) in cited]
+
+    # 5. Timing. tokens_per_s is the average speed of the two writing calls,
     # counting thinking tokens, network and waiting. It is a measured end-to-end rate.
     rates = []
     for stats in (h_stats, w_stats):
@@ -84,8 +113,10 @@ def run_assist(cards, fault_text, asset=None, aircraft_type=None):
         "structured": card,
         "similar": similar,
         "hypotheses": hypotheses,
-        "procedures": [to_procedure(h.chunk, query) for h in hits],
+        "procedures": [to_procedure(h.chunk, query) for h in used],
         "work_order": work_order,
-        "repeat_history": repeat_history(cards, card["failure_mode"], tail, aircraft_type),
+        "repeat_history": repeat_history(
+            cards, card["failure_mode"], tail, aircraft_type, card.get("ata_chapter")
+        ),
         "timing": {"total_ms": int((t3 - t0) * 1000), "tokens_per_s": tokens_per_s},
     }
