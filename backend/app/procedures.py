@@ -3,8 +3,8 @@
 The AC PDF is split by paragraph ("9-14. TIRE INSPECTION AND REPAIR.") so every
 chunk carries the AC number, chapter, section, paragraph number and the page it
 starts on. Search is BM25 over those chunks; it runs on the CPU in milliseconds
-and needs no model, so it works before the embedding service is up. Embedding
-search on the MI300X can rerank these hits later without changing the output.
+and needs no model, so it works even when the model service is down. Token Factory
+has no embedding model, so this search stays on the CPU.
 
 The FAA AMT Handbooks (General, Airframe, Powerplant) are chunked by heading in
 handbooks.py into the same `Chunk` record; for them `ac_number` holds the

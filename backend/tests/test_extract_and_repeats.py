@@ -66,3 +66,20 @@ def test_repeat_history_for_one_asset():
 def test_repeat_history_none_when_nothing_matches():
     assert repeat_history([make_card(1, "2026-01-01", 1.0)], "fuel_leak", "N1") is None
     assert repeat_history([make_card(1, "2026-01-01", 1.0)], "other", "N1") is None
+
+def test_same_day_reports_are_one_event():
+    cards = [make_card(n, "2026-01-01", 1.0) for n in (1, 2, 3)]
+    assert repeat_rows(cards, "aircraft", 2) == []
+
+
+def test_partial_dates_become_null():
+    assert normalise({"date": "2024-03"}, "t", "text")["date"] is None
+    assert normalise({"date": "March 2024"}, "t", "text")["date"] is None
+    assert normalise({"date": "2024-02-30"}, "t", "text")["date"] is None
+    assert normalise({"date": "2024-03-18"}, "t", "text")["date"] == "2024-03-18"
+
+
+def test_card_with_partial_date_does_not_break_repeats():
+    bad = normalise({"date": "2024-03", "failure_mode": "fuel_leak", "ata_chapter": "28"}, "t", "text")
+    bad["registration"] = "N1"
+    assert repeat_rows([bad, make_card(1, "2026-01-01", 1.0)], "aircraft", 2) == []

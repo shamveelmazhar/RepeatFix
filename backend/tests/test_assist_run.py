@@ -77,3 +77,69 @@ def test_assist_with_aircraft_type_and_asset(monkeypatch):
     assert result["structured"]["aircraft_type"] == "B737"
     assert all(s["card"]["aircraft_type"] == "B737-800" for s in result["similar"][:3])
     assert result["repeat_history"]["count"] == 3
+
+def test_ingest_adds_a_card(monkeypatch):
+    monkeypatch.setattr(extract, "get_client", lambda: FakeClient())
+    from app.main import CARDS, CARDS_BY_ID, IngestRequest, ingest
+
+    before = len(CARDS)
+    result = ingest(IngestRequest(text="Brake hot after taxi"))
+    card = result["cards"][0]
+    try:
+        assert card["failure_mode"] == "brake_overheat"
+        assert card["source"] == "text"
+        assert len(CARDS) == before + 1
+    finally:
+        CARDS.pop()
+        CARDS_BY_ID.pop(card["id"], None)
+
+def test_assist_uses_saved_answer_when_model_times_out(monkeypatch, tmp_path):
+    from openai import OpenAIError
+
+    import app.cache as cache
+    import app.main as m
+
+    class TimingOut:
+        def __init__(self):
+            self.chat = SimpleNamespace(completions=SimpleNamespace(create=self.create))
+
+        def create(self, **kwargs):
+            raise OpenAIError("timed out")
+
+    monkeypatch.setattr(cache, "CACHE_FILE", tmp_path / "cache.json")
+    monkeypatch.setattr(cache, "_entries", None)
+    cache.save("some-key", "FUME EVENT ON DESCENT IN COCKPIT", {"id": "wo-saved", "timing": {"total_ms": 9000, "tokens_per_s": 10}})
+
+    monkeypatch.setattr(extract, "get_client", lambda: TimingOut())
+    monkeypatch.setattr(extract.time, "sleep", lambda seconds: None)
+
+    result = m.assist(m.AssistRequest(fault_text="fume event in cockpit on descent", asset="N926NK"))
+    assert result["cached"] is True
+    assert result["cached_for"] == "FUME EVENT ON DESCENT IN COCKPIT"
+
+
+def test_assist_gives_an_error_when_no_saved_answer_is_close(monkeypatch, tmp_path):
+    import pytest
+    from fastapi import HTTPException
+    from openai import OpenAIError
+
+    import app.cache as cache
+    import app.main as m
+
+    class TimingOut:
+        def __init__(self):
+            self.chat = SimpleNamespace(completions=SimpleNamespace(create=self.create))
+
+        def create(self, **kwargs):
+            raise OpenAIError("timed out")
+
+    monkeypatch.setattr(cache, "CACHE_FILE", tmp_path / "cache.json")
+    monkeypatch.setattr(cache, "_entries", None)
+    cache.save("k", "cabin pressure controller fault", {"id": "wo-saved"})
+
+    monkeypatch.setattr(extract, "get_client", lambda: TimingOut())
+    monkeypatch.setattr(extract.time, "sleep", lambda seconds: None)
+
+    with pytest.raises(HTTPException) as error:
+        m.assist(m.AssistRequest(fault_text="fume event in cockpit on descent", asset="N926NK"))
+    assert error.value.status_code == 502

@@ -16,6 +16,11 @@ from typing import Literal
 from pydantic import BaseModel, Field
 from app.repeats import repeat_rows
 from app.assist import run_assist
+import time
+from concurrent.futures import ThreadPoolExecutor
+from openai import OpenAIError
+from app.benchmark import load_results
+import app.cache as assist_cache
 load_dotenv()
 
 # The project folder (RepeatFix) and where the sample data lives
@@ -73,10 +78,27 @@ async def validation_error_handler(request, exc):
     )
 
 
+_health_cache = {"at": 0.0, "model_ok": False}
+
+
+def model_is_up():
+    """Cheap check that the model service answers. The result is kept for 60 seconds."""
+    now = time.time()
+    if now - _health_cache["at"] < 60:
+        return _health_cache["model_ok"]
+    try:
+        extract_module.get_client().with_options(timeout=5, max_retries=0).models.list()
+        ok = True
+    except Exception:
+        ok = False
+    _health_cache.update(at=now, model_ok=ok)
+    return ok
+
+
 @app.get("/api/health")
 def health():
-    # vllm and evolus become real checks later
-    return {"ok": True, "vllm": False, "evolus": False}
+    # evolus stays false: the Evolus integration is not built, so we don't claim it
+    return {"ok": True, "vllm": model_is_up(), "evolus": False}
 
 
 @app.get("/api/cards")
@@ -145,16 +167,19 @@ def median_of(values):
 
 @app.get("/api/metrics")
 def metrics():
-    # Only measured numbers. Everything else stays null until we measure it.
+    bench = load_results()
+    if bench.get("model") != extract_module.MODEL:
+        bench = {}  # measured with another model, so we don't show those numbers
+    live = ASSIST_TIMINGS
     return {
         "cards_processed": len(CARDS),
-        "extraction_field_accuracy": None,
-        "labelled_cards": 0,
+        "extraction_field_accuracy": bench.get("extraction_field_accuracy"),
+        "labelled_cards": bench.get("labelled_cards", 0),
         "repeat_groups_found": len(repeat_rows(CARDS, "aircraft", 2)),
-        "p50_latency_ms": median_of([t["total_ms"] for t in ASSIST_TIMINGS]),
-        "tokens_per_s": median_of([t["tokens_per_s"] for t in ASSIST_TIMINGS]),
+        "p50_latency_ms": bench.get("p50_latency_ms") or median_of([t["total_ms"] for t in live]),
+        "tokens_per_s": bench.get("tokens_per_s") or median_of([t["tokens_per_s"] for t in live]),
         "cost_per_100_cards_usd": None,
-        "gpu": "AMD GPU via AMD Token Factory",
+        "gpu": os.getenv("GPU_LABEL", "AMD GPUs via AMD Token Factory"),
         "model": extract_module.MODEL,
     }
 
@@ -165,12 +190,71 @@ class AssistRequest(BaseModel):
     aircraft_type: str | None = None
 
 
+ASSIST_BUDGET_S = float(os.getenv("ASSIST_BUDGET_S", "45"))
+_assist_pool = ThreadPoolExecutor(max_workers=8)
+
+
+def run_assist_with_budget(fault_text, asset, aircraft_type):
+    """Run assist, but stop waiting after ASSIST_BUDGET_S seconds."""
+    future = _assist_pool.submit(run_assist, CARDS, fault_text, asset, aircraft_type)
+    return future.result(timeout=ASSIST_BUDGET_S)  # raises TimeoutError if too slow
+
+
 @app.post("/api/assist")
 def assist(body: AssistRequest):
+    started = time.time()
+    key = assist_cache.make_key(body.fault_text, body.asset, body.aircraft_type)
+
+    # Same fault asked before: answer instantly, no model call
+    saved = assist_cache.get(key)
+    if saved:
+        return assist_cache.as_cached(saved, started)
+
     try:
-        result = run_assist(CARDS, body.fault_text, body.asset, body.aircraft_type)
+        result = run_assist_with_budget(body.fault_text, body.asset, body.aircraft_type)
+    except (OpenAIError, ValueError, TimeoutError):
+        # The model service failed or was too slow. Use the closest saved answer.
+        traceback.print_exc()
+        fallback = assist_cache.closest(body.fault_text)
+        if fallback:
+            return assist_cache.as_cached(fallback, started, fallback=True)
+        raise HTTPException(status_code=502, detail="The model call failed. Please try again.")
+    except Exception:
+        # A bug in our own code. Show it, don't hide it behind a saved answer.
+        traceback.print_exc()
+        raise HTTPException(status_code=502, detail="The model call failed. Please try again.")
+
+    result["cached"] = False
+    ASSIST_TIMINGS.append(result["timing"])  # only live calls count as measurements
+    assist_cache.save(key, body.fault_text, result)
+    return result
+
+class IngestRequest(BaseModel):
+    text: str = Field(min_length=3, max_length=20000)
+
+
+@app.post("/api/ingest")
+def ingest(body: IngestRequest):
+    try:
+        card, model_ms = extract_module.extract_card(body.text, source="text")
     except Exception:
         traceback.print_exc()  # the real error shows in your terminal
         raise HTTPException(status_code=502, detail="The model call failed. Please try again.")
-    ASSIST_TIMINGS.append(result["timing"])
-    return result
+    # Keep the new card, so it shows in /api/cards and /api/repeats until the server restarts
+    CARDS.append(card)
+    CARDS_BY_ID[card["id"]] = card
+    return {"cards": [card], "model_ms": model_ms}
+
+@app.on_event("startup")
+def warm_up():
+    """Load the search indexes in the background, so the server starts listening at once."""
+    import threading
+
+    from app.assist import get_procedure_index
+    from app.retrieval import get_card_index
+
+    def load():
+        get_procedure_index()
+        get_card_index(CARDS)
+
+    threading.Thread(target=load, daemon=True).start()
