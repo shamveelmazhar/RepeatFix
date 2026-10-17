@@ -48,6 +48,22 @@ QUERY_HINTS = {
     "low_pressure": "pressure check servicing",
     "panel_missing": "access panels fasteners inspection",
     "component_malfunction": "troubleshooting inspection",
+    "fire_detection_fault": "fire detection loop detector troubleshooting",
+    "warning_indication_fault": "warning annunciator indicating system troubleshooting",
+    "battery_power_fault": "battery power supply inspection",
+    "lighting_fault": "lighting systems lamp inspection",
+    "door_latch_fault": "door latch hinge inspection",
+    "floor_panel_fault": "floor panel seat track inspection",
+    "skin_frame_fault": "skin frame stringer fitting inspection repair",
+    "window_fault": "windshield window inspection",
+    "valve_fault": "valve troubleshooting",
+    "sensor_switch_fault": "sensor switch probe troubleshooting",
+    "computer_controller_fault": "avionics computer controller troubleshooting",
+    "actuator_pump_motor_fault": "actuator pump motor troubleshooting",
+    "wiring_relay_fault": "wiring connector relay inspection",
+    "seal_bearing_fault": "seal bearing bushing inspection",
+    "landing_gear_part_fault": "landing gear wheel brake inspection",
+    "engine_apu_fault": "engine troubleshooting",
     "corrosion": "corrosion removal treatment inspection",
     "crack_found": "crack inspection repair",
     "wear_or_chafing": "chafing wear inspection",
@@ -111,6 +127,7 @@ ATA_SCOPE = {
 PINNED = {
     "33|emer_light_battery_fault": [(AF, "Maintenance & Inspection of Lighting Systems"), (AC, "Battery Maintenance")],
     "25|escape_slide_fault": [(AC, "Functional Check of Stand-by or Emergency Equipment")],
+    "26|fire_detection_fault": [(PP, "Fire Detection System Troubleshooting"), (PP, "Continuous-Loop Detector Systems")],
     "*|corrosion": [(AC, "Corrosion Inspection"), (AC, "General Surface Corrosion")],
     "*|crack_found": [(AC, "Repairing Cracked Members"), (GEN, "Surface Cracks")],
 }
@@ -214,7 +231,7 @@ def main(argv: list[str] | None = None) -> int:
         "tokens_per_s": None,
         "cost_per_100_cards_usd": None,
         "gpu": "AMD GPUs via AMD Token Factory",
-        "model": None,
+        "model": "DeepSeek-V4-Flash",  # the backend's default model (VLLM_MODEL)
     }
 
     MOCKS.mkdir(exist_ok=True)

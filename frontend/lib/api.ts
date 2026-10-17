@@ -24,6 +24,8 @@ export type AssistResult = AssistResponse & { savedDemo?: boolean };
 // The backend answers within about 50 s (falling back to its own saved answer), so this sits above that.
 const ASSIST_TIMEOUT_MS = 60_000;
 
+const PHOTO_COMING_SOON = "Photo reading is coming soon. For now, type the fault into the box.";
+
 /** Busy, broken or unreachable: worth showing a saved answer instead of an error. */
 function backendUnavailable(err: unknown): boolean {
   if (err instanceof ApiError) return err.status === 429 || err.status >= 500;
@@ -79,10 +81,20 @@ export const api = {
 
   /** Reads a photographed or scanned log entry and returns it as a job card. */
   async ingestImage(file: File): Promise<JobCard> {
-    if (USE_MOCKS) return mockApi.ingestImage();
+    // Neither the backend nor the saved demo can read photos yet, so say so instead of faking a card.
+    if (USE_MOCKS) throw new Error(PHOTO_COMING_SOON);
     const form = new FormData();
     form.append("file", file);
-    const r = await request<{ cards: JobCard[] }>("/api/ingest", { method: "POST", body: form });
+    let r: { cards: JobCard[] };
+    try {
+      r = await request<{ cards: JobCard[] }>("/api/ingest", { method: "POST", body: form });
+    } catch (err) {
+      // The backend reads typed text only for now and turns photos away with a 4xx.
+      if (err instanceof ApiError && err.status < 500) {
+        throw new Error(PHOTO_COMING_SOON);
+      }
+      throw err;
+    }
     if (!r.cards.length) throw new Error("No text could be read from this photo.");
     return r.cards[0];
   },

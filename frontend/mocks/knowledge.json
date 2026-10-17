@@ -202,6 +202,86 @@
    "ata_chapter": "*"
   },
   {
+   "code": "fire_detection_fault",
+   "label": "Fire or overheat detection fault",
+   "ata_chapter": "*"
+  },
+  {
+   "code": "warning_indication_fault",
+   "label": "Warning message or indicator fault",
+   "ata_chapter": "*"
+  },
+  {
+   "code": "battery_power_fault",
+   "label": "Battery or power supply fault",
+   "ata_chapter": "*"
+  },
+  {
+   "code": "lighting_fault",
+   "label": "Light, bulb or sign fault",
+   "ata_chapter": "*"
+  },
+  {
+   "code": "door_latch_fault",
+   "label": "Door, latch or handle fault",
+   "ata_chapter": "*"
+  },
+  {
+   "code": "floor_panel_fault",
+   "label": "Floor panel or seat track defect",
+   "ata_chapter": "*"
+  },
+  {
+   "code": "skin_frame_fault",
+   "label": "Skin, frame or fitting defect",
+   "ata_chapter": "*"
+  },
+  {
+   "code": "window_fault",
+   "label": "Window or windshield fault",
+   "ata_chapter": "*"
+  },
+  {
+   "code": "valve_fault",
+   "label": "Valve fault",
+   "ata_chapter": "*"
+  },
+  {
+   "code": "sensor_switch_fault",
+   "label": "Sensor, switch or probe fault",
+   "ata_chapter": "*"
+  },
+  {
+   "code": "computer_controller_fault",
+   "label": "Computer, controller or radio fault",
+   "ata_chapter": "*"
+  },
+  {
+   "code": "actuator_pump_motor_fault",
+   "label": "Actuator, pump or motor fault",
+   "ata_chapter": "*"
+  },
+  {
+   "code": "wiring_relay_fault",
+   "label": "Wiring, connector or relay fault",
+   "ata_chapter": "*"
+  },
+  {
+   "code": "seal_bearing_fault",
+   "label": "Seal, bearing or hardware failed",
+   "ata_chapter": "*"
+  },
+  {
+   "code": "landing_gear_part_fault",
+   "label": "Landing gear, wheel or brake part fault",
+   "ata_chapter": "*"
+  },
+  {
+   "code": "engine_apu_fault",
+   "label": "Engine or APU malfunction",
+   "ata_chapter": "*"
+  },
+  {
    "code": "component_malfunction",
    "label": "Component malfunction",
    "ata_chapter": "*"
@@ -268,16 +348,67 @@
     "citation": "FAA-H-8083-30B, Chapter 10 (Inspection Concepts & Techniques), \"Annual/100-Hour Inspections\", page 10-10"
    }
   ],
-  "21|component_malfunction": [
+  "11|lighting_fault": [
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Turbocharger & Control System (Ch. 11: Light-Sport Aircraft Engines)",
+    "page": 441,
+    "page_label": "11-8",
+    "snippet": "If the lamp is blinking, this indicates a malfunction of the TCU or its periphery systems. Exceeding the admissible boost pressure activates and illuminates the red boost lamp continuously. The TCU registers the time of full throttle operation (boost pressure). Full throttle…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 11 (Light-Sport Aircraft Engines), \"Turbocharger & Control System\", page 11-8"
+   },
+   {
+    "doc": "FAA-H-8083-30B AMT Handbook – General",
+    "section": "Troubleshooting Open Faults in a Series Circuit (Ch. 12: Fundamentals of Electricity & Electronics)",
+    "page": 523,
+    "page_label": "12-82",
+    "snippet": "The circuit depicted in Figure 12-174 is designed to cause current to flow through a lamp, but because of the open resistor, the lamp will not light. To locate this open, a voltmeter or an ohmmeter should be used.",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_general_handbook",
+    "citation": "FAA-H-8083-30B, Chapter 12 (Fundamentals of Electricity & Electronics), \"Troubleshooting Open Faults in a Series Circuit\", page 12-82"
+   }
+  ],
+  "21|actuator_pump_motor_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Cabin Pressurization Troubleshooting (Ch. 16: Cabin Environmental Control Systems)",
+    "page": 945,
+    "page_label": "16-34",
+    "snippet": "It is important to check the aircraft manufacture’s service information when troubleshooting the pressurization system. A fault, such as failure to pressurize or failure to maintain pressurization, can have many different causes. Adherence to the steps in a manufacturer’s…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 16 (Cabin Environmental Control Systems), \"Cabin Pressurization Troubleshooting\", page 16-34"
+   },
    {
     "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
     "section": "Cabin Air Pressure Regulator & Outflow Valve (Ch. 16: Cabin Environmental Control Systems)",
     "page": 941,
     "page_label": "16-30",
-    "snippet": "Many air transport category aircraft have an outflow valve that operates electrically, using signals sent Differential control system Isobaric control system from a remotely located cabin air pressure controller that acts as the pressure regulator. The controller positions the…",
+    "snippet": "Controlling cabin pressurization is accomplished through regulating the amount of air that flows out of the cabin. A cabin outflow valve opens, closes, or modulates to establish the amount of air pressure maintained in the cabin. Some outflow valves contain the pressure…",
     "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
     "citation": "FAA-H-8083-31B, Chapter 16 (Cabin Environmental Control Systems), \"Cabin Air Pressure Regulator & Outflow Valve\", page 16-30"
+   }
+  ],
+  "21|component_malfunction": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Cabin Pressurization Troubleshooting (Ch. 16: Cabin Environmental Control Systems)",
+    "page": 945,
+    "page_label": "16-34",
+    "snippet": "While pressurization systems on different aircraft operate similarly with similar components, it cannot be assumed that they are the same. Even those systems constructed by a single manufacturer likely have differences when installed on different aircraft. It is important to…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 16 (Cabin Environmental Control Systems), \"Cabin Pressurization Troubleshooting\", page 16-34"
    },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Component Operation (Ch. 16: Cabin Environmental Control Systems)",
+    "page": 947,
+    "page_label": "16-36",
+    "snippet": "Pack Valve The pack valve is the valve that regulates bleed air from the pneumatic manifold into the air cycle air conditioning system. It is controlled with a switch from the air conditioning panel in the flight deck. Many pack valves are electrically controlled and…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 16 (Cabin Environmental Control Systems), \"Component Operation\", page 16-36"
+   }
+  ],
+  "21|computer_controller_fault": [
    {
     "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
     "section": "Cabin Pressure Controller (Ch. 16: Cabin Environmental Control Systems)",
@@ -286,6 +417,15 @@
     "snippet": "The cabin pressure controller is the device used to control the cabin air pressure. Older aircraft use strictly pneumatic means for controlling cabin pressure. Selections for the desired cabin altitude, rate of cabin altitude change, and barometric pressure setting are all made…",
     "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
     "citation": "FAA-H-8083-31B, Chapter 16 (Cabin Environmental Control Systems), \"Cabin Pressure Controller\", page 16-29"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Cabin Pressurization Troubleshooting (Ch. 16: Cabin Environmental Control Systems)",
+    "page": 945,
+    "page_label": "16-34",
+    "snippet": "It is important to check the aircraft manufacture’s service information when troubleshooting the pressurization system. A fault, such as failure to pressurize or failure to maintain pressurization, can have many different causes. Adherence to the steps in a manufacturer’s…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 16 (Cabin Environmental Control Systems), \"Cabin Pressurization Troubleshooting\", page 16-34"
    }
   ],
   "21|crack_found": [
@@ -328,6 +468,46 @@
     "citation": "FAA-H-8083-31B, Chapter 16 (Cabin Environmental Control Systems), \"Oxygen System Inspection & Maintenance\", page 16-20"
    }
   ],
+  "21|seal_bearing_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Water Separator (Ch. 16: Cabin Environmental Control Systems)",
+    "page": 950,
+    "page_label": "16-39",
+    "snippet": "Bleed air from the pneumatic manifold is compressed by the air cycle machine compressor before it flows to a single heat exchanger. Condensed water from the water separator is sprayed into the ram air at its entrance to the exchanger to draw additional heat",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 16 (Cabin Environmental Control Systems), \"Water Separator\", page 16-39"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Pressurization Issues (Ch. 16: Cabin Environmental Control Systems)",
+    "page": 934,
+    "page_label": "16-23",
+    "snippet": "Additionally, a pressurization system should circulate air from inside the cabin to the outside at a rate that quickly eliminates odors and to remove stale air. Cabin air must also be heated or cooled on pressurized aircraft. Typically, these functions are incorporated into the…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 16 (Cabin Environmental Control Systems), \"Pressurization Issues\", page 16-23"
+   }
+  ],
+  "21|sensor_switch_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "System Servicing (Ch. 16: Cabin Environmental Control Systems)",
+    "page": 965,
+    "page_label": "16-54",
+    "snippet": "Vapor cycle air conditioning systems can give many hours of reliable, maintenance-free service. Periodic visual inspections, tests, and refrigerant level and oil level checks may be all that is required for some time. Follow the manufacturer’s instructions for inspection…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 16 (Cabin Environmental Control Systems), \"System Servicing\", page 16-54"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Theory of Refrigeration (Ch. 16: Cabin Environmental Control Systems)",
+    "page": 955,
+    "page_label": "16-44",
+    "snippet": "",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 16 (Cabin Environmental Control Systems), \"Theory of Refrigeration\", page 16-44"
+   }
+  ],
   "21|smoke_or_odor": [
    {
     "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
@@ -346,6 +526,46 @@
     "snippet": "Pack Valve The pack valve is the valve that regulates bleed air from the pneumatic manifold into the air cycle air conditioning system. It is controlled with a switch from the air conditioning panel in the flight deck. Many pack valves are electrically controlled and…",
     "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
     "citation": "FAA-H-8083-31B, Chapter 16 (Cabin Environmental Control Systems), \"Component Operation\", page 16-36"
+   }
+  ],
+  "21|valve_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Cabin Pressurization Troubleshooting (Ch. 16: Cabin Environmental Control Systems)",
+    "page": 945,
+    "page_label": "16-34",
+    "snippet": "It is important to check the aircraft manufacture’s service information when troubleshooting the pressurization system. A fault, such as failure to pressurize or failure to maintain pressurization, can have many different causes. Adherence to the steps in a manufacturer’s…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 16 (Cabin Environmental Control Systems), \"Cabin Pressurization Troubleshooting\", page 16-34"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Cabin Air Pressure Safety Valve Operation (Ch. 16: Cabin Environmental Control Systems)",
+    "page": 943,
+    "page_label": "16-32",
+    "snippet": "A valve opens when the air conditioning packs fail or emergency pressurization is selected from the flight deck. It directs a mixture of bleed air and ram air into the cabin. This combines with fully closed outflow valves to preserve some pressurization in the aircraft.",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 16 (Cabin Environmental Control Systems), \"Cabin Air Pressure Safety Valve Operation\", page 16-32"
+   }
+  ],
+  "21|warning_indication_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Pressurization Gauges (Ch. 16: Cabin Environmental Control Systems)",
+    "page": 943,
+    "page_label": "16-32",
+    "snippet": "While all pressurization systems differ slightly, usually three flight deck indications, in concert with various warning lights and alerts, advise the crew of pressurization variables. They are the cabin altimeter, the cabin rate of climb or vertical speed indicator, and the…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 16 (Cabin Environmental Control Systems), \"Pressurization Gauges\", page 16-32"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Cabin Pressurization Troubleshooting (Ch. 16: Cabin Environmental Control Systems)",
+    "page": 945,
+    "page_label": "16-34",
+    "snippet": "It is important to check the aircraft manufacture’s service information when troubleshooting the pressurization system. A fault, such as failure to pressurize or failure to maintain pressurization, can have many different causes. Adherence to the steps in a manufacturer’s…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 16 (Cabin Environmental Control Systems), \"Cabin Pressurization Troubleshooting\", page 16-34"
    }
   ],
   "22|component_malfunction": [
@@ -390,15 +610,6 @@
   ],
   "23|component_malfunction": [
    {
-    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
-    "section": "Transceivers (Ch. 11: Communication & Navigation)",
-    "page": 639,
-    "page_label": "11-36",
-    "snippet": "A transceiver is a communication radio that transmits and receives. The same frequency is used for both. When transmitting, the receiver does not function. The push to talk (PTT) switch blocks the receiving circuitry and allows the transmitter circuitry to be active. In a…",
-    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
-    "citation": "FAA-H-8083-31B, Chapter 11 (Communication & Navigation), \"Transceivers\", page 11-36"
-   },
-   {
     "doc": "FAA AC 43.13-1B CHG 1",
     "section": "Par. 12-56 System Inspection (Ch. 12, Sec. 4: Pitot/static Systems)",
     "page": 726,
@@ -406,6 +617,35 @@
     "snippet": "Check these holes at regular intervals to preclude system malfunctioning. b. Check to ensure the water drains freely. If a problem is experienced with the pitot-static system drainage or freezing at altitude, and the tubing diameter is less than 3/8 inch, replace it with larger…",
     "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
     "citation": "AC 43.13-1B, Chapter 12, Section 4, par. 12-56 (System Inspection), page 12-21"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Types of Radio Waves (Ch. 11: Communication & Navigation)",
+    "page": 633,
+    "page_label": "11-30",
+    "snippet": "As a result, transoceanic aircraft often use HF radios for voice communication. The frequency range is between 2 to 25 MHz. These kinds of radio waves are known as sky waves. [Figure 11-78] Above HF transmissions, radio waves are known as space waves. They are only capable of…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 11 (Communication & Navigation), \"Types of Radio Waves\", page 11-30"
+   }
+  ],
+  "23|computer_controller_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Radar Beacon Transponder (Ch. 11: Communication & Navigation)",
+    "page": 656,
+    "page_label": "11-53",
+    "snippet": "The primary radar transmits directional UHF or SHF radio waves sequentially in all directions. When the radio waves encounter an aircraft, part of those waves reflect back to a ground antenna. Calculations are made in a receiver to determine the direction and distance of the…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 11 (Communication & Navigation), \"Radar Beacon Transponder\", page 11-53"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Inertial Navigation System (INS)/Inertial Reference System (IRS) (Ch. 11: Communication & Navigation)",
+    "page": 673,
+    "page_label": "11-70",
+    "snippet": "GPS also feeds data into the IRS computer to be used for error correction. Occasional service interruptions and altitude inaccuracies of the GPS system pose no problem for IRS/GPS. The IRS functions continuously and is completely self-contained within the IRS unit. Should the…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 11 (Communication & Navigation), \"Inertial Navigation System (INS)/Inertial Reference System (IRS)\", page 11-70"
    }
   ],
   "23|smoke_or_odor": [
@@ -426,6 +666,46 @@
     "snippet": "High performance aircraft with avionics equipment racks typically route air-conditioned air over the avionics to keep them cool. It is also common for non-air conditioned aircraft to use a blower or scooped ram air to cool avionics installations. When adding a unit to an…",
     "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
     "citation": "FAA-H-8083-31B, Chapter 11 (Communication & Navigation), \"Cooling & Moisture\", page 11-71"
+   }
+  ],
+  "24|actuator_pump_motor_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Relays & Solenoids (Electromagnetic Switches) (Ch. 9: Aircraft Electrical System)",
+    "page": 514,
+    "page_label": "9-98",
+    "snippet": "They are used to switch motors and other electrical equipment on and off and to protect them from overheating. A solenoid is a special type of relay that has a moving core. The electromagnet core in a relay is fixed. Solenoids are mostly used as mechanical actuators but can also…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 9 (Aircraft Electrical System), \"Relays & Solenoids (Electromagnetic Switches)\", page 9-98"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Landing Gear Circuit (Ch. 9: Aircraft Electrical System)",
+    "page": 469,
+    "page_label": "9-53",
+    "snippet": "When the motor runs, the hydraulic pump produces pressure and the gear begins to move. When all three gears reach the DOWN position, the gear-DOWN switches move to the DOWN position, the three green lights illuminate, and the gear motor turns off completing the gear-DOWN cycle.…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 9 (Aircraft Electrical System), \"Landing Gear Circuit\", page 9-53"
+   }
+  ],
+  "24|battery_power_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Battery Circuit (Ch. 9: Aircraft Electrical System)",
+    "page": 462,
+    "page_label": "9-46",
+    "snippet": "The aircraft battery and battery circuit is used to supply power for engine starting and to provide a secondary power supply in the event of an alternator (or generator) failure. A schematic of a typical battery circuit is shown in Figure 9-84. This diagram shows the…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 9 (Aircraft Electrical System), \"Battery Circuit\", page 9-46"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Large Multiengine Aircraft (Ch. 9: Aircraft Electrical System)",
+    "page": 475,
+    "page_label": "9-59",
+    "snippet": "However, if all AC generators are lost, the aircraft battery will continue to supply DC electrical power to operate vital systems.",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 9 (Aircraft Electrical System), \"Large Multiengine Aircraft\", page 9-59"
    }
   ],
   "24|component_malfunction": [
@@ -548,6 +828,26 @@
     "citation": "AC 43.13-1B, Chapter 11, Section 2, par. 11-21 (No Xious Fumes), page 11-10"
    }
   ],
+  "24|warning_indication_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Aircraft Lighting Systems (Ch. 9: Aircraft Electrical System)",
+    "page": 516,
+    "page_label": "9-100",
+    "snippet": "Certain special lights, such as indicator and warning lights, indicate the operation status of equipment.",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 9 (Aircraft Electrical System), \"Aircraft Lighting Systems\", page 9-100"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Landing Gear Circuit (Ch. 9: Aircraft Electrical System)",
+    "page": 469,
+    "page_label": "9-53",
+    "snippet": "Figure 9-96 shows the gear warning horn in the bottom left corner.",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 9 (Aircraft Electrical System), \"Landing Gear Circuit\", page 9-53"
+   }
+  ],
   "24|wiring_connector_fault": [
    {
     "doc": "FAA AC 43.13-1B CHG 1",
@@ -566,6 +866,26 @@
     "snippet": "They are useful where a number of wires are connected for power or signal distribution. When used as grounding modules, they save and reduce hardware installation on the aircraft. Standardized modules are available with wire end grommet seals for environmental applications and…",
     "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
     "citation": "AC 43.13-1B, Chapter 11, Section 17, par. 11-232 (Types of Connectors), page 11-106"
+   }
+  ],
+  "25|battery_power_fault": [
+   {
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 11-15 General (Ch. 11, Sec. 2: Storage Batteries)",
+    "page": 576,
+    "page_label": "11-5",
+    "snippet": "Aircraft batteries may be used for many functions, e.g., ground power, emergency power, improving DC bus stability, and fault-clearing. Most small private aircraft use lead-acid batteries. Most commercial and military aircraft use NiCad batteries. However, other types are…",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 11, Section 2, par. 11-15 (General), page 11-5"
+   },
+   {
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 11-34 S Tatic Electrical Power Converters (Ch. 11, Sec. 3: Inspection of Equipment Installation)",
+    "page": 584,
+    "page_label": "11-13",
+    "snippet": "Static power converters employ solid-state devices to convert the aircraft’s primary electrical source voltage to a different voltage or frequency for the operation of radio and electronic equipment. They contain no moving parts (with the exception of a cooling fan on some…",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 11, Section 3, par. 11-34 (S Tatic Electrical Power Converters), page 11-13"
    }
   ],
   "25|component_malfunction": [
@@ -819,6 +1139,26 @@
     "citation": "AC 43.13-1B, Chapter 9, Section 3, par. 9-48 (Inspection), page 9-48"
    }
   ],
+  "25|wiring_relay_fault": [
+   {
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 11-7 Insulation of Electrical Equipment (Ch. 11, Sec. 1: Inspection and Care of Electrical Systems)",
+    "page": 574,
+    "page_label": "11-3",
+    "snippet": "In some cases, electrical equipment is connected into a heavy current circuit, perhaps as a control device or relay. Such equipment is normally insulated from the mounting structure since grounding the frame of the equipment may result in a serious ground fault in the event of…",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 11, Section 1, par. 11-7 (Insulation of Electrical Equipment), page 11-3"
+   },
+   {
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 11-56 O Perating Conditions for Switches and Relays (Ch. 11, Sec. 4: Inspection of Circuit-protection Devices)",
+    "page": 594,
+    "page_label": "11-23",
+    "snippet": "Switches and relays should be compared to their specification rating to ensure that all contacts are made properly under all conditions of operation, including vibration equivalent to that in the area of the aircraft in which the switch or relay is to be installed.",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 11, Section 4, par. 11-56 (O Perating Conditions for Switches and Relays), page 11-23"
+   }
+  ],
   "26|component_malfunction": [
    {
     "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
@@ -830,13 +1170,33 @@
     "citation": "FAA-H-8083-31B, Chapter 17 (Fire Protection Systems), \"Fire Detection System Troubleshooting\", page 17-19"
    },
    {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Fire Extinguisher Containers (Ch. 9: Engine Fire Protection Systems)",
+    "page": 363,
+    "page_label": "9-14",
+    "snippet": "Each bottle has these following components: • A safety relief and fill port, • A handle for removal and installation, • A pressure switch, • Two discharge assemblies, • Four mounting lugs. [Figures 9-23, 9-24, 9-25] The bottles contain Halon fire extinguishing agent pressurized…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 9 (Engine Fire Protection Systems), \"Fire Extinguisher Containers\", page 9-14"
+   }
+  ],
+  "26|computer_controller_fault": [
+   {
     "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
-    "section": "Fire Detection System Maintenance (Ch. 17: Fire Protection Systems)",
-    "page": 989,
-    "page_label": "17-17",
-    "snippet": "General maintenance of a fire detection system typically includes the inspection and servicing of damaged sections, containment of loose material that could short detector terminals, correcting connection joints and shielding, and replacement of damaged sensing elements. An…",
+    "section": "Fire Detection System Troubleshooting (Ch. 17: Fire Protection Systems)",
+    "page": 990,
+    "page_label": "17-18",
+    "snippet": "The following troubleshooting procedures represent the most common difficulties encountered in engine fire detection systems: 1. Intermittent alarms are most often caused by an intermittent short in the detector system wiring. Such shorts may be caused by a loose wire that…",
     "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
-    "citation": "FAA-H-8083-31B, Chapter 17 (Fire Protection Systems), \"Fire Detection System Maintenance\", page 17-17"
+    "citation": "FAA-H-8083-31B, Chapter 17 (Fire Protection Systems), \"Fire Detection System Troubleshooting\", page 17-18"
+   },
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Fire Bottle Discharge (Ch. 9: Engine Fire Protection Systems)",
+    "page": 367,
+    "page_label": "9-18",
+    "snippet": "[Figure 9-29] Cargo fire/engine control panel (P5) AIMS cabinet (2) P40 service and APU shutdown panelP310 standby power management panel",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 9 (Engine Fire Protection Systems), \"Fire Bottle Discharge\", page 9-18"
    }
   ],
   "26|false_warning": [
@@ -879,6 +1239,26 @@
     "citation": "FAA-H-8083-31B, Chapter 17 (Fire Protection Systems), \"Lavatory Fire Extinguisher System\", page 17-17"
    }
   ],
+  "26|fire_detection_fault": [
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Fire Detection System Troubleshooting (Ch. 9: Engine Fire Protection Systems)",
+    "page": 360,
+    "page_label": "9-11",
+    "snippet": "The following troubleshooting procedures represent the most common difficulties encountered in engine fire detection systems: 1. Intermittent alarms are most often caused by an intermittent short in the detector system wiring. Such shorts may be caused by a loose wire that…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 9 (Engine Fire Protection Systems), \"Fire Detection System Troubleshooting\", page 9-11"
+   },
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Continuous-Loop Detector Systems (Ch. 9: Engine Fire Protection Systems)",
+    "page": 352,
+    "page_label": "9-3",
+    "snippet": "A continuous-loop detector, or sensing system, permits more complete coverage of a fire hazard area than any of the spot-type temperature detectors. Continuous-loop systems are versions of the thermal switch system. They are overheat systems, heat-sensitive units that complete…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 9 (Engine Fire Protection Systems), \"Continuous-Loop Detector Systems\", page 9-3"
+   }
+  ],
   "26|manual_or_procedure_gap": [
    {
     "doc": "FAA-H-8083-30B AMT Handbook – General",
@@ -919,24 +1299,44 @@
     "citation": "AC 43.13-1B, Chapter 4, Section 6, par. 4-112 (Fire and Explosion Safety), page 4-94"
    }
   ],
+  "26|warning_indication_fault": [
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Fire Detection (Ch. 9: Engine Fire Protection Systems)",
+    "page": 362,
+    "page_label": "9-13",
+    "snippet": "If an engine fire occurs, the fire detection card sends a signal to the AIMS and to the warning electronics unit, and a warning message illuminates. The following indications occur in the flight deck: • The master warning lights come on. • The fire warning aural operates. • An…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 9 (Engine Fire Protection Systems), \"Fire Detection\", page 9-13"
+   },
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Continuous Fault Monitoring (Ch. 9: Engine Fire Protection Systems)",
+    "page": 362,
+    "page_label": "9-13",
+    "snippet": "Master caution light (2) Master warning light (2) Speaker (2) Loop 2 Fire detection",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 9 (Engine Fire Protection Systems), \"Continuous Fault Monitoring\", page 9-13"
+   }
+  ],
   "27|component_malfunction": [
+   {
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 7-149 Cable System Inspection (Ch. 7, Sec. 8: Inspection and Repair of Control Cables and Turnbuckles)",
+    "page": 398,
+    "page_label": "7-43",
+    "snippet": "Various cable system malfunctions may be detected by analyzing pulley conditions. These include such discrepancies as too much tension, misalignment, pulley bearing problems, and size mismatches between cables and pulleys. Examples of these condition are shown in Figure 7-20.…",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 7, Section 8, par. 7-149 (Cable System Inspection), page 7-43"
+   },
    {
     "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
     "section": "Trim Controls (Ch. 2: Aerodynamics, Aircraft Assembly, & Rigging)",
     "page": 82,
     "page_label": "2-11",
-    "snippet": "Included in the trim controls are the trim tabs, servo tabs, balance tabs, and spring tabs. Trim tabs are small airfoils recessed into the trailing edges of the primary control surfaces. [Figure 2-12] Trim tabs can be used to correct any tendency of the aircraft to move toward…",
+    "snippet": "Their purpose is to enable the pilot to trim out any unbalanced condition which may exist during flight, without exerting any pressure on the primary controls. Servo tabs, sometimes referred to as flight tabs, are used primarily on the large main control surfaces. They aid in…",
     "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
     "citation": "FAA-H-8083-31B, Chapter 2 (Aerodynamics, Aircraft Assembly, & Rigging), \"Trim Controls\", page 2-11"
-   },
-   {
-    "doc": "FAA AC 43.13-1B CHG 1",
-    "section": "Par. 7-104 Spring Pins (Ch. 7, Sec. 6: Pins)",
-    "page": 372,
-    "page_label": "7-17",
-    "snippet": "They should not be used in an aircraft component or system where the loss or failure of the pin might endanger safe flight. b. The joints where spring pins are used for fastening shall be designed like riveted and bolted joints. Spring pins should not be mixed with other…",
-    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
-    "citation": "AC 43.13-1B, Chapter 7, Section 6, par. 7-104 (Spring Pins), page 7-17"
    }
   ],
   "27|corrosion": [
@@ -1019,16 +1419,67 @@
     "citation": "FAA-H-8083-31B, Chapter 2 (Aerodynamics, Aircraft Assembly, & Rigging), \"Stability Augmentation Systems (SAS)\", page 2-30"
    }
   ],
-  "28|component_malfunction": [
+  "27|seal_bearing_fault": [
+   {
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 7-149 Cable System Inspection (Ch. 7, Sec. 8: Inspection and Repair of Control Cables and Turnbuckles)",
+    "page": 398,
+    "page_label": "7-43",
+    "snippet": "Seal guards should be positioned to prevent jamming of a pulley in case pressure seal fails and pieces slide along the cable.",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 7, Section 8, par. 7-149 (Cable System Inspection), page 7-43"
+   },
+   {
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 7-152 Cable Maintenance (Ch. 7, Sec. 8: Inspection and Repair of Control Cables and Turnbuckles)",
+    "page": 400,
+    "page_label": "7-45",
+    "snippet": "Frequent inspections and preservation measures, such as rust-prevention treatments for bare carbon steel cable areas, will help to extend cable service life. Where cables pass through fair-leads, pressure seals, or over pulleys, remove accumulated heavy coatings of…",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 7, Section 8, par. 7-152 (Cable Maintenance), page 7-45"
+   }
+  ],
+  "27|warning_indication_fault": [
    {
     "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
-    "section": "Fuel Flow Meters (Ch. 14: Aircraft Fuel Systems)",
-    "page": 865,
-    "page_label": "14-42",
-    "snippet": "The turbine in this unit is in line with the fuel flow but is fail-safe to allow adequate fuel flow without interruption should the unit malfunction. [Figure 14-80] Another fuel flow sensor used primarily on light aircraft also detects the spinning velocity of a turbine in the…",
+    "section": "Hydromechanical Control (Ch. 2: Aerodynamics, Aircraft Assembly, & Rigging)",
+    "page": 84,
+    "page_label": "2-13",
+    "snippet": "Conventional cable or push-pull tube systems link the flight deck controls with the hydraulic system. With the system activated, the pilot’s movement of a control causes the mechanical link to open servo valves, thereby directing hydraulic fluid to actuators, which convert…",
     "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
-    "citation": "FAA-H-8083-31B, Chapter 14 (Aircraft Fuel Systems), \"Fuel Flow Meters\", page 14-42"
+    "citation": "FAA-H-8083-31B, Chapter 2 (Aerodynamics, Aircraft Assembly, & Rigging), \"Hydromechanical Control\", page 2-13"
    },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Transmission System (Ch. 2: Aerodynamics, Aircraft Assembly, & Rigging)",
+    "page": 105,
+    "page_label": "2-34",
+    "snippet": "The transmission system transfers power from the engine to the main rotor, tail rotor, and other accessories during normal flight conditions. The main components of the transmission system are the main rotor transmission, tail rotor drive system, clutch, and freewheeling unit.…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 2 (Aerodynamics, Aircraft Assembly, & Rigging), \"Transmission System\", page 2-34"
+   }
+  ],
+  "28|actuator_pump_motor_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Centrifugal Boost Pumps (Ch. 14: Aircraft Fuel Systems)",
+    "page": 851,
+    "page_label": "14-28",
+    "snippet": "It is electric motor driven and most frequently is submerged in the fuel tank or located just outside of the bottom of the tank with the inlet of the pump extending into the tank. If the pump is mounted outside the tank, a pump removal valve is typically installed so the pump…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 14 (Aircraft Fuel Systems), \"Centrifugal Boost Pumps\", page 14-28"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Vane-Type Fuel Pumps (Ch. 14: Aircraft Fuel Systems)",
+    "page": 854,
+    "page_label": "14-31",
+    "snippet": "Vane-type fuel pumps (engine-driven fuel pumps) are the most common types of fuel pumps found on reciprocating-engine aircraft. They are used as both engine-driven primary fuel pumps and as auxiliary or boost pumps. Regardless, the vane-type pump is a constant displacement pump…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 14 (Aircraft Fuel Systems), \"Vane-Type Fuel Pumps\", page 14-31"
+   }
+  ],
+  "28|component_malfunction": [
    {
     "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
     "section": "Troubleshooting the Fuel System (Ch. 14: Aircraft Fuel Systems)",
@@ -1037,6 +1488,35 @@
     "snippet": "Knowledge of the fuel system and how it operates is essential when troubleshooting. Manufacturers produce diagrams and descriptions in their maintenance manuals to aid the technician. Study these for insight. Many manuals have troubleshooting charts or flow diagrams that can be…",
     "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
     "citation": "FAA-H-8083-31B, Chapter 14 (Aircraft Fuel Systems), \"Troubleshooting the Fuel System\", page 14-45"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Location of Leaks & Defects (Ch. 14: Aircraft Fuel Systems)",
+    "page": 868,
+    "page_label": "14-45",
+    "snippet": "Close visual inspection is required whenever a leak or defect is suspected in a fuel system. Leaks can often be traced to the connection point of two fuel lines or a fuel line and a component. Occasionally, the component itself may have an internal leak. Fuel leaks also occur in…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 14 (Aircraft Fuel Systems), \"Location of Leaks & Defects\", page 14-45"
+   }
+  ],
+  "28|computer_controller_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Fuel Flow Meters (Ch. 14: Aircraft Fuel Systems)",
+    "page": 865,
+    "page_label": "14-42",
+    "snippet": "Some of these fuel computers, as they are called, integrate global positioning satellite (GPS) location information. [Figure 14-79] Aircraft with fully digital flight decks process fuel flow data in computers and display a wide array of fuel flow related information on demand.…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 14 (Aircraft Fuel Systems), \"Fuel Flow Meters\", page 14-42"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Fuel Quantity Indicating Systems (Ch. 14: Aircraft Fuel Systems)",
+    "page": 862,
+    "page_label": "14-39",
+    "snippet": "Capacitance-type fuel quantity system test units are available for troubleshooting and ensuring proper functioning and calibration of the indicating system components. Many aircraft with capacitance-type fuel indicating systems also use a mechanical indication system to…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 14 (Aircraft Fuel Systems), \"Fuel Quantity Indicating Systems\", page 14-39"
    }
   ],
   "28|false_warning": [
@@ -1079,6 +1559,66 @@
     "citation": "FAA-H-8083-31B, Chapter 14 (Aircraft Fuel Systems), \"Fuel Pressure Gauges\", page 14-43"
    }
   ],
+  "28|sensor_switch_fault": [
+   {
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 8-2 Special Inspection (Ch. 8, Sec. 1: Engines)",
+    "page": 439,
+    "page_label": "8-1",
+    "snippet": "If an engine is running rough, the cause may be a bad ignition lead, a spark plug not firing, a partially clogged fuel injector, or a bad magneto. The dead cylinder will be colder than the surrounding cylinders and can be quickly determined by using the recommended cold cylinder…",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 8, Section 1, par. 8-2 (Special Inspection), page 8-1"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Fuel Pressure Gauges (Ch. 14: Aircraft Fuel Systems)",
+    "page": 866,
+    "page_label": "14-43",
+    "snippet": "Monitoring fuel pressure can give the pilot early warning of a fuel system related malfunction. Verification that the fuel system is delivering fuel to the fuel metering device can be critical. Simple light reciprocating-engine aircraft typically utilize a direct reading Bourdon…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 14 (Aircraft Fuel Systems), \"Fuel Pressure Gauges\", page 14-43"
+   }
+  ],
+  "28|valve_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Gravity Feed Systems (Ch. 14: Aircraft Fuel Systems)",
+    "page": 832,
+    "page_label": "14-9",
+    "snippet": "Downstream of the shutoff valve or selector valve, the fuel passes through a main system strainer. This often has a drain function to remove sediment and water. From there, it flows to the carburetor or to the primer pump for engine starting. Having no fuel pump, the gravity…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 14 (Aircraft Fuel Systems), \"Gravity Feed Systems\", page 14-9"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Fuel Valves (Ch. 14: Aircraft Fuel Systems)",
+    "page": 847,
+    "page_label": "14-24",
+    "snippet": "Most simply open and close and are known by different names related to their location and function in the fuel system (e.g., shutoff valve, transfer valve, crossfeed valve). Fuel valves can be manually operated, solenoid operated, or operated by electric motor. A feature of all…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 14 (Aircraft Fuel Systems), \"Fuel Valves\", page 14-24"
+   }
+  ],
+  "28|warning_indication_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Pressure Warning Signal (Ch. 14: Aircraft Fuel Systems)",
+    "page": 867,
+    "page_label": "14-44",
+    "snippet": "Fuel pressure is an important parameter that merits the use of a warning signal when it falls outside of the normal operating range. Low fuel pressure warning lights can be illuminated through the use of simple pressure sensing switches. [Figure 14-86] The contacts of the switch…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 14 (Aircraft Fuel Systems), \"Pressure Warning Signal\", page 14-44"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Fuel System Indicators (Ch. 14: Aircraft Fuel Systems)",
+    "page": 859,
+    "page_label": "14-36",
+    "snippet": "Aircraft fuel systems utilize various indicators. All systems are required to have some sort of fuel quantity indicator. Fuel flow, pressure, and temperature are monitored on many aircraft. Valve position indicators and various warning lights and annunciations are also used.",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 14 (Aircraft Fuel Systems), \"Fuel System Indicators\", page 14-36"
+   }
+  ],
   "29|component_malfunction": [
    {
     "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
@@ -1097,6 +1637,26 @@
     "snippet": "Maintenance of the pneumatic power system consists of servicing, troubleshooting, removal, and installation of components, and operational testing. The air compressor’s lubricating oil level should be checked daily in accordance with the applicable manufacturer’s instructions.…",
     "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
     "citation": "FAA-H-8083-31B, Chapter 12 (Hydraulic & Pneumatic Power Systems), \"Pneumatic Power System Maintenance\", page 12-51"
+   }
+  ],
+  "29|computer_controller_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Power Transfer Unit (PTU) (Ch. 12: Hydraulic & Pneumatic Power Systems)",
+    "page": 718,
+    "page_label": "12-39",
+    "snippet": "Nose Wheel Steering System Consists of a digital electronic controller, hydro-mecharical power unit, mounting collar, tiller, and rudder pedal positon sensors. The hydro-mecharical power unit (an integrated assembly) components. PTU uses system A pressure to drive a hydraulic…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 12 (Hydraulic & Pneumatic Power Systems), \"Power Transfer Unit (PTU)\", page 12-39"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Hydraulic Power Pack System (Ch. 12: Hydraulic & Pneumatic Power Systems)",
+    "page": 686,
+    "page_label": "12-7",
+    "snippet": "A hydraulic power pack is a small unit that consists of an electric pump, filters, reservoir, valves, and pressure relief valve. [Figure 12-5] The advantage of the power pack is that there is no need for a centralized hydraulic power supply system and long stretches of hydraulic…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 12 (Hydraulic & Pneumatic Power Systems), \"Hydraulic Power Pack System\", page 12-7"
    }
   ],
   "29|fluid_leak": [
@@ -1179,6 +1739,46 @@
     "citation": "FAA-H-8083-31B, Chapter 12 (Hydraulic & Pneumatic Power Systems), \"High-Pressure Systems\", page 12-47"
    }
   ],
+  "29|sensor_switch_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Hydraulic Power Pack System (Ch. 12: Hydraulic & Pneumatic Power Systems)",
+    "page": 686,
+    "page_label": "12-7",
+    "snippet": "A hydraulic power pack is a small unit that consists of an electric pump, filters, reservoir, valves, and pressure relief valve. [Figure 12-5] The advantage of the power pack is that there is no need for a centralized hydraulic power supply system and long stretches of hydraulic…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 12 (Hydraulic & Pneumatic Power Systems), \"Hydraulic Power Pack System\", page 12-7"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Left & Right System Description (Ch. 12: Hydraulic & Pneumatic Power Systems)",
+    "page": 722,
+    "page_label": "12-43",
+    "snippet": "Indication The hydraulic system sensors send pressure, temperature, and quantity signals to the flight deck. A reservoir quantity transmitter and temperature transducer are installed on each of the reservoirs, and a hydraulic reservoir pressure switch is located on the pneumatic…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 12 (Hydraulic & Pneumatic Power Systems), \"Left & Right System Description\", page 12-43"
+   }
+  ],
+  "29|wiring_relay_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Center Hydraulic System (Ch. 12: Hydraulic & Pneumatic Power Systems)",
+    "page": 724,
+    "page_label": "12-45",
+    "snippet": "This causes a loss of these systems, but the alternate brake system continues to get hydraulic power from ACMP C1.",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 12 (Hydraulic & Pneumatic Power Systems), \"Center Hydraulic System\", page 12-45"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Hydraulic System Flushing (Ch. 12: Hydraulic & Pneumatic Power Systems)",
+    "page": 684,
+    "page_label": "12-5",
+    "snippet": "When inspection of hydraulic filters or hydraulic fluid evaluation indicates that the fluid is contaminated, flushing the system may be necessary. This must be done according to the manufacturer’s instructions; however, a typical procedure for flushing is as follows: 1. Connect…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 12 (Hydraulic & Pneumatic Power Systems), \"Hydraulic System Flushing\", page 12-5"
+   }
+  ],
   "30|component_malfunction": [
    {
     "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
@@ -1191,15 +1791,115 @@
    },
    {
     "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Inspection (Ch. 15: Ice & Rain Protection)",
+    "page": 901,
+    "page_label": "15-21",
+    "snippet": "During each preflight and scheduled inspection, check the deicer boots for cuts, tears, deterioration, punctures, and security; during periodic inspections, go a little further and check deicer components and lines for cracks. If weather cracking of rubber is noted, apply a…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 15 (Ice & Rain Protection), \"Inspection\", page 15-21"
+   }
+  ],
+  "30|computer_controller_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Leading Edge Slat Anti-Ice System (Ch. 15: Ice & Rain Protection)",
+    "page": 888,
+    "page_label": "15-8",
+    "snippet": "Other faults cause central maintenance computer system (CMCS) maintenance messages. The BITE in the WAI ACIPS computer card also performs automatic power-up and periodic tests. Faults found during these tests that affect dispatch cause status messages. Other faults cause CMCS…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 15 (Ice & Rain Protection), \"Leading Edge Slat Anti-Ice System\", page 15-8"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
     "section": "Thermal Electric Anti-Icing (Ch. 15: Ice & Rain Protection)",
     "page": 889,
     "page_label": "15-9",
-    "snippet": "This type of anti-ice is typically limited to small components due to high amperage draw. Effective thermal electric anti-ice is used on most air data probes, such as pitot tubes, static air ports, TAT and AOA probes, ice detectors, and engine P2/T2 sensors. Water lines, waste…",
+    "snippet": "Advanced aircraft may have more complex circuitry in which control is by computer and flight condition of the aircraft is considered before thermal electric heaters are activated automatically. Figure 15-15 shows such a circuit for a pitot tube. The primary flight computer (PFC)…",
     "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
     "citation": "FAA-H-8083-31B, Chapter 15 (Ice & Rain Protection), \"Thermal Electric Anti-Icing\", page 15-9"
    }
   ],
+  "30|seal_bearing_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Wing Anti-Ice (WAI) System (Ch. 15: Ice & Rain Protection)",
+    "page": 885,
+    "page_label": "15-5",
+    "snippet": "When installing a section of duct, make certain that the seal bears evenly against and is compressed by the adjacent joint’s flange. When specified, the ducts should be pressure tested at the pressure recommended by the manufacturer of the aircraft concerned. Leak checks are…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 15 (Ice & Rain Protection), \"Wing Anti-Ice (WAI) System\", page 15-5"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Inspection (Ch. 15: Ice & Rain Protection)",
+    "page": 901,
+    "page_label": "15-21",
+    "snippet": "During each preflight and scheduled inspection, check the deicer boots for cuts, tears, deterioration, punctures, and security; during periodic inspections, go a little further and check deicer components and lines for cracks. If weather cracking of rubber is noted, apply a…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 15 (Ice & Rain Protection), \"Inspection\", page 15-21"
+   }
+  ],
+  "30|valve_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Leading Edge Slat Anti-Ice System (Ch. 15: Ice & Rain Protection)",
+    "page": 888,
+    "page_label": "15-8",
+    "snippet": "EAI (2) (2) WAI selector (P5) Ice detector (2) < 200 °F (93 °C) (10 °C) Engine anti-ice: Wing anti-ice: • V ALVE—WAI valve open, closed, or regulating. • AIR PRESS—pressure downstream of the WAI valves in PSIG. • AIR FLOW—air flow through the WAI valves in pounds per minute. WAI…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 15 (Ice & Rain Protection), \"Leading Edge Slat Anti-Ice System\", page 15-8"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Adjustments (Ch. 15: Ice & Rain Protection)",
+    "page": 900,
+    "page_label": "15-20",
+    "snippet": "A pressure relief valve acts as a safety device to relieve excess pressure in the event of regulator valve failure. To adjust this valve, operate the aircraft engines and adjust a screw on the valve until the deicing pressure gauge indicates the specified pressure at which the…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 15 (Ice & Rain Protection), \"Adjustments\", page 15-20"
+   }
+  ],
+  "30|wiring_relay_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Thermal Electric Anti-Icing (Ch. 15: Ice & Rain Protection)",
+    "page": 889,
+    "page_label": "15-9",
+    "snippet": "Figure 15-15 shows such a circuit for a pitot tube. The primary flight computer (PFC) supplies signals for the air data card (ADC) to energize ground and air heat control relays to activate probe heat. Information concerning speed of the aircraft, whether it is in the air or on…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 15 (Ice & Rain Protection), \"Thermal Electric Anti-Icing\", page 15-9"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Electric (Ch. 15: Ice & Rain Protection)",
+    "page": 908,
+    "page_label": "15-28",
+    "snippet": "The laminated construction facilitates the inclusion of electric heating elements into the glass layers, which are used to keep the windshield clear of ice, frost, and fog. The elements can be in the form of resistance wires or a transparent conductive material may be used as…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 15 (Ice & Rain Protection), \"Electric\", page 15-28"
+   }
+  ],
   "31|component_malfunction": [
+   {
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 12-23 Inspection of ELT (Ch. 12, Sec. 2: Ground Operational Checks for Avionics Equipment (Electrical))",
+    "page": 714,
+    "page_label": "12-9",
+    "snippet": "Record the Inspection. Record the inspection in the aircraft maintenance records according to 14 CFR part 43, § 43.9. We suggest the following: I inspected the Make/Model ELT system in this aircraft according to applicable Aircraft and ELT manufacturer’s instructions and…",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 12, Section 2, par. 12-23 (Inspection of ELT), page 12-9"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Engine Indicating & Crew Alerting System (EICAS) (Ch. 10: Aircraft Systems)",
+    "page": 589,
+    "page_label": "10-70",
+    "snippet": "An engine indicating and crew alerting system (EICAS) performs many of the same functions as an ECAM system. The objective is still to monitor the aircraft systems for the pilot. All EICASs display engine, as well as airframe, parameters. SENRO CTL ESS BUS EMER BUS BAT 1 BAT 2…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 10 (Aircraft Systems), \"Engine Indicating & Crew Alerting System (EICAS)\", page 10-70"
+   }
+  ],
+  "31|engine_apu_fault": [
    {
     "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
     "section": "Engine Indicating & Crew Alerting System (EICAS) (Ch. 10: Aircraft Systems)",
@@ -1211,12 +1911,52 @@
    },
    {
     "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Classifying Instruments (Ch. 10: Aircraft Systems)",
+    "page": 521,
+    "page_label": "10-2",
+    "snippet": "There are three basic kinds of instruments classified by the job they perform: flight instruments, engine instruments, and navigation instruments. There are also miscellaneous gauges and indicators that provide information that do not fall into these classifications, especially…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 10 (Aircraft Systems), \"Classifying Instruments\", page 10-2"
+   }
+  ],
+  "31|sensor_switch_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Total Air Temperature Measurement (Ch. 10: Aircraft Systems)",
+    "page": 560,
+    "page_label": "10-41",
+    "snippet": "[Figure 10-76] TAT sensor/probe design is complicated by the potential of ice forming during icing conditions. Left unheated, a probe may cease to function properly. The inclusion of a heating element threatens accurate data collection. Heating the probe must not affect the…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 10 (Aircraft Systems), \"Total Air Temperature Measurement\", page 10-41"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Stall Warning & Angle of Attack (AOA) Indicators (Ch. 10: Aircraft Systems)",
+    "page": 553,
+    "page_label": "10-34",
+    "snippet": "Additionally, AOA sensors of the type described are subject to position error since airflow around the alpha vane and slotted probe changes somewhat with airspeed and aircraft attitude. The errors are small but can be corrected in the ADC. To incorporate a warning of an…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 10 (Aircraft Systems), \"Stall Warning & Angle of Attack (AOA) Indicators\", page 10-34"
+   }
+  ],
+  "31|warning_indication_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
     "section": "Annunciator Panels (Ch. 10: Aircraft Systems)",
     "page": 592,
     "page_label": "10-73",
     "snippet": "These analog aircraft warning systems may look different in various aircraft and depend on manufacturer Environmental control systems and maintenance message formats Configuration and maintenance control/display panel Electrical and hydraulic systems format Performance and…",
     "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
     "citation": "FAA-H-8083-31B, Chapter 10 (Aircraft Systems), \"Annunciator Panels\", page 10-73"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Engine Indicating & Crew Alerting System (EICAS) (Ch. 10: Aircraft Systems)",
+    "page": 589,
+    "page_label": "10-70",
+    "snippet": "An engine indicating and crew alerting system (EICAS) performs many of the same functions as an ECAM system. The objective is still to monitor the aircraft systems for the pilot. All EICASs display engine, as well as airframe, parameters. SENRO CTL ESS BUS EMER BUS BAT 1 BAT 2…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 10 (Aircraft Systems), \"Engine Indicating & Crew Alerting System (EICAS)\", page 10-70"
    }
   ],
   "32|brake_component_crack": [
@@ -1279,26 +2019,6 @@
     "citation": "FAA-H-8083-31B, Chapter 13 (Aircraft Landing Gear Systems), \"Overheating\", page 13-72"
    }
   ],
-  "32|component_malfunction": [
-   {
-    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
-    "section": "Bleeding Power Brake Systems (Ch. 13: Aircraft Landing Gear Systems)",
-    "page": 800,
-    "page_label": "13-69",
-    "snippet": "Inspection for Leaks Aircraft brake systems should maintain all fluid inside lines and components and should not leak. Any evidence of a leak must be investigated for its cause. It is possible that the leak is a precursor to more significant damage that can be repaired, thus…",
-    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
-    "citation": "FAA-H-8083-31B, Chapter 13 (Aircraft Landing Gear Systems), \"Bleeding Power Brake Systems\", page 13-69"
-   },
-   {
-    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
-    "section": "Anti-Skid System Maintenance (Ch. 13: Aircraft Landing Gear Systems)",
-    "page": 797,
-    "page_label": "13-66",
-    "snippet": "Troubleshooting anti-skid system faults is either performed via test circuitry or can be accomplished through isolation of the fault to one of the three main operating components of the system. Anti-skid components are normally not repaired in the field. They are sent to the…",
-    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
-    "citation": "FAA-H-8083-31B, Chapter 13 (Aircraft Landing Gear Systems), \"Anti-Skid System Maintenance\", page 13-66"
-   }
-  ],
   "32|fluid_leak": [
    {
     "doc": "FAA AC 43.13-1B CHG 1",
@@ -1359,6 +2079,46 @@
     "citation": "FAA-H-8083-31B, Chapter 13 (Aircraft Landing Gear Systems), \"Safety Switch\", page 13-22"
    }
   ],
+  "32|landing_gear_part_fault": [
+   {
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 9-7 Landing-gear Components (Ch. 9, Sec. 1: Inspection and Maintenance of Landing Gear)",
+    "page": 495,
+    "page_label": "9-6",
+    "snippet": "When inspecting wheel bearings for condition, replace damaged or excessively worn parts. Maintain bearings and races as matched sets. Pack bearings only with the grease type called for in the manufacturer’s maintenance manual prior to their installation. Avoid preloading the…",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 9, Section 1, par. 9-7 (Landing-gear Components), page 9-6"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Overheating (Ch. 13: Aircraft Landing Gear Systems)",
+    "page": 803,
+    "page_label": "13-72",
+    "snippet": "Excessive heat can damage and distort brake parts weakening them to the point of failure. Protocol for brake usage is designed to prevent overheating. When a brake shows signs of overheating, it must be removed from the aircraft and inspected for damage. When an aircraft is…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 13 (Aircraft Landing Gear Systems), \"Overheating\", page 13-72"
+   }
+  ],
+  "32|skin_frame_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Bleeding Power Brake Systems (Ch. 13: Aircraft Landing Gear Systems)",
+    "page": 800,
+    "page_label": "13-69",
+    "snippet": "Proper Bolt Torque The stress experience by the landing gear and brake system requires that all bolts are properly torqued. Bolts used to attach the brakes to the strut typically have the required torque specified in the manufacturer’s maintenance manual. Check for torque…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 13 (Aircraft Landing Gear Systems), \"Bleeding Power Brake Systems\", page 13-69"
+   },
+   {
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 9-30 Hydraulic Lines and Fittings (Ch. 9, Sec. 2: Hydraulic Systems)",
+    "page": 511,
+    "page_label": "9-22",
+    "snippet": "Carefully inspect all lines and fittings at regular intervals to ensure airworthiness. Investigate any evidence of fluid loss or leaks. Check metal lines for leaks, loose anchorage, scratches, kinks, or other damage. Inspect fittings and connections for leakage, looseness…",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 9, Section 2, par. 9-30 (Hydraulic Lines and Fittings), page 9-22"
+   }
+  ],
   "32|smoke_or_odor": [
    {
     "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
@@ -1399,16 +2159,27 @@
     "citation": "FAA-H-8083-31B, Chapter 13 (Aircraft Landing Gear Systems), \"Tread Condition\", page 13-81"
    }
   ],
-  "33|component_malfunction": [
+  "32|valve_fault": [
    {
     "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
-    "section": "Position Lights (Ch. 9: Aircraft Electrical System)",
-    "page": 516,
-    "page_label": "9-100",
-    "snippet": "Traditional position lights use incandescent light bulbs. LED lights have been introduced on modern aircraft because of their good visibility, high reliability, and low power consumption.",
+    "section": "Anti-Skid System Maintenance (Ch. 13: Aircraft Landing Gear Systems)",
+    "page": 797,
+    "page_label": "13-66",
+    "snippet": "Troubleshooting anti-skid system faults is either performed via test circuitry or can be accomplished through isolation of the fault to one of the three main operating components of the system. Anti-skid components are normally not repaired in the field. They are sent to the…",
     "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
-    "citation": "FAA-H-8083-31B, Chapter 9 (Aircraft Electrical System), \"Position Lights\", page 9-100"
+    "citation": "FAA-H-8083-31B, Chapter 13 (Aircraft Landing Gear Systems), \"Anti-Skid System Maintenance\", page 13-66"
    },
+   {
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 9-29 Hydraulic System Maintenance Practices (Ch. 9, Sec. 2: Hydraulic Systems)",
+    "page": 510,
+    "page_label": "9-21",
+    "snippet": "Troubleshooting. Hydraulic system troubleshooting varies according to the complexity of the system and the components in the system. It is, therefore, important that the technician refer to the troubleshooting information furnished by the manufacturer. (1) Lack of pressure in a…",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 9, Section 2, par. 9-29 (Hydraulic System Maintenance Practices), page 9-21"
+   }
+  ],
+  "33|battery_power_fault": [
    {
     "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
     "section": "AC Supply (Ch. 9: Aircraft Electrical System)",
@@ -1417,6 +2188,35 @@
     "snippet": "Many modern light aircraft employ a low-power AC electrical system. Commonly, the AC system is used to power certain instruments and some lighting that operate only using AC. The electroluminescent panel has become a popular lighting system for aircraft instrument panels and…",
     "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
     "citation": "FAA-H-8083-31B, Chapter 9 (Aircraft Electrical System), \"AC Supply\", page 9-53"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Light Multiengine Aircraft (Ch. 9: Aircraft Electrical System)",
+    "page": 471,
+    "page_label": "9-55",
+    "snippet": "The bus system is designed to create a power distribution system that is extremely reliable by supplying current to most loads through more than one source.",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 9 (Aircraft Electrical System), \"Light Multiengine Aircraft\", page 9-55"
+   }
+  ],
+  "33|component_malfunction": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Wing Inspection Lights (Ch. 9: Aircraft Electrical System)",
+    "page": 519,
+    "page_label": "9-103",
+    "snippet": "Some aircraft are equipped with wing inspection lights to illuminate the leading edge of the wings to permit observation of icing and general condition of the se areas in flight. These lights permit visual detection of ice formation on wing leading edges while flying at night.…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 9 (Aircraft Electrical System), \"Wing Inspection Lights\", page 9-103"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Landing & Taxi Lights (Ch. 9: Aircraft Electrical System)",
+    "page": 517,
+    "page_label": "9-101",
+    "snippet": "Taxi lights are designed to provide illumination on the ground while taxiing or towing the aircraft to or from a runway, taxi strip, or in the hangar area. [Figure 9-179] Taxi lights are not designed to provide the degree of illumination necessary for landing lights. On aircraft…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 9 (Aircraft Electrical System), \"Landing & Taxi Lights\", page 9-101"
    }
   ],
   "33|crack_found": [
@@ -1457,6 +2257,26 @@
     "snippet": "Battery inspection and maintenance procedures vary with the type of chemical technology and the type of physical construction. Always follow the battery manufacturer’s approved procedures. Battery performance at any time in a given application will depend upon the battery’s age…",
     "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
     "citation": "AC 43.13-1B, Chapter 11, Section 2, par. 11-19 (Battery Maintenance), page 11-7"
+   }
+  ],
+  "33|lighting_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Position Lights (Ch. 9: Aircraft Electrical System)",
+    "page": 516,
+    "page_label": "9-100",
+    "snippet": "On many aircraft, each light unit contains a single lamp mounted on the surface of the aircraft. Other types of position light units contain two lamps and are often streamlined into the surface of the aircraft structure. The green light unit is always mounted at the extreme tip…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 9 (Aircraft Electrical System), \"Position Lights\", page 9-100"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Landing & Taxi Lights (Ch. 9: Aircraft Electrical System)",
+    "page": 517,
+    "page_label": "9-101",
+    "snippet": "Landing lights are installed in aircraft to illuminate runways during night landings. These lights are very powerful and are directed by a parabolic reflector at an angle providing a maximum range of illumination. Landing lights of smaller aircraft are usually located midway in…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 9 (Aircraft Electrical System), \"Landing & Taxi Lights\", page 9-101"
    }
   ],
   "33|out_of_adjustment": [
@@ -1559,24 +2379,64 @@
     "citation": "FAA-H-8083-31B, Chapter 9 (Aircraft Electrical System), \"Exterior Lights\", page 9-100"
    }
   ],
+  "33|wiring_relay_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Wing Inspection Lights (Ch. 9: Aircraft Electrical System)",
+    "page": 519,
+    "page_label": "9-103",
+    "snippet": "Some aircraft are equipped with wing inspection lights to illuminate the leading edge of the wings to permit observation of icing and general condition of the se areas in flight. These lights permit visual detection of ice formation on wing leading edges while flying at night.…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 9 (Aircraft Electrical System), \"Wing Inspection Lights\", page 9-103"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Maintenance & Inspection of Lighting Systems (Ch. 9: Aircraft Electrical System)",
+    "page": 519,
+    "page_label": "9-103",
+    "snippet": "Inspection of an aircraft’s lighting system normally includes checking the condition and security of all visible wiring, connections, terminals, fuses, and switches. A continuity light or meter can be used in making these checks, since the cause of many troubles can often be…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 9 (Aircraft Electrical System), \"Maintenance & Inspection of Lighting Systems\", page 9-103"
+   }
+  ],
   "34|component_malfunction": [
    {
     "doc": "FAA AC 43.13-1B CHG 1",
     "section": "Par. 12-56 System Inspection (Ch. 12, Sec. 4: Pitot/static Systems)",
     "page": 726,
     "page_label": "12-21",
-    "snippet": "Probe the drains in the pitot tube with a fine wire to remove dirt or other obstructions. The bottom static openings act as drains for the head’s static chamber. Check these holes at regular intervals to preclude system malfunctioning. b. Check to ensure the water drains freely.…",
+    "snippet": "Check these holes at regular intervals to preclude system malfunctioning. b. Check to ensure the water drains freely. If a problem is experienced with the pitot-static system drainage or freezing at altitude, and the tubing diameter is less than 3/8 inch, replace it with larger…",
     "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
     "citation": "AC 43.13-1B, Chapter 12, Section 4, par. 12-56 (System Inspection), page 12-21"
    },
    {
     "doc": "FAA AC 43.13-1B CHG 1",
-    "section": "Par. 12-63 Troubleshooting the Pitot/static Pressure System (Ch. 12, Sec. 4: Pitot/static Systems)",
-    "page": 728,
-    "page_label": "12-23",
-    "snippet": "If the pitot heating element(s) are operative, check the following: (1) Are circuit breaker(s) tripped? (2) Reset the circuit breaker to determine if: (a) The system is OK, or (b) The circuit breaker trips again, if so: 1. Check the wiring continuity to the ground. If the…",
+    "section": "Par. 12-2 Handling of Components (Ch. 12, Sec. 1: Avionics Equipment Maintenance)",
+    "page": 706,
+    "page_label": "12-1",
+    "snippet": "Any unit containing electronic components such as transistors, diodes, integrated circuits, programmable read-only memory (PROM), Read-Only Memory (ROM), and memory devices should be protected from excessive shocks. Excessive shock can cause internal failures of these…",
     "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
-    "citation": "AC 43.13-1B, Chapter 12, Section 4, par. 12-63 (Troubleshooting the Pitot/static Pressure System), page 12-23"
+    "citation": "AC 43.13-1B, Chapter 12, Section 1, par. 12-2 (Handling of Components), page 12-1"
+   }
+  ],
+  "34|computer_controller_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Radar Beacon Transponder (Ch. 11: Communication & Navigation)",
+    "page": 656,
+    "page_label": "11-53",
+    "snippet": "Generally, two types of radar are used by air traffic control (ATC). The primary radar transmits directional UHF or SHF radio waves sequentially in all directions. When the radio waves encounter an aircraft, part of those waves reflect back to a ground antenna. Calculations are…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 11 (Communication & Navigation), \"Radar Beacon Transponder\", page 11-53"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Digital Electronics (Ch. 11: Communication & Navigation)",
+    "page": 630,
+    "page_label": "11-27",
+    "snippet": "Avionics components and computers combine to provide the different information portrayed on the displays. Controls on the instrument panel or on the display unit itself are used for selection. Some screens have limited display capability because they are not part of a totally…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 11 (Communication & Navigation), \"Digital Electronics\", page 11-27"
    }
   ],
   "34|incorrect_installation": [
@@ -1597,6 +2457,46 @@
     "snippet": "When the VOR/ILS receiver is tuned for the approach, the glideslope receiver is automatically tuned. Like the localizer, the glideslope transmits two signals, one modulated at 90 Hz and the other modulated at 150 Hz. The aircraft’s glideslope receiver deciphers the signals…",
     "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
     "citation": "FAA-H-8083-31B, Chapter 11 (Communication & Navigation), \"Glideslope\", page 11-48"
+   }
+  ],
+  "34|sensor_switch_fault": [
+   {
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 12-56 System Inspection (Ch. 12, Sec. 4: Pitot/static Systems)",
+    "page": 726,
+    "page_label": "12-21",
+    "snippet": "Probe the drains in the pitot tube with a fine wire to remove dirt or other obstructions. The bottom static openings act as drains for the head’s static chamber. Check these holes at regular intervals to preclude system malfunctioning. b. Check to ensure the water drains freely.…",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 12, Section 4, par. 12-56 (System Inspection), page 12-21"
+   },
+   {
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 12-63 Troubleshooting the Pitot/static Pressure System (Ch. 12, Sec. 4: Pitot/static Systems)",
+    "page": 728,
+    "page_label": "12-23",
+    "snippet": "If the pitot heating element(s) are operative, check the following: (1) Are circuit breaker(s) tripped? (2) Reset the circuit breaker to determine if: (a) The system is OK, or (b) The circuit breaker trips again, if so: 1. Check the wiring continuity to the ground. If the…",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 12, Section 4, par. 12-63 (Troubleshooting the Pitot/static Pressure System), page 12-23"
+   }
+  ],
+  "34|warning_indication_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "VOR Navigation System (Ch. 11: Communication & Navigation)",
+    "page": 645,
+    "page_label": "11-42",
+    "snippet": "As flight instruments and displays have evolved, VOR navigation information has been integrated into other instruments displays, such as the radio magnetic indicator (RMI), the HSI, an EFIS display or an electronic attitude director indicator (EADI). Flight management systems…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 11 (Communication & Navigation), \"VOR Navigation System\", page 11-42"
+   },
+   {
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 12-59 Test Pitot System (Ch. 12, Sec. 4: Pitot/static Systems)",
+    "page": 727,
+    "page_label": "12-22",
+    "snippet": "If the airspeed indicator reading declines, check the system for leaky hoses and loose connections. e. Inspect the hoses for signs of deterioration, particularly at bends and at the connection points to the pitot mast and airspeed indicator. Replace hoses that are cracked or…",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 12, Section 4, par. 12-59 (Test Pitot System), page 12-22"
    }
   ],
   "35|component_malfunction": [
@@ -1637,6 +2537,26 @@
     "snippet": "General surface corrosion (also referred to as Uniform Etch or Uniform Attack Corrosion) is the most common form of corrosion and results from a direct chemical attack on a metal surface and involves only the metal surface. (See Figure 6-4.) General surface corrosion usually…",
     "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
     "citation": "AC 43.13-1B, Chapter 6, Section 2, par. 6-12 (General Surface Corrosion), page 6-5"
+   }
+  ],
+  "35|door_latch_fault": [
+   {
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 9-3 Cleaning and Lubricating (Ch. 9, Sec. 1: Inspection and Maintenance of Landing Gear)",
+    "page": 490,
+    "page_label": "9-1",
+    "snippet": "Wear points, such as landing-gear up-and-down latches, jack-screws, door hinges, pulleys, cables, bellcranks, and all pressure-type grease fittings, should be lubricated after every cleaning operation. c. To prevent possible failure of a component due to incompatibility or…",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 9, Section 1, par. 9-3 (Cleaning and Lubricating), page 9-1"
+   },
+   {
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 9-7 Landing-gear Components (Ch. 9, Sec. 1: Inspection and Maintenance of Landing Gear)",
+    "page": 494,
+    "page_label": "9-5",
+    "snippet": "(1) Towing of some aircraft with the rudder locks installed may cause damage to the steering linkage and rudder control system. Exceeding the steering or towing stop limits should be followed by a close inspection of the entire nose steering assembly. A broken steering stop will…",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 9, Section 1, par. 9-7 (Landing-gear Components), page 9-5"
    }
   ],
   "35|false_warning": [
@@ -1759,6 +2679,26 @@
     "citation": "FAA-H-8083-31B, Chapter 12 (Hydraulic & Pneumatic Power Systems), \"Pneumatic Power System Maintenance\", page 12-51"
    }
   ],
+  "36|computer_controller_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Cabin Pressure Controller (Ch. 16: Cabin Environmental Control Systems)",
+    "page": 940,
+    "page_label": "16-29",
+    "snippet": "The cabin pressure controller is the device used to control the cabin air pressure. Older aircraft use strictly pneumatic means for controlling cabin pressure. Selections for the desired cabin altitude, rate of cabin altitude change, and barometric pressure setting are all made…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 16 (Cabin Environmental Control Systems), \"Cabin Pressure Controller\", page 16-29"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Cabin Pressurization Troubleshooting (Ch. 16: Cabin Environmental Control Systems)",
+    "page": 945,
+    "page_label": "16-34",
+    "snippet": "It is important to check the aircraft manufacture’s service information when troubleshooting the pressurization system. A fault, such as failure to pressurize or failure to maintain pressurization, can have many different causes. Adherence to the steps in a manufacturer’s…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 16 (Cabin Environmental Control Systems), \"Cabin Pressurization Troubleshooting\", page 16-34"
+   }
+  ],
   "36|false_warning": [
    {
     "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
@@ -1799,6 +2739,66 @@
     "citation": "FAA-H-8083-31B, Chapter 16 (Cabin Environmental Control Systems), \"Vapor Cycle Air Conditioning Servicing Equipment\", page 16-53"
    }
   ],
+  "36|sensor_switch_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "System Servicing (Ch. 16: Cabin Environmental Control Systems)",
+    "page": 965,
+    "page_label": "16-54",
+    "snippet": "The mechanism to extend and retract the unit should function as specified, including the throttle position switch present on many systems. It is designed to cut power to the compressor clutch and retract the condenser at full power settings. Condensers may also have a fan to…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 16 (Cabin Environmental Control Systems), \"System Servicing\", page 16-54"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Hydraulic Power Pack System (Ch. 12: Hydraulic & Pneumatic Power Systems)",
+    "page": 686,
+    "page_label": "12-7",
+    "snippet": "Integration of essential valves, filters, sensors, and transducers reduces system weight, virtually eliminates any opportunity for external leakage, and simplifies troubleshooting. Some power pack systems have an integrated actuator. These systems are used to control the…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 12 (Hydraulic & Pneumatic Power Systems), \"Hydraulic Power Pack System\", page 12-7"
+   }
+  ],
+  "36|valve_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Cabin Pressurization Troubleshooting (Ch. 16: Cabin Environmental Control Systems)",
+    "page": 945,
+    "page_label": "16-34",
+    "snippet": "It is important to check the aircraft manufacture’s service information when troubleshooting the pressurization system. A fault, such as failure to pressurize or failure to maintain pressurization, can have many different causes. Adherence to the steps in a manufacturer’s…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 16 (Cabin Environmental Control Systems), \"Cabin Pressurization Troubleshooting\", page 16-34"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Hydraulic Power Pack System (Ch. 12: Hydraulic & Pneumatic Power Systems)",
+    "page": 686,
+    "page_label": "12-7",
+    "snippet": "A hydraulic power pack is a small unit that consists of an electric pump, filters, reservoir, valves, and pressure relief valve. [Figure 12-5] The advantage of the power pack is that there is no need for a centralized hydraulic power supply system and long stretches of hydraulic…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 12 (Hydraulic & Pneumatic Power Systems), \"Hydraulic Power Pack System\", page 12-7"
+   }
+  ],
+  "36|warning_indication_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Pressurization Gauges (Ch. 16: Cabin Environmental Control Systems)",
+    "page": 943,
+    "page_label": "16-32",
+    "snippet": "While all pressurization systems differ slightly, usually three flight deck indications, in concert with various warning lights and alerts, advise the crew of pressurization variables. They are the cabin altimeter, the cabin rate of climb or vertical speed indicator, and the…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 16 (Cabin Environmental Control Systems), \"Pressurization Gauges\", page 16-32"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Filter Differential Pressure Indicators (Ch. 12: Hydraulic & Pneumatic Power Systems)",
+    "page": 693,
+    "page_label": "12-14",
+    "snippet": "Differential pressure indicating devices have many configurations, including electrical switches, continuous-reading visual indicators (gauges), and visual indicators with memory. Visual indicators with memory usually take the form of magnetic or mechanically latched buttons or…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 12 (Hydraulic & Pneumatic Power Systems), \"Filter Differential Pressure Indicators\", page 12-14"
+   }
+  ],
   "36|wear_or_chafing": [
    {
     "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
@@ -1817,6 +2817,26 @@
     "snippet": "Periodic visual inspections, tests, and refrigerant level and oil level checks may be all that is required for some time. Follow the manufacturer’s instructions for inspection criteria and intervals. Visual Inspection All components of any vapor cycle system should be checked to…",
     "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
     "citation": "FAA-H-8083-31B, Chapter 16 (Cabin Environmental Control Systems), \"System Servicing\", page 16-54"
+   }
+  ],
+  "36|wiring_relay_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Oxygen System Inspection & Maintenance (Ch. 16: Cabin Environmental Control Systems)",
+    "page": 931,
+    "page_label": "16-20",
+    "snippet": "All oxygen lines should be marked and should have at least (about 50 miles) Sea level 29.92 (760 mm) 2 inches of clearance from moving parts, electrical wiring, and all fluid lines. Adequate clearance must also be provided from hot ducts and other sources that might heat the…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 16 (Cabin Environmental Control Systems), \"Oxygen System Inspection & Maintenance\", page 16-20"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Center Hydraulic System (Ch. 12: Hydraulic & Pneumatic Power Systems)",
+    "page": 724,
+    "page_label": "12-45",
+    "snippet": "Relays control the electric motors in the reserve and nose gear isolation valves. When the CHIS system is operational, it prevents hydraulic operation of the leading-edge slats. ACMP C1 gets hydraulic fluid from the bottom of the center system reservoir. All other hydraulic…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 12 (Hydraulic & Pneumatic Power Systems), \"Center Hydraulic System\", page 12-45"
    }
   ],
   "38|component_malfunction": [
@@ -1879,7 +2899,47 @@
     "citation": "FAA-H-8083-30B, Chapter 9 (Fluid Lines & Fittings), \"Hose Identification\", page 9-17"
    }
   ],
+  "49|actuator_pump_motor_fault": [
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Gas Turbine Engine Starters (Ch. 5: Engine Starting Systems)",
+    "page": 239,
+    "page_label": "5-9",
+    "snippet": "The starter consists of a turbine-driven power unit and auxiliary fuel, air, and ignition systems. Operation of this type starter is, in most installations, fully automatic; actuation of a single switch causes the starter to fire and accelerate the engine from rest to starter…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 5 (Engine Starting Systems), \"Gas Turbine Engine Starters\", page 5-9"
+   },
+   {
+    "doc": "FAA-H-8083-30B AMT Handbook – General",
+    "section": "Auxiliary Power Units (APUs) (Ch. 1: Safety, Ground Operations, & Servicing)",
+    "page": 37,
+    "page_label": "1-16",
+    "snippet": "APUs are generally smaller turbine engines that provide compressed air for starting engines, cabin heating and cooling, and electrical power while on the ground. Their operation is normally simple. By turning a switch on and up to the start position (spring loaded to on…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_general_handbook",
+    "citation": "FAA-H-8083-30B, Chapter 1 (Safety, Ground Operations, & Servicing), \"Auxiliary Power Units (APUs)\", page 1-16"
+   }
+  ],
   "49|component_malfunction": [
+   {
+    "doc": "FAA-H-8083-30B AMT Handbook – General",
+    "section": "Auxiliary Power Units (APUs) (Ch. 1: Safety, Ground Operations, & Servicing)",
+    "page": 37,
+    "page_label": "1-16",
+    "snippet": "APUs are generally smaller turbine engines that provide compressed air for starting engines, cabin heating and cooling, and electrical power while on the ground. Their operation is normally simple. By turning a switch on and up to the start position (spring loaded to on…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_general_handbook",
+    "citation": "FAA-H-8083-30B, Chapter 1 (Safety, Ground Operations, & Servicing), \"Auxiliary Power Units (APUs)\", page 1-16"
+   },
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Types & Construction (Ch. 1: Aircraft Engines)",
+    "page": 58,
+    "page_label": "1-37",
+    "snippet": "With regard to aircraft, the turboshaft engine is a gas turbine engine made to transfer horsepower to a shaft that turns a helicopter transmission or is an onboard auxiliary power unit (APU). An APU is used on turbine-powered aircraft to provide electrical power and bleed air on…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 1 (Aircraft Engines), \"Types & Construction\", page 1-37"
+   }
+  ],
+  "49|computer_controller_fault": [
    {
     "doc": "FAA-H-8083-30B AMT Handbook – General",
     "section": "Auxiliary Power Units (APUs) (Ch. 1: Safety, Ground Operations, & Servicing)",
@@ -1939,7 +2999,67 @@
     "citation": "FAA-H-8083-32B, Chapter 1 (Aircraft Engines), \"Types & Construction\", page 1-37"
    }
   ],
+  "49|sensor_switch_fault": [
+   {
+    "doc": "FAA-H-8083-30B AMT Handbook – General",
+    "section": "Auxiliary Power Units (APUs) (Ch. 1: Safety, Ground Operations, & Servicing)",
+    "page": 37,
+    "page_label": "1-16",
+    "snippet": "APUs are generally smaller turbine engines that provide compressed air for starting engines, cabin heating and cooling, and electrical power while on the ground. Their operation is normally simple. By turning a switch on and up to the start position (spring loaded to on…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_general_handbook",
+    "citation": "FAA-H-8083-30B, Chapter 1 (Safety, Ground Operations, & Servicing), \"Auxiliary Power Units (APUs)\", page 1-16"
+   },
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Air Turbine Starters (Ch. 5: Engine Starting Systems)",
+    "page": 242,
+    "page_label": "5-12",
+    "snippet": "A rotor switch actuator, mounted in the turbine rotor hub, is set to open the turbine switch when Cross feed from running engine Auxiliary power unit (APU) the starter reaches cutout speed. Opening the turbine switch interrupts an electrical signal to the start valve. This…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 5 (Engine Starting Systems), \"Air Turbine Starters\", page 5-12"
+   }
+  ],
   "49|smoke_or_odor": [
+   {
+    "doc": "FAA-H-8083-30B AMT Handbook – General",
+    "section": "Auxiliary Power Units (APUs) (Ch. 1: Safety, Ground Operations, & Servicing)",
+    "page": 37,
+    "page_label": "1-16",
+    "snippet": "APUs are generally smaller turbine engines that provide compressed air for starting engines, cabin heating and cooling, and electrical power while on the ground. Their operation is normally simple. By turning a switch on and up to the start position (spring loaded to on…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_general_handbook",
+    "citation": "FAA-H-8083-30B, Chapter 1 (Safety, Ground Operations, & Servicing), \"Auxiliary Power Units (APUs)\", page 1-16"
+   },
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Types & Construction (Ch. 1: Aircraft Engines)",
+    "page": 58,
+    "page_label": "1-37",
+    "snippet": "With regard to aircraft, the turboshaft engine is a gas turbine engine made to transfer horsepower to a shaft that turns a helicopter transmission or is an onboard auxiliary power unit (APU). An APU is used on turbine-powered aircraft to provide electrical power and bleed air on…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 1 (Aircraft Engines), \"Types & Construction\", page 1-37"
+   }
+  ],
+  "49|valve_fault": [
+   {
+    "doc": "FAA-H-8083-30B AMT Handbook – General",
+    "section": "Auxiliary Power Units (APUs) (Ch. 1: Safety, Ground Operations, & Servicing)",
+    "page": 37,
+    "page_label": "1-16",
+    "snippet": "APUs are generally smaller turbine engines that provide compressed air for starting engines, cabin heating and cooling, and electrical power while on the ground. Their operation is normally simple. By turning a switch on and up to the start position (spring loaded to on…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_general_handbook",
+    "citation": "FAA-H-8083-30B, Chapter 1 (Safety, Ground Operations, & Servicing), \"Auxiliary Power Units (APUs)\", page 1-16"
+   },
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Types & Construction (Ch. 1: Aircraft Engines)",
+    "page": 58,
+    "page_label": "1-37",
+    "snippet": "With regard to aircraft, the turboshaft engine is a gas turbine engine made to transfer horsepower to a shaft that turns a helicopter transmission or is an onboard auxiliary power unit (APU). An APU is used on turbine-powered aircraft to provide electrical power and bleed air on…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 1 (Aircraft Engines), \"Types & Construction\", page 1-37"
+   }
+  ],
+  "49|wiring_relay_fault": [
    {
     "doc": "FAA-H-8083-30B AMT Handbook – General",
     "section": "Auxiliary Power Units (APUs) (Ch. 1: Safety, Ground Operations, & Servicing)",
@@ -1977,6 +3097,26 @@
     "snippet": "Adequately trained personnel in: (1) Recognition of corrosion-inducing conditions; (2) Corrosion identification techniques; (3) Corrosion detection, cleaning, and treating; and (4) Lubrication and preservation of aircraft structure and components. b. Inspection for corrosion on…",
     "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
     "citation": "AC 43.13-1B, Chapter 6, Section 4, par. 6-50 (Guidelines: All Aircraft), page 6-16"
+   }
+  ],
+  "51|skin_frame_fault": [
+   {
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 4-50 General (Ch. 4, Sec. 4: Metal Repair Procedures)",
+    "page": 165,
+    "page_label": "4-14",
+    "snippet": "Longerons and stringers are designed to carry principally axial loads, but are sometimes required to carry side loads and bending moments, as when they frame cutouts in metal-skinned structures. Truss members are designed to carry axial (tension and compression) loads applied to…",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 4, Section 4, par. 4-50 (General), page 4-14"
+   },
+   {
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 4-59 Repairing Cracked Members (Ch. 4, Sec. 4: Metal Repair Procedures)",
+    "page": 200,
+    "page_label": "4-49",
+    "snippet": "The following general procedures apply in repairing such defects. FIGURE 4-20. EXAMPLE OF INTERMEDIATE FRAME STRINGER SPLICE (MATERIAL: 2017-T3 AL ALLOY) FIGURE 4-21. TYPICAL METHODS OF REPAIRING CRACKED LEADING AND TRAILING EDGES AND RIB INTERSECTIONS FIGURE 4-22. TYPICAL…",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 4, Section 4, par. 4-59 (Repairing Cracked Members), page 4-49"
    }
   ],
   "51|smoke_or_odor": [
@@ -2079,6 +3219,26 @@
     "citation": "AC 43.13-1B, Chapter 5, Section 7, par. 5-97 (Leak Testing), page 5-54"
    }
   ],
+  "52|door_latch_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Access & Inspection Panels (Ch. 1: Aircraft Structures)",
+    "page": 64,
+    "page_label": "1-38",
+    "snippet": "in the fuselage is provided for by numerous access doors, inspection plates, landing wheel wells, and other openings. Servicing diagrams showing the arrangement of equipment and location of access doors are supplied by the manufacturer in the aircraft maintenance manual. Knowing…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 1 (Aircraft Structures), \"Access & Inspection Panels\", page 1-38"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Airframe (Ch. 1: Aircraft Structures)",
+    "page": 65,
+    "page_label": "1-39",
+    "snippet": "Tubular and sheet metal substructures are usually made of aluminum, though stainless steel or ZONE 300—Empennage 326 ZONE 300—Empennage324 Zone 400—Engine nacelles ZONE 800—Doors 825 Zone 700—Landing gear and landing gear doors titanium are sometimes used in areas subject to…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 1 (Aircraft Structures), \"Airframe\", page 1-39"
+   }
+  ],
   "52|false_warning": [
    {
     "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
@@ -2097,6 +3257,26 @@
     "snippet": "WARNING: Cuttings and small shavings from magnesium can ignite easily and are an extreme fire hazard. Fires of this metal must be extinguished with absolutely dry talc, calcium carbonate, sand, or graphite by applying the powder to a depth of 1/2 inch over the metal.",
     "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
     "citation": "AC 43.13-1B, Chapter 6, Section 9, par. 6-152 (Example of Removing Corrosion From Magnesium), page 6-37"
+   }
+  ],
+  "52|lighting_fault": [
+   {
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 5-16 Simple Visual Inspection Aids (Ch. 5, Sec. 2: Visual Inspection)",
+    "page": 256,
+    "page_label": "5-9",
+    "snippet": "Inspection flashlights are available in several different bulb brightness levels: • Standard incandescent (for long battery life). • Krypton (for 70 percent more light than standard bulbs). • Halogen (for up to 100 percent more light than standard bulbs). • Xenon (for over 100…",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 5, Section 2, par. 5-16 (Simple Visual Inspection Aids), page 5-9"
+   },
+   {
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 5-17 Borescopes (Ch. 5, Sec. 2: Visual Inspection)",
+    "page": 257,
+    "page_label": "5-10",
+    "snippet": "A fiber optic light guide with white light is generally used in the illumination system, but ultraviolet light can also be used to inspect surfaces treated with liquid fluorescent penetrant or to inspect for contaminants that fluoresce. Some borescopes with long working lengths…",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 5, Section 2, par. 5-17 (Borescopes), page 5-10"
    }
   ],
   "52|low_pressure": [
@@ -2159,6 +3339,46 @@
     "citation": "FAA-H-8083-31B, Chapter 1 (Aircraft Structures), \"Nacelles\", page 1-18"
    }
   ],
+  "52|seal_bearing_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Shear Strength & Bearing Strength (Ch. 4: Aircraft Metal Structural Repair)",
+    "page": 248,
+    "page_label": "4-86",
+    "snippet": "Aircraft structural joint design involves an attempt to find the optimum strength relationship between being critical in shear and critical in bearing. These are determined by the failure mode affecting the joint. The joint is critical in shear if less than the optimum number of…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 4 (Aircraft Metal Structural Repair), \"Shear Strength & Bearing Strength\", page 4-86"
+   },
+   {
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 5-45 Preparation of Surface (Ch. 5, Sec. 4: Magnetic Particle Inspection)",
+    "page": 271,
+    "page_label": "5-24",
+    "snippet": "This may require extracting components such as bushings, bearings, or inserts from assemblies before cleaning and magnetic particle examination. d. A water-break-free surface is required for parts to be examined by water suspension methods. If the suspension completely wets the…",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 5, Section 4, par. 5-45 (Preparation of Surface), page 5-24"
+   }
+  ],
+  "52|sensor_switch_fault": [
+   {
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 5-112 General (Ch. 5, Sec. 9: Acoustic-emission)",
+    "page": 303,
+    "page_label": "5-56",
+    "snippet": "Acoustic-Emission is an NDI technique that involves the placing of acoustical-emission sensors at various locations on the aircraft structure and then applying a load or stress. The level of stress applied need not reach general yielding, nor does the stress generally need to be…",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 5, Section 9, par. 5-112 (General), page 5-56"
+   },
+   {
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 5-17 Borescopes (Ch. 5, Sec. 2: Visual Inspection)",
+    "page": 257,
+    "page_label": "5-10",
+    "snippet": "(1) Typical designs for the optical connection between the borescope viewing end and the distal tip are: • A rigid tube with a series of relay lenses; • A flexible or rigid tube with a bundle of optical fibers; and • A flexible or rigid tube with wiring that carries the image…",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 5, Section 2, par. 5-17 (Borescopes), page 5-10"
+   }
+  ],
   "52|structural_damage": [
    {
     "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
@@ -2177,6 +3397,26 @@
     "snippet": "Damage involving all of these members necessitates installing an access door to make the repair possible.",
     "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
     "citation": "FAA-H-8083-31B, Chapter 4 (Aircraft Metal Structural Repair), \"Leading Edge Repair\", page 4-105"
+   }
+  ],
+  "52|warning_indication_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Transmission (Ch. 1: Aircraft Structures)",
+    "page": 67,
+    "page_label": "1-41",
+    "snippet": "[Figure 1-94] Transmission The transmission system transfers power from the engine to the main rotor, tail rotor, and other accessories during normal flight conditions. The main components of the transmission system are the main rotor transmission, tail rotor drive system…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 1 (Aircraft Structures), \"Transmission\", page 1-41"
+   },
+   {
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 5-49 Determination of Field Strength (Ch. 5, Sec. 4: Magnetic Particle Inspection)",
+    "page": 275,
+    "page_label": "5-28",
+    "snippet": "A magnetization indicator, such as a Quantitative Quality Indicator (QQI), should be used to verify that adequate magnetic flux strength is being used. It effectively indicates the internally-induced field, the field direction, and the quality of particle suspension during…",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 5, Section 4, par. 5-49 (Determination of Field Strength), page 5-28"
    }
   ],
   "52|wear_or_chafing": [
@@ -2199,24 +3439,44 @@
     "citation": "AC 43.13-1B, Chapter 5, Section 2, par. 5-18 (Visual Inspection Procedures), page 5-12"
    }
   ],
+  "52|wiring_relay_fault": [
+   {
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 6-77 Electrical Connectors (Ch. 6, Sec. 5: Visual Corrosion Inspection Guide for Aircraft)",
+    "page": 326,
+    "page_label": "6-20",
+    "snippet": "Inspect electrical connectors for breaks in potting compound and corrosion of pins and wires. b. If the electrical connector is suspected of having moisture intrusion, disassemble the connector, clean the connector, and inspect it for corrosion.",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 6, Section 5, par. 6-77 (Electrical Connectors), page 6-20"
+   },
+   {
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 5-17 Borescopes (Ch. 5, Sec. 2: Visual Inspection)",
+    "page": 257,
+    "page_label": "5-10",
+    "snippet": "(1) Typical designs for the optical connection between the borescope viewing end and the distal tip are: • A rigid tube with a series of relay lenses; • A flexible or rigid tube with a bundle of optical fibers; and • A flexible or rigid tube with wiring that carries the image…",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 5, Section 2, par. 5-17 (Borescopes), page 5-10"
+   }
+  ],
   "53|component_malfunction": [
    {
     "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
-    "section": "Access & Inspection Panels (Ch. 1: Aircraft Structures)",
-    "page": 65,
-    "page_label": "1-39",
-    "snippet": "The underside of a wing, for example, sometimes contains dozens of small panels through which control cable components can be monitored and fittings greased. Various drains and jack points may also be on the underside of the wing. The upper surface of the wings typically have…",
+    "section": "Wing Configurations (Ch. 1: Aircraft Structures)",
+    "page": 35,
+    "page_label": "1-9",
+    "snippet": "They may extend perpendicular to the horizontal plane of the fuselage or can angle up or down slightly. This angle is known as the wing dihedral. The dihedral angle affects the lateral stability of the aircraft. Figure 1-20 shows some common wing attach points and dihedral angle.",
     "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
-    "citation": "FAA-H-8083-31B, Chapter 1 (Aircraft Structures), \"Access & Inspection Panels\", page 1-39"
+    "citation": "FAA-H-8083-31B, Chapter 1 (Aircraft Structures), \"Wing Configurations\", page 1-9"
    },
    {
     "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
-    "section": "Wing Skin (Ch. 1: Aircraft Structures)",
-    "page": 42,
-    "page_label": "1-16",
-    "snippet": "They have a variety of uses on the aircraft, such as floor panels, bulkheads, and control surfaces, as well as wing skin panels. Figure 1-38 shows the locations of honeycomb construction wing panels on a jet transport aircraft. A honeycomb panel can be made from a wide variety…",
+    "section": "Fuselage (Ch. 1: Aircraft Structures)",
+    "page": 33,
+    "page_label": "1-7",
+    "snippet": "The fuselage is the main structure or body of the fixed-wing aircraft. It provides space for cargo, controls, accessories, passengers, and other equipment. In single-engine aircraft, the fuselage houses the powerplant. In multiengine aircraft, the engines may be either in the…",
     "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
-    "citation": "FAA-H-8083-31B, Chapter 1 (Aircraft Structures), \"Wing Skin\", page 1-16"
+    "citation": "FAA-H-8083-31B, Chapter 1 (Aircraft Structures), \"Fuselage\", page 1-7"
    }
   ],
   "53|corrosion": [
@@ -2259,6 +3519,46 @@
     "citation": "FAA-H-8083-30B, Chapter 10 (Inspection Concepts & Techniques), \"Surface Cracks\", page 10-18"
    }
   ],
+  "53|floor_panel_fault": [
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Wing Skin (Ch. 1: Aircraft Structures)",
+    "page": 42,
+    "page_label": "1-16",
+    "snippet": "They have a variety of uses on the aircraft, such as floor panels, bulkheads, and control surfaces, as well as wing skin panels. Figure 1-38 shows the locations of honeycomb construction wing panels on a jet transport aircraft. A honeycomb panel can be made from a wide variety…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 1 (Aircraft Structures), \"Wing Skin\", page 1-16"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "A Brief History of Aircraft Structures (Ch. 1: Aircraft Structures)",
+    "page": 29,
+    "page_label": "1-3",
+    "snippet": "Initially, aluminum core with aluminum or fiberglass skin sandwich panels were used on wing panels, flight control surfaces, cabin floor boards, and other applications. A steady increase in the use of honeycomb and foam core sandwich components and a wide variety of composite…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 1 (Aircraft Structures), \"A Brief History of Aircraft Structures\", page 1-3"
+   }
+  ],
+  "53|skin_frame_fault": [
+   {
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 4-50 General (Ch. 4, Sec. 4: Metal Repair Procedures)",
+    "page": 165,
+    "page_label": "4-14",
+    "snippet": "Some examples of members are the metal tubes that form engine mount and fuselage trusses and frames, beams used as wing spars, and longerons and stringers of metal-skinned fuselages and wings. Longerons and stringers are designed to carry principally axial loads, but are…",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 4, Section 4, par. 4-50 (General), page 4-14"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Monocoque Type (Ch. 1: Aircraft Structures)",
+    "page": 33,
+    "page_label": "1-7",
+    "snippet": "The monocoque (single shell) fuselage relies largely on the strength of the skin or covering to carry the primary loads. The design may be divided into three classes: 1. Monocoque 2. Semimonocoque 3. Reinforced shell Different portions of the same fuselage may belong to either…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 1 (Aircraft Structures), \"Monocoque Type\", page 1-7"
+   }
+  ],
   "53|structural_damage": [
    {
     "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
@@ -2299,26 +3599,6 @@
     "citation": "AC 43.13-1B, Chapter 6, Section 5, par. 6-73 (Flexible Hose Assemblies), page 6-19"
    }
   ],
-  "54|component_malfunction": [
-   {
-    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
-    "section": "Nacelles (Ch. 1: Aircraft Structures)",
-    "page": 44,
-    "page_label": "1-18",
-    "snippet": "[Figure 1-42] The exterior of a nacelle is covered with a skin or fitted with a cowling which can be opened to access the engine and components inside. Both are usually made of sheet aluminum or magnesium alloy with stainless steel or titanium alloys being used in…",
-    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
-    "citation": "FAA-H-8083-31B, Chapter 1 (Aircraft Structures), \"Nacelles\", page 1-18"
-   },
-   {
-    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
-    "section": "Antitorque System (Ch. 1: Aircraft Structures)",
-    "page": 70,
-    "page_label": "1-44",
-    "snippet": "Similar to a vertical stabilizer on the empennage of an airplane, a fin or pylon is also a common feature on rotorcraft. Normally, it supports the tail rotor assembly, although some tail rotors are mounted on the tail cone of the boom. Additionally, a horizontal member called a…",
-    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
-    "citation": "FAA-H-8083-31B, Chapter 1 (Aircraft Structures), \"Antitorque System\", page 1-44"
-   }
-  ],
   "54|corrosion": [
    {
     "doc": "FAA AC 43.13-1B CHG 1",
@@ -2339,6 +3619,26 @@
     "citation": "AC 43.13-1B, Chapter 6, Section 2, par. 6-12 (General Surface Corrosion), page 6-5"
    }
   ],
+  "54|skin_frame_fault": [
+   {
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 4-50 General (Ch. 4, Sec. 4: Metal Repair Procedures)",
+    "page": 165,
+    "page_label": "4-14",
+    "snippet": "Longerons and stringers are designed to carry principally axial loads, but are sometimes required to carry side loads and bending moments, as when they frame cutouts in metal-skinned structures. Truss members are designed to carry axial (tension and compression) loads applied to…",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 4, Section 4, par. 4-50 (General), page 4-14"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Semimonocoque Type (Ch. 1: Aircraft Structures)",
+    "page": 34,
+    "page_label": "1-8",
+    "snippet": "It also consists of frame assemblies, bulkheads, and formers as used in the monocoque design but, additionally, the skin is reinforced by longitudinal members called longerons. Longerons usually extend across several frame members and help the skin support primary bending loads.…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 1 (Aircraft Structures), \"Semimonocoque Type\", page 1-8"
+   }
+  ],
   "54|wear_or_chafing": [
    {
     "doc": "FAA AC 43.13-1B CHG 1",
@@ -2357,26 +3657,6 @@
     "snippet": "Loose or vibrating trim tabs will increase wear of actuating mechanisms and hinge points which may develop into serious flutter conditions. When this happens, primary control surfaces are highly susceptible to wear, deformation, and fatigue failures because of the buffeting…",
     "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
     "citation": "AC 43.13-1B, Chapter 4, Section 3, par. 4-36 (Flutter and Vibration Precautions), page 4-12"
-   }
-  ],
-  "55|component_malfunction": [
-   {
-    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
-    "section": "Access & Inspection Panels (Ch. 1: Aircraft Structures)",
-    "page": 64,
-    "page_label": "1-38",
-    "snippet": "The digits of the zone number are reserved and Access & Inspection Panelsindexed to indicate the location and type of system of which the component is a part. Figure 1-92 illustrates these zones Quick access to the accessories and other equipment carried and subzones on a…",
-    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
-    "citation": "FAA-H-8083-31B, Chapter 1 (Aircraft Structures), \"Access & Inspection Panels\", page 1-38"
-   },
-   {
-    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
-    "section": "Empennage (Ch. 1: Aircraft Structures)",
-    "page": 45,
-    "page_label": "1-19",
-    "snippet": "Most empennage designs consist of a tail cone, fixed aerodynamic surfaces or stabilizers, and movable aerodynamic surfaces. Glass reinforced plastics sandwich the core The tail cone serves to close and streamline the aft end of most fuselages. The cone is made up of structural…",
-    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
-    "citation": "FAA-H-8083-31B, Chapter 1 (Aircraft Structures), \"Empennage\", page 1-19"
    }
   ],
   "55|corrosion": [
@@ -2459,6 +3739,26 @@
     "citation": "FAA-H-8083-31B, Chapter 1 (Aircraft Structures), \"Nacelles\", page 1-18"
    }
   ],
+  "55|skin_frame_fault": [
+   {
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 4-50 General (Ch. 4, Sec. 4: Metal Repair Procedures)",
+    "page": 165,
+    "page_label": "4-14",
+    "snippet": "Longerons and stringers are designed to carry principally axial loads, but are sometimes required to carry side loads and bending moments, as when they frame cutouts in metal-skinned structures. Truss members are designed to carry axial (tension and compression) loads applied to…",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 4, Section 4, par. 4-50 (General), page 4-14"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Monocoque Type (Ch. 1: Aircraft Structures)",
+    "page": 33,
+    "page_label": "1-7",
+    "snippet": "[Figure 1-16] The heaviest of these structural members are located at intervals to carry concentrated loads and at points where fittings are used to attach other units such as wings, powerplants, and stabilizers. Since no other bracing members are present, the skin must carry…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 1 (Aircraft Structures), \"Monocoque Type\", page 1-7"
+   }
+  ],
   "55|structural_damage": [
    {
     "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
@@ -2477,26 +3777,6 @@
     "snippet": "The aircraft structure can be supported adequately by the landing gear or by jacks where the work involves a repair, such as removing the control surfaces, wing panels, or stabilizers. Cradles must be prepared to hold these components while they are removed from the aircraft.…",
     "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
     "citation": "FAA-H-8083-31B, Chapter 4 (Aircraft Metal Structural Repair), \"Structural Support During Repair\", page 4-91"
-   }
-  ],
-  "56|component_malfunction": [
-   {
-    "doc": "FAA AC 43.13-1B CHG 1",
-    "section": "Par. 3-40 General (Ch. 3, Sec. 4: Windshields, Enclosures, and Windows)",
-    "page": 149,
-    "page_label": "3-31",
-    "snippet": "These repairs are applicable to plastic windshields, enclosures, and windows in nonpressurized airplanes. For pressurized airplanes, replace or repair plastic elements in accordance with the manufacturer’s recommendation. When windshields and side windows made of acrylic…",
-    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
-    "citation": "AC 43.13-1B, Chapter 3, Section 4, par. 3-40 (General), page 3-31"
-   },
-   {
-    "doc": "FAA AC 43.13-1B CHG 1",
-    "section": "Par. 3-42 Windshield Installation (Ch. 3, Sec. 4: Windshields, Enclosures, and Windows)",
-    "page": 150,
-    "page_label": "3-32",
-    "snippet": "Aircraft windshields may be purchased either from the original aircraft manufacturer or from any of several FAA-PMA sources. These windshields are formed to the exact shape required, but are slightly larger than necessary so they may be trimmed to the exact size. a. After…",
-    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
-    "citation": "AC 43.13-1B, Chapter 3, Section 4, par. 3-42 (Windshield Installation), page 3-32"
    }
   ],
   "56|crack_found": [
@@ -2559,24 +3839,24 @@
     "citation": "AC 43.13-1B, Chapter 5, Section 7, par. 5-97 (Leak Testing), page 5-54"
    }
   ],
-  "57|component_malfunction": [
+  "56|window_fault": [
    {
-    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
-    "section": "Access & Inspection Panels (Ch. 1: Aircraft Structures)",
-    "page": 65,
-    "page_label": "1-39",
-    "snippet": "The underside of a wing, for example, sometimes contains dozens of small panels through which control cable components can be monitored and fittings greased. Various drains and jack points may also be on the underside of the wing. The upper surface of the wings typically have…",
-    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
-    "citation": "FAA-H-8083-31B, Chapter 1 (Aircraft Structures), \"Access & Inspection Panels\", page 1-39"
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 3-40 General (Ch. 3, Sec. 4: Windshields, Enclosures, and Windows)",
+    "page": 149,
+    "page_label": "3-31",
+    "snippet": "These repairs are applicable to plastic windshields, enclosures, and windows in nonpressurized airplanes. For pressurized airplanes, replace or repair plastic elements in accordance with the manufacturer’s recommendation. When windshields and side windows made of acrylic…",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 3, Section 4, par. 3-40 (General), page 3-31"
    },
    {
-    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
-    "section": "Wing Ribs (Ch. 1: Aircraft Structures)",
-    "page": 40,
-    "page_label": "1-14",
-    "snippet": "The fairing(s) can be removed for access to the wing attach fittings.",
-    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
-    "citation": "FAA-H-8083-31B, Chapter 1 (Aircraft Structures), \"Wing Ribs\", page 1-14"
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 3-42 Windshield Installation (Ch. 3, Sec. 4: Windshields, Enclosures, and Windows)",
+    "page": 150,
+    "page_label": "3-32",
+    "snippet": "Aircraft windshields may be purchased either from the original aircraft manufacturer or from any of several FAA-PMA sources. These windshields are formed to the exact shape required, but are slightly larger than necessary so they may be trimmed to the exact size. a. After…",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 3, Section 4, par. 3-42 (Windshield Installation), page 3-32"
    }
   ],
   "57|corrosion": [
@@ -2657,6 +3937,46 @@
     "snippet": "Cowling refers to the detachable panels covering those areas into which access must be gained regularly, such as the engine and its accessories. It is designed to provide a smooth airflow over the nacelle and to protect the engine from damage. Cowl panels are generally made of…",
     "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
     "citation": "FAA-H-8083-31B, Chapter 1 (Aircraft Structures), \"Nacelles\", page 1-18"
+   }
+  ],
+  "57|seal_bearing_fault": [
+   {
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 5-45 Preparation of Surface (Ch. 5, Sec. 4: Magnetic Particle Inspection)",
+    "page": 271,
+    "page_label": "5-24",
+    "snippet": "This may require extracting components such as bushings, bearings, or inserts from assemblies before cleaning and magnetic particle examination. d. A water-break-free surface is required for parts to be examined by water suspension methods. If the suspension completely wets the…",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 5, Section 4, par. 5-45 (Preparation of Surface), page 5-24"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Shear Strength & Bearing Strength (Ch. 4: Aircraft Metal Structural Repair)",
+    "page": 248,
+    "page_label": "4-86",
+    "snippet": "Aircraft structural joint design involves an attempt to find the optimum strength relationship between being critical in shear and critical in bearing. These are determined by the failure mode affecting the joint. The joint is critical in shear if less than the optimum number of…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 4 (Aircraft Metal Structural Repair), \"Shear Strength & Bearing Strength\", page 4-86"
+   }
+  ],
+  "57|skin_frame_fault": [
+   {
+    "doc": "FAA AC 43.13-1B CHG 1",
+    "section": "Par. 4-50 General (Ch. 4, Sec. 4: Metal Repair Procedures)",
+    "page": 165,
+    "page_label": "4-14",
+    "snippet": "Some examples of members are the metal tubes that form engine mount and fuselage trusses and frames, beams used as wing spars, and longerons and stringers of metal-skinned fuselages and wings. Longerons and stringers are designed to carry principally axial loads, but are…",
+    "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
+    "citation": "AC 43.13-1B, Chapter 4, Section 4, par. 4-50 (General), page 4-14"
+   },
+   {
+    "doc": "FAA-H-8083-31B AMT Handbook – Airframe",
+    "section": "Wing Skin (Ch. 1: Aircraft Structures)",
+    "page": 42,
+    "page_label": "1-16",
+    "snippet": "On aircraft with stressed-skin wing design, honeycomb structured wing panels are often used as skin. A honeycomb structure is built up from a core material resembling a bee hive’s honeycomb which is laminated or sandwiched between thin outer skin sheets. Figure 1-37 illustrates…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_airframe_handbook",
+    "citation": "FAA-H-8083-31B, Chapter 1 (Aircraft Structures), \"Wing Skin\", page 1-16"
    }
   ],
   "57|structural_damage": [
@@ -2782,21 +4102,41 @@
   "72|component_malfunction": [
    {
     "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
-    "section": "Turboprop Engines (Ch. 1: Aircraft Engines)",
-    "page": 76,
-    "page_label": "1-55",
-    "snippet": "The power section assembly—contains the usual major components of a gas turbine engine (i.e., compressor, combustion chamber, turbine, and exhaust sections). 2. The reduction gear or gearbox assembly—contains those sections unique to turboprop configurations. 3. The torquemeter…",
+    "section": "Centrifugal-Flow Compressors (Ch. 1: Aircraft Engines)",
+    "page": 61,
+    "page_label": "1-40",
+    "snippet": "Shown in Figure 1-48 are the rotor and stator elements of a typical axial-flow compressor. The first stage rotor blades can be preceded by an inlet guide vane assembly that can be fixed or variable. The guide vanes direct the airflow into the first stage rotor blades at the…",
     "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
-    "citation": "FAA-H-8083-32B, Chapter 1 (Aircraft Engines), \"Turboprop Engines\", page 1-55"
+    "citation": "FAA-H-8083-32B, Chapter 1 (Aircraft Engines), \"Centrifugal-Flow Compressors\", page 1-40"
    },
    {
     "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
-    "section": "Gas Turbine Engine Bearings & Seals (Ch. 1: Aircraft Engines)",
-    "page": 74,
-    "page_label": "1-53",
-    "snippet": "Carbon seals rest against a surface provided to create a sealed bearing cavity or void; thus, the oil is prevented from leaking out along the shaft into the compressor airflow or the turbine section. [Figure 1-77] The ball or roller bearing is fitted into the bearing housing and…",
+    "section": "Axial-Flow Compressor (Ch. 1: Aircraft Engines)",
+    "page": 62,
+    "page_label": "1-41",
+    "snippet": "The main difference between variable inlet guide vane (VIGV) and a variable stator vane (VSV) is their position with regard to the rotor blades. VIGV are in front of the rotor blades, and VSV are behind the rotor blades. The angles of the inlet guide vanes and the first several…",
     "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
-    "citation": "FAA-H-8083-32B, Chapter 1 (Aircraft Engines), \"Gas Turbine Engine Bearings & Seals\", page 1-53"
+    "citation": "FAA-H-8083-32B, Chapter 1 (Aircraft Engines), \"Axial-Flow Compressor\", page 1-41"
+   }
+  ],
+  "72|engine_apu_fault": [
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Troubleshooting Turbine Engines (Ch. 10: Engine Maintenance & Operation)",
+    "page": 427,
+    "page_label": "10-59",
+    "snippet": "Included in this section are typical guidelines for locating engine malfunctions on most turbine engines. Since it would be impractical to list all the malfunctions that could occur, only the most common malfunctions are covered. A thorough knowledge of the engine systems…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 10 (Engine Maintenance & Operation), \"Troubleshooting Turbine Engines\", page 10-59"
+   },
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Engine Troubleshooting (Ch. 10: Engine Maintenance & Operation)",
+    "page": 403,
+    "page_label": "10-35",
+    "snippet": "Troubleshooting is a systematic analysis of the symptoms that indicate engine malfunction. It would be impractical to list all the malfunctions that could occur in a reciprocating engine, so only the most common malfunctions are discussed. A thorough knowledge of the engine…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 10 (Engine Maintenance & Operation), \"Engine Troubleshooting\", page 10-35"
    }
   ],
   "72|engine_power_loss": [
@@ -2859,6 +4199,26 @@
     "citation": "FAA-H-8083-30B, Chapter 2 (Regulations, Maintenance Forms, Records, & Publications), \"14 CFR Part 33—Airworthiness Standards: Aircraft Engines\", page 2-8"
    }
   ],
+  "72|seal_bearing_fault": [
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Gas Turbine Engine Bearings & Seals (Ch. 1: Aircraft Engines)",
+    "page": 74,
+    "page_label": "1-53",
+    "snippet": "Carbon seals rest against a surface provided to create a sealed bearing cavity or void; thus, the oil is prevented from leaking out along the shaft into the compressor airflow or the turbine section. [Figure 1-77] The ball or roller bearing is fitted into the bearing housing and…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 1 (Aircraft Engines), \"Gas Turbine Engine Bearings & Seals\", page 1-53"
+   },
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Turboprop Engines (Ch. 1: Aircraft Engines)",
+    "page": 76,
+    "page_label": "1-55",
+    "snippet": "The power section assembly—contains the usual major components of a gas turbine engine (i.e., compressor, combustion chamber, turbine, and exhaust sections). 2. The reduction gear or gearbox assembly—contains those sections unique to turboprop configurations. 3. The torquemeter…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 1 (Aircraft Engines), \"Turboprop Engines\", page 1-55"
+   }
+  ],
   "72|smoke_or_odor": [
    {
     "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
@@ -2919,16 +4279,67 @@
     "citation": "FAA-H-8083-32B, Chapter 10 (Engine Maintenance & Operation), \"Cylinder Compression Tests\", page 10-39"
    }
   ],
+  "73|actuator_pump_motor_fault": [
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "FADEC for an Auxiliary Power Unit (Ch. 2: Engine Fuel & Fuel Metering Systems)",
+    "page": 118,
+    "page_label": "2-36",
+    "snippet": "An APU engine uses the aircraft fuel system to supply fuel to the fuel control. An electric boost pump may be used to supply fuel under pressure to the control. The fuel usually passes through an aircraft shutoff valve that is tied to the fire detecting/extinguishing system. An…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 2 (Engine Fuel & Fuel Metering Systems), \"FADEC for an Auxiliary Power Unit\", page 2-36"
+   },
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Pumps (Ch. 2: Engine Fuel & Fuel Metering Systems)",
+    "page": 114,
+    "page_label": "2-32",
+    "snippet": "Check the engine-driven pump for leaks and security of mounting. Check the vent and drain lines for obstructions.",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 2 (Engine Fuel & Fuel Metering Systems), \"Pumps\", page 2-32"
+   }
+  ],
   "73|component_malfunction": [
    {
     "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
-    "section": "FADEC Fuel Control Propulsion Engine (Ch. 2: Engine Fuel & Fuel Metering Systems)",
-    "page": 120,
-    "page_label": "2-38",
-    "snippet": "The EEC has output driver banks that supply the control signals to engine components. Each channel of the EEC supplies the driver banks with control signals. The EEC has both volatile and nonvolatile memory to store performance and maintenance data. The EEC can control the…",
+    "section": "Flow Divider (Ch. 2: Engine Fuel & Fuel Metering Systems)",
+    "page": 127,
+    "page_label": "2-45",
+    "snippet": "[Figure 2-67] Metered fuel from the fuel control enters the inlet of the flow divider and passes through an orifice and then on to the primary nozzles. A passage in the flow divider directs fuel flow from both sides of the orifice to a chamber. This chamber contains a…",
     "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
-    "citation": "FAA-H-8083-32B, Chapter 2 (Engine Fuel & Fuel Metering Systems), \"FADEC Fuel Control Propulsion Engine\", page 2-38"
+    "citation": "FAA-H-8083-32B, Chapter 2 (Engine Fuel & Fuel Metering Systems), \"Flow Divider\", page 2-45"
    },
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Duplex Fuel Nozzle (Ch. 2: Engine Fuel & Fuel Metering Systems)",
+    "page": 126,
+    "page_label": "2-44",
+    "snippet": "The duplex fuel nozzle is widely used in present day gas turbine engines and produces two different spray patterns. As mentioned previously, its use requires a flow divider, but at the same time it offers a desirable spray pattern for combustion over a wide range of operating…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 2 (Engine Fuel & Fuel Metering Systems), \"Duplex Fuel Nozzle\", page 2-44"
+   }
+  ],
+  "73|computer_controller_fault": [
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Turbine Fuel Controls (Ch. 2: Engine Fuel & Fuel Metering Systems)",
+    "page": 115,
+    "page_label": "2-33",
+    "snippet": "The computing section of the FADEC system depends completely on sensor inputs to the electronic engine control (EEC) to meter the fuel flow. The fuel metering device meters the fuel using only outputs from the EEC. Most turbine fuel controls are quickly going to the FADEC type…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 2 (Engine Fuel & Fuel Metering Systems), \"Turbine Fuel Controls\", page 2-33"
+   },
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "FADEC Fuel Control Propulsion Engine (Ch. 2: Engine Fuel & Fuel Metering Systems)",
+    "page": 118,
+    "page_label": "2-36",
+    "snippet": "The EEC is the primary component of the FADEC engine fuel control system. The [WF/P3] EEC is a computer that controls the operation of the engine. The EEC housing contains two electronic channels (two separate computers) that are physically separated internally and is naturally…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 2 (Engine Fuel & Fuel Metering Systems), \"FADEC Fuel Control Propulsion Engine\", page 2-36"
+   }
+  ],
+  "73|engine_apu_fault": [
    {
     "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
     "section": "FADEC Fuel Control Systems (Ch. 2: Engine Fuel & Fuel Metering Systems)",
@@ -2937,6 +4348,15 @@
     "snippet": "A full authority digital electronic control (FADEC) has been developed to control fuel flow on most new turbine engine models. A true FADEC system has no hydromechanical fuel control backup system. The system uses electronic sensors that feed engine parameter information into…",
     "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
     "citation": "FAA-H-8083-32B, Chapter 2 (Engine Fuel & Fuel Metering Systems), \"FADEC Fuel Control Systems\", page 2-36"
+   },
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "FADEC Fuel Control Propulsion Engine (Ch. 2: Engine Fuel & Fuel Metering Systems)",
+    "page": 121,
+    "page_label": "2-39",
+    "snippet": "The programming plug selects the proper software in the EEC for the thrust rating of the engine. The plug attaches to the engine fan case with a lanyard. When removing the EEC, the plug remains with the engine. Each channel of the EEC has three pneumatic connections on the…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 2 (Engine Fuel & Fuel Metering Systems), \"FADEC Fuel Control Propulsion Engine\", page 2-39"
    }
   ],
   "73|fuel_nozzle_leak": [
@@ -2959,6 +4379,26 @@
     "citation": "FAA-H-8083-32B, Chapter 2 (Engine Fuel & Fuel Metering Systems), \"Pumps\", page 2-32"
    }
   ],
+  "73|sensor_switch_fault": [
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "FADEC Fuel Control Propulsion Engine (Ch. 2: Engine Fuel & Fuel Metering Systems)",
+    "page": 120,
+    "page_label": "2-38",
+    "snippet": "The EEC can control the engine thrust in two modes, which can be selected by use of a mode selection switch. In the normal mode, engine thrust is set with engine pressure ratio (EPR); in the alternate mode, thrust is set by N1. When the fuel control switch is moved from run to…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 2 (Engine Fuel & Fuel Metering Systems), \"FADEC Fuel Control Propulsion Engine\", page 2-38"
+   },
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Turbine Fuel Controls (Ch. 2: Engine Fuel & Fuel Metering Systems)",
+    "page": 115,
+    "page_label": "2-33",
+    "snippet": "The computing section of the FADEC system depends completely on sensor inputs to the electronic engine control (EEC) to meter the fuel flow. The fuel metering device meters the fuel using only outputs from the EEC. Most turbine fuel controls are quickly going to the FADEC type…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 2 (Engine Fuel & Fuel Metering Systems), \"Turbine Fuel Controls\", page 2-33"
+   }
+  ],
   "73|structural_damage": [
    {
     "doc": "FAA AC 43.13-1B CHG 1",
@@ -2977,6 +4417,46 @@
     "snippet": "DO NOT use the oxy-fuel apparatus if oil or grease is present or if damage is evident. Have the oxy-fuel apparatus cleaned and/or repaired by a qualified repair technician before it is used. b. Never use oil or grease on or around any oxy-fuel apparatus. Even a trace of oil or…",
     "url": "https://www.faa.gov/regulations_policies/advisory_circulars/index.cfm/go/document.information/documentID/99861",
     "citation": "AC 43.13-1B, Chapter 4, Section 6, par. 4-114 (Fire Protection), page 4-95"
+   }
+  ],
+  "73|valve_fault": [
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "FADEC for an Auxiliary Power Unit (Ch. 2: Engine Fuel & Fuel Metering Systems)",
+    "page": 118,
+    "page_label": "2-36",
+    "snippet": "An APU engine uses the aircraft fuel system to supply fuel to the fuel control. An electric boost pump may be used to supply fuel under pressure to the control. The fuel usually passes through an aircraft shutoff valve that is tied to the fire detecting/extinguishing system. An…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 2 (Engine Fuel & Fuel Metering Systems), \"FADEC for an Auxiliary Power Unit\", page 2-36"
+   },
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "FADEC Fuel Control Propulsion Engine (Ch. 2: Engine Fuel & Fuel Metering Systems)",
+    "page": 120,
+    "page_label": "2-38",
+    "snippet": "The EEC controls the metering valve in the fuel metering unit to supply fuel flow for combustion. [Figure 2-54] The fuel metering unit is mounted on the front face of the gearbox and is attached to the front of the fuel pump. [Figure 2-55] The EEC also sends a signal to the…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 2 (Engine Fuel & Fuel Metering Systems), \"FADEC Fuel Control Propulsion Engine\", page 2-38"
+   }
+  ],
+  "73|warning_indication_fault": [
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Fuel Quantity Indicating Units (Ch. 2: Engine Fuel & Fuel Metering Systems)",
+    "page": 128,
+    "page_label": "2-46",
+    "snippet": "A fuel counter or indicator, mounted on the instrument panel, is electrically connected to a flow meter installed in the fuel line to the engine. The fuel counter, or totalizer, is used to keep record of fuel use. When the aircraft is serviced with fuel, the counter is manually…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 2 (Engine Fuel & Fuel Metering Systems), \"Fuel Quantity Indicating Units\", page 2-46"
+   },
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Pressure Warning Signal (Ch. 2: Engine Fuel & Fuel Metering Systems)",
+    "page": 114,
+    "page_label": "2-32",
+    "snippet": "Inspect the entire installation for security of mounting and condition of the electrical, fuel, and air connections. Check the lamp by pressing the test switch to see that it lights. Check the operation by turning the battery switch on, building up pressure with the booster…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 2 (Engine Fuel & Fuel Metering Systems), \"Pressure Warning Signal\", page 2-32"
    }
   ],
   "73|wear_or_chafing": [
@@ -2999,16 +4479,27 @@
     "citation": "FAA-H-8083-32B, Chapter 2 (Engine Fuel & Fuel Metering Systems), \"Complete System\", page 2-31"
    }
   ],
-  "74|component_malfunction": [
+  "73|wiring_relay_fault": [
    {
     "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
-    "section": "Engine Indicating & Crew Alerting System (EICAS) (Ch. 4: Engine Ignition & Electrical Systems)",
-    "page": 175,
-    "page_label": "4-16",
-    "snippet": "Caution and warning lights, as well as aural tones, are incorporated. [Figure 4-29] EICAS provides full time primary engine parameters (EPR, N1, EGT) on the top, primary monitor. Advisories and warnings are also shown there. Secondary engine parameters and nonengine system…",
+    "section": "FADEC Fuel Control Propulsion Engine (Ch. 2: Engine Fuel & Fuel Metering Systems)",
+    "page": 121,
+    "page_label": "2-39",
+    "snippet": "These are the programming plug and test connector. The programming plug selects the proper software in the EEC for the thrust rating of the engine. The plug attaches to the engine fan case with a lanyard. When removing the EEC, the plug remains with the engine. Each channel of…",
     "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
-    "citation": "FAA-H-8083-32B, Chapter 4 (Engine Ignition & Electrical Systems), \"Engine Indicating & Crew Alerting System (EICAS)\", page 4-16"
+    "citation": "FAA-H-8083-32B, Chapter 2 (Engine Fuel & Fuel Metering Systems), \"FADEC Fuel Control Propulsion Engine\", page 2-39"
    },
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Hydromechanical/Electronic Fuel Control (Ch. 2: Engine Fuel & Fuel Metering Systems)",
+    "page": 118,
+    "page_label": "2-36",
+    "snippet": "The EFCU computes electrical output signals for use by the engine fuel control for scheduling engine operation within predetermined limits. The EFCU is programmed to recognize predetermined engine operating limits and to compute output signals such that these operating limits…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 2 (Engine Fuel & Fuel Metering Systems), \"Hydromechanical/Electronic Fuel Control\", page 2-36"
+   }
+  ],
+  "74|component_malfunction": [
    {
     "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
     "section": "Turbine Ignition System Inspection & Maintenance (Ch. 4: Engine Ignition & Electrical Systems)",
@@ -3017,9 +4508,87 @@
     "snippet": "Maintenance of the typical turbine engine ignition system consists primarily of inspection, test, troubleshooting, removal, and installation.",
     "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
     "citation": "FAA-H-8083-32B, Chapter 4 (Engine Ignition & Electrical Systems), \"Turbine Ignition System Inspection & Maintenance\", page 4-45"
+   },
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Igniter Plugs (Ch. 4: Engine Ignition & Electrical Systems)",
+    "page": 206,
+    "page_label": "4-47",
+    "snippet": "A good procedure to perform before disconnecting the ignition lead is to disconnect the low-voltage primary lead from the ignition exciter unit and wait at least one minute to permit the stored energy to dissipate before disconnecting the high-voltage cable from the igniter. 2.…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 4 (Engine Ignition & Electrical Systems), \"Igniter Plugs\", page 4-47"
+   }
+  ],
+  "74|engine_apu_fault": [
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Turbine Ignition System Inspection & Maintenance (Ch. 4: Engine Ignition & Electrical Systems)",
+    "page": 204,
+    "page_label": "4-45",
+    "snippet": "Maintenance of the typical turbine engine ignition system consists primarily of inspection, test, troubleshooting, removal, and installation.",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 4 (Engine Ignition & Electrical Systems), \"Turbine Ignition System Inspection & Maintenance\", page 4-45"
+   },
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Igniter Plugs (Ch. 4: Engine Ignition & Electrical Systems)",
+    "page": 206,
+    "page_label": "4-47",
+    "snippet": "Disconnect ignition leads from igniter plugs. A good procedure to perform before disconnecting the ignition lead is to disconnect the low-voltage primary lead from the ignition exciter unit and wait at least one minute to permit the stored energy to dissipate before…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 4 (Engine Ignition & Electrical Systems), \"Igniter Plugs\", page 4-47"
+   }
+  ],
+  "74|warning_indication_fault": [
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Engine Indicating & Crew Alerting System (EICAS) (Ch. 4: Engine Ignition & Electrical Systems)",
+    "page": 175,
+    "page_label": "4-16",
+    "snippet": "An engine indicating and crew alerting system (EICAS) performs many of the same functions as an ECAM system. The objective is still to monitor the aircraft systems for the pilot. All EICAS display engine, as well as airframe, parameters. Traditional gauges are not utilized…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 4 (Engine Ignition & Electrical Systems), \"Engine Indicating & Crew Alerting System (EICAS)\", page 4-16"
+   },
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "FADEC System Description (Ch. 4: Engine Ignition & Electrical Systems)",
+    "page": 173,
+    "page_label": "4-14",
+    "snippet": "As a control device, the system performs self-diagnostics to determine overall system status and conveys this information to the pilot by various indicators on the health status annunciator (HSA) panel. PowerLink is able to withstand storage temperature extremes and operate at…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 4 (Engine Ignition & Electrical Systems), \"FADEC System Description\", page 4-14"
+   }
+  ],
+  "75|actuator_pump_motor_fault": [
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Airflow Controls (Ch. 6: Lubrication & Cooling Systems)",
+    "page": 257,
+    "page_label": "6-11",
+    "snippet": "When the grounded center contact arm is positioned by the bimetal element so that it touches one of the floating contact arms, an electric circuit to the oil cooler exit-flap actuator motor is completed, causing the actuator to operate and position the oil cooler air-exit flap.…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 6 (Lubrication & Cooling Systems), \"Airflow Controls\", page 6-11"
+   },
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Ground-Boosted Turbosupercharger System (Ch. 3: Induction & Exhaust Systems)",
+    "page": 138,
+    "page_label": "3-10",
+    "snippet": "Oil hoses return oil from the turbochargers to the oil scavenge pump located on the rear of the engine. The one-way check valve in the oil supply line prevents oil from draining into the turbocharger while the engine is not operating. Piston ring-like oil seals are used on the…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 3 (Induction & Exhaust Systems), \"Ground-Boosted Turbosupercharger System\", page 3-10"
    }
   ],
   "75|component_malfunction": [
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Turbocharger System Troubleshooting (Ch. 3: Induction & Exhaust Systems)",
+    "page": 143,
+    "page_label": "3-15",
+    "snippet": "These troubleshooting procedures are presented as a guide only and should not be substituted for applicable Refer to differential controller in the trouble column Refer to differential controller in the trouble column Replace linkage and adjust waste gate for proper opening and…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 3 (Induction & Exhaust Systems), \"Turbocharger System Troubleshooting\", page 3-15"
+   },
    {
     "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
     "section": "Troubleshooting Oil Systems (Ch. 6: Lubrication & Cooling Systems)",
@@ -3028,15 +4597,26 @@
     "snippet": "The outline of malfunctions and their remedies listed in Figure 6-30 can expedite troubleshooting of the lubrication system. The purpose of this section is to present typical troubles. It is not intended to imply that any of the troubles are exactly as they may be in a…",
     "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
     "citation": "FAA-H-8083-32B, Chapter 6 (Lubrication & Cooling Systems), \"Troubleshooting Oil Systems\", page 6-18"
-   },
+   }
+  ],
+  "75|computer_controller_fault": [
    {
     "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
     "section": "Turbocharger System Troubleshooting (Ch. 3: Induction & Exhaust Systems)",
     "page": 143,
     "page_label": "3-15",
-    "snippet": "Figure 3-23 includes some of the most common turbocharger system malfunctions together with their cause and repair. These troubleshooting procedures are presented as a guide only and should not be substituted for applicable Refer to differential controller in the trouble column…",
+    "snippet": "These troubleshooting procedures are presented as a guide only and should not be substituted for applicable Refer to differential controller in the trouble column Refer to differential controller in the trouble column Replace linkage and adjust waste gate for proper opening and…",
     "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
     "citation": "FAA-H-8083-32B, Chapter 3 (Induction & Exhaust Systems), \"Turbocharger System Troubleshooting\", page 3-15"
+   },
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "A Typical Turbosupercharger System (Ch. 3: Induction & Exhaust Systems)",
+    "page": 141,
+    "page_label": "3-13",
+    "snippet": "One side of the diaphragm in the differential pressure controller senses air pressure upstream from the throttle; the other side samples pressure on the cylinder side of the throttle valve. [Figure 3-18] At the “wide open” throttle position when the density controller controls…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 3 (Induction & Exhaust Systems), \"A Typical Turbosupercharger System\", page 3-13"
    }
   ],
   "75|false_warning": [
@@ -3059,6 +4639,66 @@
     "citation": "FAA-H-8083-32B, Chapter 6 (Lubrication & Cooling Systems), \"Accessory Zone Cooling\", page 6-38"
    }
   ],
+  "75|sensor_switch_fault": [
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Lubrication System Instrumentation (Ch. 6: Lubrication & Cooling Systems)",
+    "page": 271,
+    "page_label": "6-25",
+    "snippet": "An electronic sensor is placed to send a signal to the Full Authority Digital Engine Control (FADEC) control unit and through the Engine Indicating and Crew Alerting System (EICAS) computers, and on to the displays in the flight deck. [Figure 6-40] The tank quantity transmitter…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 6 (Lubrication & Cooling Systems), \"Lubrication System Instrumentation\", page 6-25"
+   },
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Cylinder Temperature Indicating Systems (Ch. 6: Lubrication & Cooling Systems)",
+    "page": 284,
+    "page_label": "6-38",
+    "snippet": "When operating the engine, all of the electrical connections should be checked if the cylinder head temperature pointer fluctuates.",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 6 (Lubrication & Cooling Systems), \"Cylinder Temperature Indicating Systems\", page 6-38"
+   }
+  ],
+  "75|valve_fault": [
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "A Typical Turbosupercharger System (Ch. 3: Induction & Exhaust Systems)",
+    "page": 141,
+    "page_label": "3-13",
+    "snippet": "At “part throttle” position, the air differential is increased, opening the bleed valve to bleed oil to the engine crankcase and reposition the waste gate piston. Thus, the two controllers operate independently to control turbocharger operation at all positions of the throttle.…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 3 (Induction & Exhaust Systems), \"A Typical Turbosupercharger System\", page 3-13"
+   },
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Induction System Icing (Ch. 3: Induction & Exhaust Systems)",
+    "page": 132,
+    "page_label": "3-4",
+    "snippet": "If the temperature in this air falls below freezing and moisture is present, ice forms on the throttles and nearby units restricting the airflow to the engine causing it to quit. Throttle ice may be minimized on engines equipped with controllable-pitch propellers by the use of a…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 3 (Induction & Exhaust Systems), \"Induction System Icing\", page 3-4"
+   }
+  ],
+  "75|warning_indication_fault": [
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Oil Pressure Gauge (Ch. 6: Lubrication & Cooling Systems)",
+    "page": 254,
+    "page_label": "6-8",
+    "snippet": "This gauge warns of possible engine failure caused by an exhausted oil supply, failure of the oil pump, burned-out bearings, ruptured oil lines, or other causes that may be indicated by a loss of oil pressure. One type of oil pressure gauge uses a Bourdon-tube mechanism that…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 6 (Lubrication & Cooling Systems), \"Oil Pressure Gauge\", page 6-8"
+   },
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Lubrication System Instrumentation (Ch. 6: Lubrication & Cooling Systems)",
+    "page": 271,
+    "page_label": "6-25",
+    "snippet": "An electronic sensor is placed to send a signal to the Full Authority Digital Engine Control (FADEC) control unit and through the Engine Indicating and Crew Alerting System (EICAS) computers, and on to the displays in the flight deck. [Figure 6-40] The tank quantity transmitter…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 6 (Lubrication & Cooling Systems), \"Lubrication System Instrumentation\", page 6-25"
+   }
+  ],
   "75|wear_or_chafing": [
    {
     "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
@@ -3077,6 +4717,26 @@
     "snippet": "The induction system should be checked for cracks and leaks during all regularly scheduled engine inspections. The units of the system should be checked for security of mounting. The system should be kept clean at all times, since pieces of rags or paper can restrict the airflow…",
     "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
     "citation": "FAA-H-8083-32B, Chapter 3 (Induction & Exhaust Systems), \"Induction System Inspection & Maintenance\", page 3-4"
+   }
+  ],
+  "75|wiring_relay_fault": [
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Oil Temperature Bulbs (Ch. 6: Lubrication & Cooling Systems)",
+    "page": 261,
+    "page_label": "6-15",
+    "snippet": "They relay an indication of engine oil inlet temperature to the oil temperature indicators mounted on the instrument panel. Temperature bulbs can be replaced by removing the safety wire and disconnecting the wire leads from the temperature bulbs, then removing the temperature…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 6 (Lubrication & Cooling Systems), \"Oil Temperature Bulbs\", page 6-15"
+   },
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Cylinder Temperature Indicating Systems (Ch. 6: Lubrication & Cooling Systems)",
+    "page": 283,
+    "page_label": "6-37",
+    "snippet": "Prior to operating the engine, provided it is at ambient temperature, the cylinder head temperature indicator indicates the free outside air temperature; that is one test for determining that the instrument is working correctly. The cover glass of the cylinder head temperature…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 6 (Lubrication & Cooling Systems), \"Cylinder Temperature Indicating Systems\", page 6-37"
    }
   ],
   "76|incorrect_installation": [
@@ -3099,7 +4759,27 @@
     "citation": "FAA-H-8083-32B, Chapter 10 (Engine Maintenance & Operation), \"Engine Troubleshooting\", page 10-36"
    }
   ],
-  "77|component_malfunction": [
+  "77|sensor_switch_fault": [
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Analyzer Safety Precautions (Ch. 10: Engine Maintenance & Operation)",
+    "page": 431,
+    "page_label": "10-63",
+    "snippet": "Do not leave heater probe assemblies in the exhaust nozzle during engine run-up. 6. Never allow the heater probes to go over 900 °C (1,652 °F). Exceeding these temperatures results in damage to the jetcal analyzer and heater probe assemblies.",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 10 (Engine Maintenance & Operation), \"Analyzer Safety Precautions\", page 10-63"
+   },
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "FADEC Fuel Control Propulsion Engine (Ch. 2: Engine Fuel & Fuel Metering Systems)",
+    "page": 120,
+    "page_label": "2-38",
+    "snippet": "The EEC can control the engine thrust in two modes, which can be selected by use of a mode selection switch. In the normal mode, engine thrust is set with engine pressure ratio (EPR); in the alternate mode, thrust is set by N1. When the fuel control switch is moved from run to…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 2 (Engine Fuel & Fuel Metering Systems), \"FADEC Fuel Control Propulsion Engine\", page 2-38"
+   }
+  ],
+  "77|wiring_relay_fault": [
    {
     "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
     "section": "FADEC Fuel Control Propulsion Engine (Ch. 2: Engine Fuel & Fuel Metering Systems)",
@@ -3112,11 +4792,31 @@
    {
     "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
     "section": "Engine Troubleshooting (Ch. 10: Engine Maintenance & Operation)",
-    "page": 403,
-    "page_label": "10-35",
-    "snippet": "Troubleshooting is a systematic analysis of the symptoms that indicate engine malfunction. It would be impractical to list all the malfunctions that could occur in a reciprocating engine, so only the most common malfunctions are discussed. A thorough knowledge of the engine…",
+    "page": 404,
+    "page_label": "10-36",
+    "snippet": "• Mixture too rich; indicated by sluggish engine operation, red exhaust flame, and black smoke. • Mixture too lean; indicated by overheating or backfiring. • Leaks in induction system. • Defective spark plugs. • Improper grade of fuel. • Magneto breaker points not working…",
     "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
-    "citation": "FAA-H-8083-32B, Chapter 10 (Engine Maintenance & Operation), \"Engine Troubleshooting\", page 10-35"
+    "citation": "FAA-H-8083-32B, Chapter 10 (Engine Maintenance & Operation), \"Engine Troubleshooting\", page 10-36"
+   }
+  ],
+  "78|actuator_pump_motor_fault": [
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Thrust Reversers (Ch. 3: Induction & Exhaust Systems)",
+    "page": 155,
+    "page_label": "3-27",
+    "snippet": "Actuating power is generally pneumatic or hydraulic and uses gearboxes, flexdrives, screwjacks, control valves, and air or hydraulic motors to deploy or stow the thrust reverser systems. The systems are locked in the stowed position until commanded to deploy by the flight deck.…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 3 (Induction & Exhaust Systems), \"Thrust Reversers\", page 3-27"
+   },
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Ground-Boosted Turbosupercharger System (Ch. 3: Induction & Exhaust Systems)",
+    "page": 138,
+    "page_label": "3-10",
+    "snippet": "Oil hoses return oil from the turbochargers to the oil scavenge pump located on the rear of the engine. The one-way check valve in the oil supply line prevents oil from draining into the turbocharger while the engine is not operating. Piston ring-like oil seals are used on the…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 3 (Induction & Exhaust Systems), \"Ground-Boosted Turbosupercharger System\", page 3-10"
    }
   ],
   "78|component_malfunction": [
@@ -3199,7 +4899,16 @@
     "citation": "FAA-H-8083-32B, Chapter 3 (Induction & Exhaust Systems), \"Exhaust System Inspection\", page 3-23"
    }
   ],
-  "79|component_malfunction": [
+  "79|computer_controller_fault": [
+   {
+    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
+    "section": "Lubrication System Instrumentation (Ch. 6: Lubrication & Cooling Systems)",
+    "page": 271,
+    "page_label": "6-25",
+    "snippet": "An electronic sensor is placed to send a signal to the Full Authority Digital Engine Control (FADEC) control unit and through the Engine Indicating and Crew Alerting System (EICAS) computers, and on to the displays in the flight deck. [Figure 6-40] The tank quantity transmitter…",
+    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
+    "citation": "FAA-H-8083-32B, Chapter 6 (Lubrication & Cooling Systems), \"Lubrication System Instrumentation\", page 6-25"
+   },
    {
     "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
     "section": "Troubleshooting Oil Systems (Ch. 6: Lubrication & Cooling Systems)",
@@ -3208,15 +4917,6 @@
     "snippet": "The outline of malfunctions and their remedies listed in Figure 6-30 can expedite troubleshooting of the lubrication system. The purpose of this section is to present typical troubles. It is not intended to imply that any of the troubles are exactly as they may be in a…",
     "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
     "citation": "FAA-H-8083-32B, Chapter 6 (Lubrication & Cooling Systems), \"Troubleshooting Oil Systems\", page 6-18"
-   },
-   {
-    "doc": "FAA-H-8083-32B AMT Handbook – Powerplant",
-    "section": "Requirements for Turbine Engine Lubricants (Ch. 6: Lubrication & Cooling Systems)",
-    "page": 265,
-    "page_label": "6-19",
-    "snippet": "Compatibility—most turbine oil is compatible with other oils that meet the same military specification. But, most engine manufacturers do not recommend the indiscriminate mixing of approved oil brands and this is not a generally accepted practice. 6. Seal Wear—essential for the…",
-    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_powerplant_handbook",
-    "citation": "FAA-H-8083-32B, Chapter 6 (Lubrication & Cooling Systems), \"Requirements for Turbine Engine Lubricants\", page 6-19"
    }
   ],
   "79|low_pressure": [
@@ -3249,15 +4949,6 @@
    "snippet": "It provides information concerning the maintenance, including troubleshooting and repair, of the aircraft and systems on the aircraft. The CMM, on the other hand, is focused on a specific item or component, such as hydraulic pump, generator, or thrust reverser. It provides the…",
    "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_general_handbook",
    "citation": "FAA-H-8083-30B, Chapter 2 (Regulations, Maintenance Forms, Records, & Publications), \"Manufacturers’ Published Data\", page 2-32"
-  },
-  {
-   "doc": "FAA-H-8083-30B AMT Handbook – General",
-   "section": "14 CFR Part 45—Identification and Registration Marking (Ch. 2: Regulations, Maintenance Forms, Records, & Publications)",
-   "page": 58,
-   "page_label": "2-9",
-   "snippet": "Maintenance instructions: Such as recommended inspection/maintenance periods in which each of the major alteration components are inspected, cleaned, lubricated, adjusted, and tested, including applicable wear tolerances and work recommended at each scheduled maintenance period.…",
-   "url": "https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/amt_general_handbook",
-   "citation": "FAA-H-8083-30B, Chapter 2 (Regulations, Maintenance Forms, Records, & Publications), \"14 CFR Part 45—Identification and Registration Marking\", page 2-9"
   }
  ]
 }

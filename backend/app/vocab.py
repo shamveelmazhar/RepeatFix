@@ -242,6 +242,25 @@ FAILURE_MODES: list[FailureMode] = [
     FailureMode("low_pressure", "Low pressure (bottle, tire or system)", None, r"low (pressure|press\b)"),
     FailureMode("out_of_adjustment", "Out of adjustment, binding or needs lubrication", None,
                 r"out of (adjust|rig)|binding|\bstiff\b|lack of lub"),
+    # The part that failed, for SDR reports that only say "failed" or "inoperative".
+    # No text pattern: sdr.py picks these from the reported part name, so ASRS
+    # narratives are not affected. Names follow the FAA AMT Handbooks.
+    FailureMode("fire_detection_fault", "Fire or overheat detection fault", None),
+    FailureMode("warning_indication_fault", "Warning message or indicator fault", None),
+    FailureMode("battery_power_fault", "Battery or power supply fault", None),
+    FailureMode("lighting_fault", "Light, bulb or sign fault", None),
+    FailureMode("door_latch_fault", "Door, latch or handle fault", None),
+    FailureMode("floor_panel_fault", "Floor panel or seat track defect", None),
+    FailureMode("skin_frame_fault", "Skin, frame or fitting defect", None),
+    FailureMode("window_fault", "Window or windshield fault", None),
+    FailureMode("valve_fault", "Valve fault", None),
+    FailureMode("sensor_switch_fault", "Sensor, switch or probe fault", None),
+    FailureMode("computer_controller_fault", "Computer, controller or radio fault", None),
+    FailureMode("actuator_pump_motor_fault", "Actuator, pump or motor fault", None),
+    FailureMode("wiring_relay_fault", "Wiring, connector or relay fault", None),
+    FailureMode("seal_bearing_fault", "Seal, bearing or hardware failed", None),
+    FailureMode("landing_gear_part_fault", "Landing gear, wheel or brake part fault", None),
+    FailureMode("engine_apu_fault", "Engine or APU malfunction", None),
     # Last-resort fallbacks driven by the ASRS "Problem" field.
     FailureMode("component_malfunction", "Component malfunction", None),
     FailureMode("other", "Other / not classified", None),

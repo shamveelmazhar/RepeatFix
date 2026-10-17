@@ -2,19 +2,20 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { useOpenCard } from "@/components/CardViewer";
+import { CardLink, useOpenCard } from "@/components/CardViewer";
 import { AlertIcon, BookIcon, CameraIcon, CheckIcon, HistoryIcon, SearchIcon } from "@/components/icons";
 import { AtaTag, Button, Panel, Skeleton, StatusBadge, formatDate } from "@/components/ui";
 import { type AssistResult, USE_MOCKS, api } from "@/lib/api";
 import { useRuntime } from "@/lib/runtime";
 import { failureModeLabel } from "@/lib/mock";
-import type { WorkOrder } from "@/lib/types";
+import type { JobCard, WorkOrder } from "@/lib/types";
 
 // Real write-ups from the FAA SDR records: N926NK fume events, N2193J fire loop faults, N3760C exit lights.
+// Picking one also picks its aircraft, so the repeat alert counts that tail's history.
 const EXAMPLES = [
-  "FUME EVENT ON DESCENT IN COCKPIT",
-  "ENG 2 FIRE LOOP B FAULT",
-  "FOUND FWD LH EMERG EXIT LIGHTS INOP",
+  { text: "FUME EVENT ON DESCENT IN COCKPIT", tail: "N926NK" },
+  { text: "ENG 2 FIRE LOOP B FAULT", tail: "N2193J" },
+  { text: "FOUND FWD LH EMERG EXIT LIGHTS INOP", tail: "N3760C" },
 ];
 
 export default function FixAFaultPage() {
@@ -25,6 +26,7 @@ export default function FixAFaultPage() {
   const [loading, setLoading] = useState(false);
   const [reading, setReading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [errorTitle, setErrorTitle] = useState("Couldn't get an answer");
   const [result, setResult] = useState<AssistResult | null>(null);
   const [askedType, setAskedType] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -59,6 +61,7 @@ export default function FixAFaultPage() {
     if (!text.trim()) return;
     setLoading(true);
     setError(null);
+    setErrorTitle("Couldn't get an answer");
     setResult(null);
     try {
       setResult(await api.assist(text, asset || null, aircraftType || null));
@@ -74,6 +77,7 @@ export default function FixAFaultPage() {
     if (!file) return;
     setReading(true);
     setError(null);
+    setErrorTitle("Couldn't read the photo");
     try {
       const card = await api.ingestImage(file);
       setText(card.raw_text || card.symptom);
@@ -163,12 +167,15 @@ export default function FixAFaultPage() {
             <span className="text-sm text-muted">Try:</span>
             {EXAMPLES.map((ex) => (
               <button
-                key={ex}
+                key={ex.text}
                 type="button"
-                onClick={() => setText(ex)}
+                onClick={() => {
+                  setText(ex.text);
+                  pickTail(ex.tail);
+                }}
                 className="glass-inset rounded-full px-3 py-1 text-sm text-muted transition-colors hover:border-accent hover:text-accent"
               >
-                {ex}
+                {ex.text}
               </button>
             ))}
           </div>
@@ -201,7 +208,7 @@ export default function FixAFaultPage() {
         <div role="alert" className="flex items-start gap-3 rounded-xl border border-critical/30 bg-critical-soft p-4 text-critical">
           <AlertIcon className="mt-0.5 shrink-0" />
           <div>
-            <p className="font-semibold">Couldn&apos;t get an answer</p>
+            <p className="font-semibold">{errorTitle}</p>
             <p>{error}</p>
           </div>
         </div>
@@ -314,7 +321,7 @@ function Results({
             <p className="text-muted">No similar past fixes found.</p>
           ) : (
             <ul className="space-y-3">
-              {result.similar.map(({ card, score }) => (
+              {withFixFirst(result.similar).map(({ card, score }) => (
                 <li key={card.id}>
                   <button
                     onClick={() => openCard(card.id)}
@@ -354,9 +361,7 @@ function Results({
                       <p className="mt-1 flex flex-wrap gap-1.5 text-sm text-muted">
                         Based on:
                         {h.evidence_card_ids.map((id) => (
-                          <button key={id} onClick={() => openCard(id)} className="font-medium text-accent underline underline-offset-2">
-                            {id}
-                          </button>
+                          <CardLink key={id} id={id} className="font-medium text-accent underline underline-offset-2" />
                         ))}
                       </p>
                     ) : (
@@ -535,4 +540,9 @@ function WorkOrderPanel({ id, initial, onReset }: { id: string; initial: WorkOrd
       </div>
     </Panel>
   );
+}
+
+/** Past cards that record what was done come first: the fix is what a technician is looking for. Order is kept otherwise. */
+function withFixFirst<T extends { card: JobCard }>(similar: T[]): T[] {
+  return [...similar].sort((a, b) => Number(!!b.card.action_taken) - Number(!!a.card.action_taken));
 }

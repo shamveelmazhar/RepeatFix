@@ -3,18 +3,26 @@
 import { useEffect, useState } from "react";
 import { BoltIcon, ChipIcon, ClockIcon, CoinIcon, FileIcon, RepeatIcon, TargetIcon } from "@/components/icons";
 import { Panel, StatTile } from "@/components/ui";
-import { USE_MOCKS, api } from "@/lib/api";
+import { api } from "@/lib/api";
 import { DEFAULT_GPU, servingLabel, shortModel } from "@/lib/runtime";
 import type { Metrics } from "@/lib/types";
+import insights from "@/mocks/insights.json";
+import fullSet from "@/mocks/metrics.json";
+
+// Measured on the full FAA SDR build by scripts/build_insights.py, so it shows in every mode.
+const NOT_STICK = insights.fix_did_not_stick;
+// The live backend only loads the 40-aircraft demo slice, so the full-set counts come from the build too.
+const FULL_CARDS = fullSet.cards_processed;
+const FULL_REPEATS = fullSet.repeat_groups_found;
 
 const STEPS = [
   {
     title: "Read the logs",
-    body: "Messy write-ups, abbreviations and photos of log entries are turned into clean job cards: aircraft, ATA chapter, component, symptom, fix, parts, downtime.",
+    body: "Messy write-ups and abbreviations are turned into clean job cards: aircraft, ATA chapter, component, symptom, fix and parts.",
   },
   {
     title: "Find the repeats",
-    body: "Job cards are grouped by aircraft and problem. Counts, days between failures and downtime are plain arithmetic, so every number can be checked.",
+    body: "Job cards are grouped by aircraft and problem. Counts and days between failures are plain arithmetic, so every number can be checked.",
   },
   {
     title: "Help with the next fault",
@@ -51,7 +59,7 @@ export default function ResultsPage() {
       <header>
         <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Results</h1>
         <p className="mt-2 max-w-2xl text-lg text-muted">
-          Measured numbers, not claims. How accurate RepeatFix is, what it found, and what it costs to run.
+          Measured numbers, not claims: what RepeatFix found in real FAA records, and how it runs.
         </p>
       </header>
 
@@ -62,39 +70,46 @@ export default function ResultsPage() {
       )}
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <StatTile tint="peach" icon={<TargetIcon />}
-          loading={!m}
-          label="Agreement with parser"
-          value={m && pct(m.extraction_field_accuracy)}
-          sub={m ? `Model vs our rule-based parser's labels, on ${m.labelled_cards} job cards` : ""}
+        <StatTile tint="peach" icon={<RepeatIcon />}
+          label="Fixes that didn't stick"
+          value={NOT_STICK.share === null ? null : `${Math.round(NOT_STICK.share * 100)}%`}
+          sub={`${NOT_STICK.came_back.toLocaleString()} of ${NOT_STICK.fixes.toLocaleString()} recorded fixes: the same problem came back on the same aircraft within ${NOT_STICK.window_days} days`}
         />
-        <StatTile tint="sand" icon={<FileIcon />} loading={!m} label="Job cards processed" value={m && m.cards_processed.toLocaleString()} />
+        <StatTile tint="sand" icon={<FileIcon />}
+          label="Job cards processed"
+          value={FULL_CARDS.toLocaleString()}
+          sub="FAA SDR reports 2024 to 2026 and NASA ASRS reports"
+        />
         <StatTile tint="slate" icon={<RepeatIcon />}
-          loading={!m}
           label="Repeat problems found"
-          value={m && m.repeat_groups_found.toLocaleString()}
-          sub="Same aircraft, ATA chapter and problem, 7+ days apart"
+          value={FULL_REPEATS.toLocaleString()}
+          sub={`In all ${FULL_CARDS.toLocaleString()} reports: same aircraft, ATA chapter and problem, 7+ days apart`}
         />
-        <StatTile tint="sand" icon={<ClockIcon />}
-          loading={!m}
-          label="Time to answer a fault"
-          value={m && (m.p50_latency_ms === null ? null : `${(m.p50_latency_ms / 1000).toFixed(1)} s`)}
-          sub="Typical (median) time"
-        />
-        <StatTile tint="slate" icon={<BoltIcon />} loading={!m} label="Generation speed" value={m && (m.tokens_per_s === null ? null : `${Math.round(m.tokens_per_s)} tokens/s`)} />
-        <StatTile tint="peach" icon={<CoinIcon />}
-          loading={!m}
-          label="Cost per 100 job cards"
-          value={m && (m.cost_per_100_cards_usd === null ? null : `$${m.cost_per_100_cards_usd.toFixed(2)}`)}
-          sub="Token Factory bills in points, not dollars"
-        />
+        {/* Model numbers show once the benchmark on AMD Token Factory has measured them. */}
+        {m?.extraction_field_accuracy != null && (
+          <StatTile tint="peach" icon={<TargetIcon />}
+            label="Agreement with parser"
+            value={pct(m.extraction_field_accuracy)}
+            sub={`Model vs our rule-based parser's labels, on ${m.labelled_cards} job cards`}
+          />
+        )}
+        {m?.p50_latency_ms != null && (
+          <StatTile tint="sand" icon={<ClockIcon />}
+            label="Time to answer a fault"
+            value={`${(m.p50_latency_ms / 1000).toFixed(1)} s`}
+            sub="Typical (median) time"
+          />
+        )}
+        {m?.tokens_per_s != null && (
+          <StatTile tint="slate" icon={<BoltIcon />} label="Generation speed" value={`${Math.round(m.tokens_per_s)} tokens/s`} />
+        )}
+        {m?.cost_per_100_cards_usd != null && (
+          <StatTile tint="peach" icon={<CoinIcon />}
+            label="Cost per 100 job cards"
+            value={`$${m.cost_per_100_cards_usd.toFixed(2)}`}
+          />
+        )}
       </div>
-
-      {USE_MOCKS && (
-        <p className="text-sm text-muted">
-          Numbers marked &ldquo;Not measured yet&rdquo; will be filled in by the benchmark run on AMD Token Factory.
-        </p>
-      )}
 
       <div className="grid gap-5 lg:grid-cols-[2fr_1fr]">
         <Panel title="How it works">
