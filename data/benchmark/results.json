@@ -1,0 +1,155 @@
+{
+  "model": "DeepSeek-V4-Flash",
+  "measured_at": "2026-10-17 23:55",
+  "labelled_cards": 20,
+  "extraction_field_accuracy": 0.675,
+  "failure_mode_agreement": 0.55,
+  "ata_chapter_agreement": 0.8,
+  "ata_chapter_agreement_strict": 0.6,
+  "extraction_p50_ms": 6892,
+  "assist_runs": 5,
+  "assist_total_ms_all_runs": [
+    30202,
+    15893,
+    15315,
+    17614,
+    12323
+  ],
+  "p50_latency_ms": 15893,
+  "tokens_per_s": 19.8,
+  "differences": [
+    {
+      "id": "asrs-2022066",
+      "model": [
+        "manual_or_procedure_gap",
+        "78"
+      ],
+      "parser": [
+        "thrust_reverser_fault",
+        "78"
+      ]
+    },
+    {
+      "id": "asrs-2050589",
+      "model": [
+        "panel_missing",
+        "78"
+      ],
+      "parser": [
+        "panel_missing",
+        "52"
+      ]
+    },
+    {
+      "id": "asrs-2051190",
+      "model": [
+        "incorrect_installation",
+        "32"
+      ],
+      "parser": [
+        "brake_lockup",
+        "32"
+      ]
+    },
+    {
+      "id": "asrs-2060780",
+      "model": [
+        "ground_handling",
+        null
+      ],
+      "parser": [
+        "hazmat_handling",
+        "00"
+      ]
+    },
+    {
+      "id": "asrs-2024499",
+      "model": [
+        "hazmat_handling",
+        "26"
+      ],
+      "parser": [
+        "hazmat_handling",
+        "00"
+      ]
+    },
+    {
+      "id": "asrs-2061958",
+      "model": [
+        "other",
+        "53"
+      ],
+      "parser": [
+        "structural_damage",
+        "53"
+      ]
+    },
+    {
+      "id": "asrs-2008352",
+      "model": [
+        "manual_or_procedure_gap",
+        "78"
+      ],
+      "parser": [
+        "thrust_reverser_fault",
+        "78"
+      ]
+    },
+    {
+      "id": "asrs-2000321",
+      "model": [
+        "generator_fault",
+        "24"
+      ],
+      "parser": [
+        "manual_or_procedure_gap",
+        "24"
+      ]
+    },
+    {
+      "id": "asrs-2017070",
+      "model": [
+        "fuel_nozzle_leak",
+        "28"
+      ],
+      "parser": [
+        "fuel_nozzle_leak",
+        "73"
+      ]
+    },
+    {
+      "id": "asrs-2028082",
+      "model": [
+        "incorrect_installation",
+        "32"
+      ],
+      "parser": [
+        "ground_handling",
+        "00"
+      ]
+    },
+    {
+      "id": "asrs-2024817",
+      "model": [
+        "incorrect_installation",
+        "32"
+      ],
+      "parser": [
+        "gear_rigging_error",
+        "32"
+      ]
+    },
+    {
+      "id": "asrs-2008358",
+      "model": [
+        "component_malfunction",
+        "26"
+      ],
+      "parser": [
+        "fire_bottle_discharge",
+        "26"
+      ]
+    }
+  ],
+  "note": "Agreement with the ASRS parser labels, not human labels. ATA '00' and null count as the same."
+}
