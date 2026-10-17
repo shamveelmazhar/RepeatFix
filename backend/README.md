@@ -16,7 +16,7 @@ Settings come from a `.env` file in `backend/` or the repo root. It's git-ignore
 |---|---|
 | `VLLM_BASE_URL` | the model API's `/v1` address (AMD Token Factory) |
 | `VLLM_API_KEY` | the key for it |
-| `VLLM_MODEL` | model id; we run `DeepSeek-V4-Flash` (the code default is `Qwen/Qwen2.5-VL-7B-Instruct`) |
+| `VLLM_MODEL` | model id; we run `DeepSeek-V4-Flash`, which is also the code default |
 | `GPU_LABEL` | where the model runs, shown in the app, e.g. `AMD GPUs via AMD Token Factory` |
 | `ALLOWED_ORIGINS` | extra websites allowed to call the API, comma-separated (e.g. the Vercel URL) |
 | `ASSIST_BUDGET_S` | optional, default `45`: the total time limit for `/api/assist` in seconds, after which it falls back to the closest saved answer |

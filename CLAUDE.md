@@ -66,7 +66,7 @@ scripts/        data download notes, benchmark scripts
 | Var | Used by | Meaning |
 |---|---|---|
 | `VLLM_BASE_URL`, `VLLM_API_KEY` | backend | OpenAI-compatible model API (AMD Token Factory) and its key |
-| `VLLM_MODEL` | backend | model id; the code default is `Qwen/Qwen2.5-VL-7B-Instruct`, we run `DeepSeek-V4-Flash` |
+| `VLLM_MODEL` | backend | model id; we run `DeepSeek-V4-Flash`, which is also the code default |
 | `GPU_LABEL` | backend | where the model runs, shown in the UI, e.g. `AMD GPUs via AMD Token Factory` |
 | `NEXT_PUBLIC_API_URL` | frontend | Public URL of the FastAPI service |
 | `NEXT_PUBLIC_USE_MOCKS` | frontend | `true` = use fixtures |
