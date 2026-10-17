@@ -1,5 +1,16 @@
 # RepeatFix — Hackathon Build Plan (AMD Developer Hackathon: ACT III)
 
+## What changed since we wrote this plan
+We wrote this on Wed 14 Oct. The parts below that changed:
+- **No MI300X.** Our AMD Developer Cloud credits never arrived, so there's no droplet and no vLLM of our own. Every model call goes to **AMD Token Factory**, the model API the event is hosted on (the lablab FAQ says developers need "just the api from the tokenfactory"). We run DeepSeek-V4-Flash there and say "AMD GPUs via AMD Token Factory", never MI300X.
+- **No Evolus.** Its partner prize needs our own vLLM endpoint on AMD Developer Cloud, so we dropped it and focus on the Intelligent Industry track.
+- **No embeddings.** Token Factory has no embedding model, so search is TF-IDF and BM25 on the CPU.
+- **Saved answers.** Token Factory allows about 20 requests a minute, and each fault answer makes 3 model calls. The backend saves good answers and falls back to them when the model is busy, and the app says so when it does.
+- **Accuracy** is measured today as agreement with our rule-based parser's labels, not hand labels, and the Results screen says that.
+- **Cost per 100 cards** stays empty: Token Factory bills in points, not dollars.
+
+The rest of this file is the original plan.
+
 ## Context
 We're entering **AMD Developer Hackathon: ACT III** (lablab.ai, online build 12–17 Oct 2026, on-site in Italy 17–18 Oct, **submissions close Sun 18 Oct 15:00 UTC**; aim to submit by 10:00 UTC). Our project is **RepeatFix**, an AI tool that finds repeat failures hidden in messy maintenance logs and helps technicians fix the next breakdown faster, using past fixes and cited procedures, all running on AMD MI300X. My earlier research write-up ("RepeatFix_ Repeat-Failure Hunter…") picked this idea (scored 32/35) and set the stack: Qwen2.5-VL-7B on vLLM-ROCm on MI300X, FastAPI, pandas stats, Evolus for the partner prize.
 

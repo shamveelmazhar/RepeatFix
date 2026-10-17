@@ -1,6 +1,6 @@
 # Samples
 
-Small, committed data samples and the hand-labelled ground truth (`ground_truth.jsonl`, 20 cards). Full downloads go in `data/raw/`, which is git-ignored. See `scripts/download_data.md`.
+Small, committed data samples. Full downloads go in `data/raw/`, which is git-ignored. See `scripts/download_data.md`.
 
 | File | What | Source |
 |---|---|---|
@@ -16,7 +16,7 @@ cd backend && python -m app.asrs ../data/raw/mechanic.pdf -o ../data/samples/asr
 - `date` is the 1st of the report month: ASRS de-identifies dates to the month.
 - `registration` is always null (ASRS is de-identified), so group repeats by `aircraft_type + ata_chapter + failure_mode`.
 - `ata_chapter`, `component` and `failure_mode` come from deterministic rules in `backend/app/vocab.py`. ATA `00` ("General / Ground Operations") marks reports with no aircraft system involved, such as hazmat shipping or towing.
-- `action_taken`, `parts` and `downtime_hours` are empty: ASRS does not code them. The LLM extraction step fills them from `raw_text`.
+- `action_taken`, `parts` and `downtime_hours` are empty: ASRS does not code them. The model extraction step fills them from `raw_text`.
 - The extra `asrs` object (problem, flight phase, maintenance type, primary problem) is ASRS-only context and is not part of the JobCard contract.
 
 ## `sdr_demo.jsonl`

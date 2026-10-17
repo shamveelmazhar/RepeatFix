@@ -27,7 +27,7 @@ Pitch line: *"No new sensors: your logbooks already know which aircraft will bre
 ```
 frontend/       Next.js + Tailwind app (deployed on Vercel)
 backend/        FastAPI service + pipelines (Docker on Render; calls the model on AMD Token Factory)
-data/samples/   small committed samples + hand-labelled ground truth
+data/samples/   small committed samples (SDR demo slice, ASRS cards)
 data/raw/       full downloads; git-ignored
 docs/           API contract, architecture, metrics write-up
 scripts/        data download notes, benchmark scripts

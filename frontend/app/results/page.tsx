@@ -86,7 +86,7 @@ export default function ResultsPage() {
           loading={!m}
           label="Cost per 100 job cards"
           value={m && (m.cost_per_100_cards_usd === null ? null : `$${m.cost_per_100_cards_usd.toFixed(2)}`)}
-          sub="At $1.99 per GPU hour"
+          sub="Token Factory bills in points, not dollars"
         />
       </div>
 

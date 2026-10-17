@@ -7,7 +7,7 @@ I (Shamveel) own the frontend, on branch `shamveel/frontend`. Next.js 15 + Tailw
 |---|---|---|
 | `/` | **Fix a fault** | Describe a fault (or read a photo of a log entry, beta). Shows a repeat-failure alert, plus **Seen before** (3 closest past fixes), **Likely causes** (each linked to its evidence cards) and **Procedure** (cited FAA document and section). Below that is an editable **Draft work order** that a supervisor must approve. |
 | `/repeats` | **Repeat failures** | Ranked "bad actors" by aircraft or component: times, average days between failures, downtime, status. Has a downtime bar chart, and you can click any card to see the original record. |
-| `/results` | **Results** | Measured numbers (reading accuracy, latency, tokens/s, cost per 100 cards), how it works, where it runs, and data sources. |
+| `/results` | **Results** | Measured numbers (agreement with our parser, latency, tokens/s, cost per 100 cards), how it works, where it runs (GPU and model as the backend reports them), and data sources. |
 
 ## Run
 ```bash
@@ -25,8 +25,8 @@ npm run build && npm run lint
 
 ## Deploy (Vercel)
 1. Import the GitHub repo in Vercel and set **Root Directory** to `frontend`.
-2. Set the environment variables `NEXT_PUBLIC_API_URL=https://<backend>` and `NEXT_PUBLIC_USE_MOCKS=false`. Leaving the backend unset gives the cached demo (mock) mode.
-3. The backend must allow CORS from the Vercel domain.
+2. Set the environment variables `NEXT_PUBLIC_API_URL=https://<backend>` and `NEXT_PUBLIC_USE_MOCKS=false`. Leaving the backend unset gives the cached demo (mock) mode. The backend must be on HTTPS, because the Vercel page can't call a plain `http://` address.
+3. Add the Vercel URL to the backend's `ALLOWED_ORIGINS` so it allows the calls.
 
 ## Design rules
 See the contributor guide, `../CLAUDE.md` → "UI style rules" and "Colour palette". Colours are CSS variables in `app/globals.css`; use the Tailwind names (`glass`, `bg-surface`, `text-muted`, `bg-accent-gradient`, `text-critical`, …), never raw hex values.

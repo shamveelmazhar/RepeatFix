@@ -1,6 +1,6 @@
 # RepeatFix API contract (v0)
 
-Frontend and backend share this contract. Change it only through a PR that the other teammate reviews. Base URL: `NEXT_PUBLIC_API_URL` (e.g. `https://<droplet>/`). All bodies are JSON unless noted.
+Frontend and backend share this contract. Change it only through a PR that the other teammate reviews. Base URL: `NEXT_PUBLIC_API_URL` (e.g. `https://<backend>/`). All bodies are JSON unless noted.
 
 ## JobCard
 ```json
