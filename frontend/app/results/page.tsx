@@ -7,18 +7,22 @@ import { api } from "@/lib/api";
 import { DEFAULT_GPU, servingLabel, shortModel } from "@/lib/runtime";
 import type { Metrics } from "@/lib/types";
 import insights from "@/mocks/insights.json";
+import fullSet from "@/mocks/metrics.json";
 
 // Measured on the full FAA SDR build by scripts/build_insights.py, so it shows in every mode.
 const NOT_STICK = insights.fix_did_not_stick;
+// The live backend only loads the 40-aircraft demo slice, so the full-set counts come from the build too.
+const FULL_CARDS = fullSet.cards_processed;
+const FULL_REPEATS = fullSet.repeat_groups_found;
 
 const STEPS = [
   {
     title: "Read the logs",
-    body: "Messy write-ups, abbreviations and photos of log entries are turned into clean job cards: aircraft, ATA chapter, component, symptom, fix, parts, downtime.",
+    body: "Messy write-ups and abbreviations are turned into clean job cards: aircraft, ATA chapter, component, symptom, fix and parts.",
   },
   {
     title: "Find the repeats",
-    body: "Job cards are grouped by aircraft and problem. Counts, days between failures and downtime are plain arithmetic, so every number can be checked.",
+    body: "Job cards are grouped by aircraft and problem. Counts and days between failures are plain arithmetic, so every number can be checked.",
   },
   {
     title: "Help with the next fault",
@@ -71,12 +75,15 @@ export default function ResultsPage() {
           value={NOT_STICK.share === null ? null : `${Math.round(NOT_STICK.share * 100)}%`}
           sub={`${NOT_STICK.came_back.toLocaleString()} of ${NOT_STICK.fixes.toLocaleString()} recorded fixes: the same problem came back on the same aircraft within ${NOT_STICK.window_days} days`}
         />
-        <StatTile tint="sand" icon={<FileIcon />} loading={!m} label="Job cards processed" value={m && m.cards_processed.toLocaleString()} />
+        <StatTile tint="sand" icon={<FileIcon />}
+          label="Job cards processed"
+          value={FULL_CARDS.toLocaleString()}
+          sub="FAA SDR reports 2024 to 2026 and NASA ASRS reports"
+        />
         <StatTile tint="slate" icon={<RepeatIcon />}
-          loading={!m}
           label="Repeat problems found"
-          value={m && m.repeat_groups_found.toLocaleString()}
-          sub="Same aircraft, ATA chapter and problem, 7+ days apart"
+          value={FULL_REPEATS.toLocaleString()}
+          sub={`In all ${FULL_CARDS.toLocaleString()} reports: same aircraft, ATA chapter and problem, 7+ days apart`}
         />
         {/* Model numbers show once the benchmark on AMD Token Factory has measured them. */}
         {m?.extraction_field_accuracy != null && (

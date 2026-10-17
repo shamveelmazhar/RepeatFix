@@ -1,24 +1,29 @@
 "use client";
 
 import { Fragment, useEffect, useState } from "react";
-import { useOpenCard } from "@/components/CardViewer";
+import { CardLink } from "@/components/CardViewer";
 import { ClockIcon, RepeatIcon, WrenchIcon } from "@/components/icons";
 import { AtaTag, Panel, Skeleton, StatTile, StatusBadge, repeatSeverity } from "@/components/ui";
 import { api } from "@/lib/api";
 import { failureModeLabel } from "@/lib/mock";
 import type { GroupBy, RepeatRow } from "@/lib/types";
 
+// The demo slice (data/samples/sdr_demo.jsonl) that both the backend and the saved demo load.
+const DEMO_AIRCRAFT = 40;
+const FIRST_ROWS = 25;
+
 export default function RepeatFailuresPage() {
   const [groupBy, setGroupBy] = useState<GroupBy>("aircraft");
   const [rows, setRows] = useState<RepeatRow[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [open, setOpen] = useState<string | null>(null);
-  const openCard = useOpenCard();
+  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     setRows(null);
     setError(null);
     setOpen(null);
+    setShowAll(false);
     api
       .getRepeats(groupBy)
       .then(setRows)
@@ -31,6 +36,8 @@ export default function RepeatFailuresPage() {
   const totalReports = rows?.reduce((s, r) => s + r.card_ids.length, 0) ?? 0;
   const top = rows?.[0];
   const assetHeading = groupBy === "aircraft" ? "Aircraft" : "Component";
+  const shown = rows && (showAll ? rows : rows.slice(0, FIRST_ROWS));
+  const chipClass = "glass-inset rounded-lg px-3 py-1.5 text-sm font-medium text-accent hover:border-accent";
 
   return (
     <div className="space-y-8">
@@ -39,7 +46,8 @@ export default function RepeatFailuresPage() {
           <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Repeat failures</h1>
           <p className="mt-2 max-w-2xl text-lg text-muted">
             The same problem on the same {groupBy === "aircraft" ? "aircraft" : "component"}, logged more than once.
-            Worst first, by {hasDowntime || !rows ? "total downtime" : "how often it came back"}.
+            Worst first, by {hasDowntime || !rows ? "total downtime" : "how often it came back"}, in our demo set of{" "}
+            {DEMO_AIRCRAFT} aircraft.
           </p>
         </div>
         <div role="group" aria-label="Group by" className="glass inline-flex rounded-xl p-1">
@@ -71,6 +79,7 @@ export default function RepeatFailuresPage() {
           label="Repeat problems found"
           loading={!rows}
           value={rows ? String(rows.length) : null}
+          sub={`In the demo set of ${DEMO_AIRCRAFT} aircraft`}
         />
         <StatTile
           tint="sand"
@@ -105,7 +114,7 @@ export default function RepeatFailuresPage() {
           <>
           {/* Phone and tablet: one card per repeat problem */}
           <ul className="space-y-3 lg:hidden">
-            {rows.map((r) => {
+            {shown!.map((r) => {
               const key = `${r.asset}|${r.failure_mode}`;
               const sev = repeatSeverity(r.count);
               return (
@@ -122,7 +131,7 @@ export default function RepeatFailuresPage() {
                   <div className="mt-2">
                     <AtaTag chapter={r.ata_chapter} name={r.ata_name} />
                   </div>
-                  <dl className="tabular mt-3 grid grid-cols-3 gap-2 text-center">
+                  <dl className={`tabular mt-3 grid gap-2 text-center ${hasDowntime ? "grid-cols-3" : "grid-cols-2"}`}>
                     <div className="rounded-lg bg-white/40 py-2 dark:bg-white/5">
                       <dt className="text-xs text-muted">Times</dt>
                       <dd className="text-lg font-semibold">{r.count}</dd>
@@ -131,22 +140,27 @@ export default function RepeatFailuresPage() {
                       <dt className="text-xs text-muted">Avg days between</dt>
                       <dd className="text-lg font-semibold">{r.mtbf_days !== null ? Math.round(r.mtbf_days) : "—"}</dd>
                     </div>
-                    <div className="rounded-lg bg-white/40 py-2 dark:bg-white/5">
-                      <dt className="text-xs text-muted">Downtime</dt>
-                      <dd className="text-lg font-semibold">{hasDowntime ? `${r.downtime_hours.toFixed(1)} h` : "—"}</dd>
-                    </div>
+                    {hasDowntime && (
+                      <div className="rounded-lg bg-white/40 py-2 dark:bg-white/5">
+                        <dt className="text-xs text-muted">Downtime</dt>
+                        <dd className="text-lg font-semibold">{r.downtime_hours.toFixed(1)} h</dd>
+                      </div>
+                    )}
                   </dl>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {r.card_ids.map((id) => (
-                      <button
-                        key={id}
-                        onClick={() => openCard(id)}
-                        className="glass-inset rounded-lg px-3 py-1.5 text-sm font-medium text-accent hover:border-accent"
-                      >
-                        {id}
-                      </button>
-                    ))}
-                  </div>
+                  <button
+                    onClick={() => setOpen(open === key ? null : key)}
+                    aria-expanded={open === key}
+                    className="mt-3 min-h-10 text-sm font-semibold text-accent underline underline-offset-4"
+                  >
+                    {open === key ? "Hide reports" : `Show the ${r.card_ids.length} reports`}
+                  </button>
+                  {open === key && (
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {r.card_ids.map((id) => (
+                        <CardLink key={id} id={id} className={chipClass} />
+                      ))}
+                    </div>
+                  )}
                 </li>
               );
             })}
@@ -161,12 +175,12 @@ export default function RepeatFailuresPage() {
                   <th className="px-3 py-2 font-medium">Problem</th>
                   <th className="px-3 py-2 text-right font-medium">Times</th>
                   <th className="px-3 py-2 text-right font-medium">Avg days between</th>
-                  <th className="px-3 py-2 text-right font-medium">Downtime</th>
+                  {hasDowntime && <th className="px-3 py-2 text-right font-medium">Downtime</th>}
                   <th className="px-5 py-2 font-medium sm:px-6">Status</th>
                 </tr>
               </thead>
               <tbody>
-                {rows.map((r) => {
+                {shown!.map((r) => {
                   const key = `${r.asset}|${r.failure_mode}`;
                   const sev = repeatSeverity(r.count);
                   const expanded = open === key;
@@ -189,24 +203,18 @@ export default function RepeatFailuresPage() {
                         </td>
                         <td className="tabular px-3 py-3 text-right text-lg font-semibold">{r.count}</td>
                         <td className="tabular px-3 py-3 text-right">{r.mtbf_days !== null ? Math.round(r.mtbf_days) : "—"}</td>
-                        <td className="tabular px-3 py-3 text-right">{hasDowntime ? `${r.downtime_hours.toFixed(1)} h` : "—"}</td>
+                        {hasDowntime && <td className="tabular px-3 py-3 text-right">{r.downtime_hours.toFixed(1)} h</td>}
                         <td className="px-5 py-3 sm:px-6">
                           <StatusBadge severity={sev.severity}>{sev.label}</StatusBadge>
                         </td>
                       </tr>
                       {expanded && (
                         <tr className="border-b border-line bg-accent-soft/30">
-                          <td colSpan={6} className="px-5 py-3 sm:px-6">
-                            <p className="mb-2 text-sm font-medium text-muted">Job cards in this group (oldest first)</p>
+                          <td colSpan={hasDowntime ? 6 : 5} className="px-5 py-3 sm:px-6">
+                            <p className="mb-2 text-sm font-medium text-muted">Reports in this group (oldest first)</p>
                             <div className="flex flex-wrap gap-2">
                               {r.card_ids.map((id) => (
-                                <button
-                                  key={id}
-                                  onClick={() => openCard(id)}
-                                  className="glass-inset rounded-lg px-3 py-1.5 text-sm font-medium text-accent hover:border-accent"
-                                >
-                                  {id}
-                                </button>
+                                <CardLink key={id} id={id} className={chipClass} />
                               ))}
                             </div>
                           </td>
@@ -218,6 +226,16 @@ export default function RepeatFailuresPage() {
               </tbody>
             </table>
           </div>
+          {rows.length > FIRST_ROWS && (
+            <div className="mt-4 text-center">
+              <button
+                onClick={() => setShowAll(!showAll)}
+                className="min-h-10 font-semibold text-accent underline underline-offset-4"
+              >
+                {showAll ? `Show the top ${FIRST_ROWS} only` : `Show all ${rows.length} repeat problems`}
+              </button>
+            </div>
+          )}
           </>
         )}
       </Panel>
