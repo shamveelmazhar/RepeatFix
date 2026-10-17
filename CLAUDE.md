@@ -58,7 +58,7 @@ scripts/        data download notes, benchmark scripts
 `failure_mode` is normalised to a controlled list keyed by ATA chapter. The LLM only normalises text. All statistics (count, MTBF, downtime, Pareto) are computed deterministically in pandas.
 
 ## Running locally
-- **Backend** (once scaffolded): `cd backend && pip install -r requirements.txt && uvicorn app.main:app --reload --port 8000`. It needs `VLLM_BASE_URL` and `VLLM_API_KEY` for the Token Factory model API.
+- **Backend** (once scaffolded): `cd backend && pip install -r requirements.txt && uvicorn app.main:app --reload --port 8001`. It needs `VLLM_BASE_URL` and `VLLM_API_KEY` for the Token Factory model API.
 - **Frontend:** `cd frontend && npm install && npm run dev` (http://localhost:3000). Before pushing, run `npm run lint && npm run build`. Details are in `frontend/README.md`.
 - **Mock mode:** `NEXT_PUBLIC_USE_MOCKS=true` makes the UI read JSON fixtures in `frontend/mocks/` instead of the API. Use it to build the UI before the backend is ready, and as the fallback "cached demo mode" during judging.
 

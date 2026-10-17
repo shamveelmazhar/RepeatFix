@@ -6,8 +6,8 @@ A FastAPI service that loads the job cards, finds repeat failures and answers ne
 ```bash
 cd backend
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
-pip install -r requirements-dev.txt
-uvicorn app.main:app --reload --port 8000
+pip install -r requirements-dev.txt   # also installs requirements.txt
+uvicorn app.main:app --reload --port 8001
 python -m pytest
 ```
 Settings come from a `.env` file in `backend/` or the repo root. It's git-ignored, so never commit it; `../.env.example` lists the names.
@@ -19,15 +19,19 @@ Settings come from a `.env` file in `backend/` or the repo root. It's git-ignore
 | `VLLM_MODEL` | model id; we run `DeepSeek-V4-Flash` (the code default is `Qwen/Qwen2.5-VL-7B-Instruct`) |
 | `GPU_LABEL` | where the model runs, shown in the app, e.g. `AMD GPUs via AMD Token Factory` |
 | `ALLOWED_ORIGINS` | extra websites allowed to call the API, comma-separated (e.g. the Vercel URL) |
+| `ASSIST_BUDGET_S` | optional, default `45`: the total time limit for `/api/assist` in seconds, after which it falls back to the closest saved answer |
 
-Cards, repeat failures and procedures work without the model. If the model is busy or unreachable, Fix a fault falls back to a saved answer.
+Cards, repeat failures and procedures work without the model. If the model is busy, unreachable or too slow, Fix a fault falls back to the saved answer for the closest saved fault. If no saved fault is close enough, it returns a 502 error, and the app then shows its own saved demo answer.
 
 Layout:
 - `app/main.py`: the routes
 - `app/extract.py`, `app/llm.py`: model calls (text → JobCard, JSON answers)
 - `app/assist.py`: Fix a fault, built from `retrieval.py` (similar past cards, TF-IDF), `hypotheses.py` (likely causes), `procedures.py` + `handbooks.py` (cited procedures) and `workorder.py` (draft work order)
 - `app/repeats.py`: repeat-failure stats in pandas
+- `app/cache.py`: saved answers
+- `app/benchmark.py`: reads and writes the measured numbers shown on Results
 - `app/asrs.py`, `app/sdr.py`, `app/vocab.py`, `app/aircraft.py`: ingestion and the ATA / failure-mode vocabularies
+- `scripts/`: `benchmark.py` (measures the numbers), `make_demo_cache.py` (builds the saved answers for the demo faults) and `check_key.py` (checks the Token Factory key)
 
 ## ASRS ingestion (`app/asrs.py`)
 Parses a NASA ASRS report set PDF into JobCards with deterministic rules (no LLM):
