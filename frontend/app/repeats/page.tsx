@@ -90,7 +90,7 @@ export default function RepeatFailuresPage() {
         />
       </div>
 
-      {rows && rows.length > 0 && <DowntimeChart rows={rows.slice(0, 8)} byCount={!hasDowntime} />}
+      {rows && rows.length > 0 && <DowntimeChart rows={rows} byCount={!hasDowntime} onePerProblem={groupBy === "aircraft"} />}
 
       <Panel title={`All repeat problems by ${groupBy}`}>
         {!rows ? (
@@ -226,24 +226,61 @@ export default function RepeatFailuresPage() {
 }
 
 /** Single-series horizontal bars: downtime per repeat problem (or times logged, when downtime isn't recorded). The table below is the full data view. */
-function DowntimeChart({ rows, byCount = false }: { rows: RepeatRow[]; byCount?: boolean }) {
+function DowntimeChart({
+  rows: all,
+  byCount = false,
+  onePerProblem = false,
+}: {
+  rows: RepeatRow[];
+  byCount?: boolean;
+  /** One bar per problem (its worst aircraft), so a problem shared by many aircraft doesn't fill the chart. */
+  onePerProblem?: boolean;
+}) {
   const value = (r: RepeatRow) => (byCount ? r.count : r.downtime_hours);
+  const assetsPerProblem = new Map<string, number>();
+  for (const r of all) {
+    const k = `${r.ata_chapter}|${r.failure_mode}`;
+    assetsPerProblem.set(k, (assetsPerProblem.get(k) ?? 0) + 1);
+  }
+  const rows = (
+    onePerProblem
+      ? all.filter((r, i) => all.findIndex((o) => o.ata_chapter === r.ata_chapter && o.failure_mode === r.failure_mode) === i)
+      : all
+  ).slice(0, 8);
+  const others = (r: RepeatRow) => (assetsPerProblem.get(`${r.ata_chapter}|${r.failure_mode}`) ?? 1) - 1;
   const max = Math.max(...rows.map(value), 1);
   const [hover, setHover] = useState<number | null>(null);
   return (
     <Panel title={byCount ? "Times each repeat problem was logged" : "Downtime from each repeat problem (hours)"}>
+      {onePerProblem && (
+        <p className="-mt-1 mb-4 text-muted">Each problem once, on the aircraft where it came back most.</p>
+      )}
       <ul className="space-y-1">
         {rows.map((r, i) => (
           <li
             key={`${r.asset}|${r.failure_mode}`}
-            className="relative grid grid-cols-[minmax(0,10rem)_1fr] items-center gap-3 rounded-md py-1.5 sm:grid-cols-[minmax(0,16rem)_1fr]"
+            className={`relative grid items-center gap-3 rounded-md py-1.5 ${
+              onePerProblem
+                ? "grid-cols-[minmax(0,12rem)_1fr] sm:grid-cols-[minmax(0,20rem)_1fr]"
+                : "grid-cols-[minmax(0,10rem)_1fr] sm:grid-cols-[minmax(0,16rem)_1fr]"
+            }`}
             onMouseEnter={() => setHover(i)}
             onMouseLeave={() => setHover(null)}
           >
-            <span className="truncate text-sm">
-              <span className="font-semibold">{r.asset}</span>{" "}
-              <span className="text-muted">{failureModeLabel(r.failure_mode)}</span>
-            </span>
+            {onePerProblem ? (
+              <span className="min-w-0 text-sm">
+                <span className="block truncate font-semibold">{failureModeLabel(r.failure_mode)}</span>
+                <span className="block truncate text-muted">
+                  {r.asset}
+                  {others(r) > 0 && ` · also on ${others(r)} more aircraft`}
+                </span>
+              </span>
+            ) : (
+              <span className="truncate text-sm">
+                <span className="font-semibold">{r.asset}</span>{" "}
+                <span className="text-muted">{failureModeLabel(r.failure_mode)}</span>
+              </span>
+            )}
             <div className="flex items-center gap-2">
               <div
                 className={`h-6 rounded-r-[4px] bg-brand-gradient transition-opacity ${hover !== null && hover !== i ? "opacity-40" : ""}`}
@@ -260,6 +297,9 @@ function DowntimeChart({ rows, byCount = false }: { rows: RepeatRow[]; byCount?:
                   {r.count} times · every {r.mtbf_days !== null ? Math.round(r.mtbf_days) : "—"} days on average
                   {byCount ? "" : ` · ${r.downtime_hours.toFixed(1)} h down`}
                 </p>
+                {onePerProblem && others(r) > 0 && (
+                  <p className="text-muted">Repeats on {others(r) + 1} aircraft in all</p>
+                )}
               </div>
             )}
           </li>
