@@ -12,7 +12,7 @@ Return ONLY this JSON, with no extra words:
 {{"title": "...", "steps": ["..."], "parts": ["..."]}}
 
 Rules:
-- 3 to 8 short steps, in the order a mechanic would do them.
+- 3 to 6 short steps, in the order a mechanic would do them.
 - Base the steps on the procedure excerpts and on what fixed the similar past cards.
 - Never invent torque values, limits or part numbers that are not in the text.
 - parts: only part numbers that appear in the past cards. Empty list if none.
@@ -60,7 +60,7 @@ def make_work_order(card, fault_text, similar, hits, asset):
     ]
     est_hours = round(statistics.median(hours), 1) if hours else None
 
-    steps = [clean(s, hits) for s in (data.get("steps") or []) if s][:8]
+    steps = [clean(s, hits) for s in (data.get("steps") or []) if s][:6]
     work_order = {
         "title": clean(data.get("title") or "Draft work order", hits),
         "asset": asset,

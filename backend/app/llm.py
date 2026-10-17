@@ -8,7 +8,7 @@ def chat_json(system, user, max_tokens=1500):
     client = ex.get_client()
     started = time.time()
     reply = None
-    for attempt in range(3):  # try up to 3 times if the service is busy
+    for attempt in range(2):  # try up to 3 times if the service is busy
         try:
             reply = client.chat.completions.create(
                 model=ex.MODEL,

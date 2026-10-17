@@ -19,7 +19,7 @@ from app.assist import run_assist
 import time
 
 from openai import OpenAIError
-
+from app.benchmark import load_results
 import app.cache as assist_cache
 load_dotenv()
 
@@ -167,16 +167,19 @@ def median_of(values):
 
 @app.get("/api/metrics")
 def metrics():
-    # Only measured numbers. Everything else stays null until we measure it.
+    bench = load_results()
+    if bench.get("model") != extract_module.MODEL:
+        bench = {}  # measured with another model, so we don't show those numbers
+    live = ASSIST_TIMINGS
     return {
         "cards_processed": len(CARDS),
-        "extraction_field_accuracy": None,
-        "labelled_cards": 0,
+        "extraction_field_accuracy": bench.get("extraction_field_accuracy"),
+        "labelled_cards": bench.get("labelled_cards", 0),
         "repeat_groups_found": len(repeat_rows(CARDS, "aircraft", 2)),
-        "p50_latency_ms": median_of([t["total_ms"] for t in ASSIST_TIMINGS]),
-        "tokens_per_s": median_of([t["tokens_per_s"] for t in ASSIST_TIMINGS]),
+        "p50_latency_ms": bench.get("p50_latency_ms") or median_of([t["total_ms"] for t in live]),
+        "tokens_per_s": bench.get("tokens_per_s") or median_of([t["tokens_per_s"] for t in live]),
         "cost_per_100_cards_usd": None,
-         "gpu": os.getenv("GPU_LABEL", "AMD GPU via AMD Token Factory"),
+        "gpu": os.getenv("GPU_LABEL", "AMD GPU via AMD Token Factory"),
         "model": extract_module.MODEL,
     }
 
@@ -231,3 +234,12 @@ def ingest(body: IngestRequest):
     CARDS.append(card)
     CARDS_BY_ID[card["id"]] = card
     return {"cards": [card], "model_ms": model_ms}
+
+@app.on_event("startup")
+def warm_up():
+    """Load the search indexes when the server starts, so the first request is not slower."""
+    from app.assist import get_procedure_index
+    from app.retrieval import get_card_index
+
+    get_procedure_index()
+    get_card_index(CARDS)

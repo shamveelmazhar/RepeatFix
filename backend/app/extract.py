@@ -12,10 +12,12 @@ load_dotenv()
 
 
 def get_client():
-    """Connect to vLLM on the droplet. The address and password come from .env."""
+    """Connect to the model service. The address and password come from .env."""
     return OpenAI(
         base_url=os.getenv("VLLM_BASE_URL"),
         api_key=os.getenv("VLLM_API_KEY", "none"),
+        timeout=40,  # give up on a call after 40 seconds instead of waiting for minutes
+        max_retries=0,  # our own retry loop handles repeats
     )
 
 
@@ -108,7 +110,7 @@ def extract_card(text, source="text", client=None):
     client = client or get_client()
     started = time.time()
     reply = None
-    for attempt in range(3):  # try up to 3 times if the service is busy
+    for attempt in range(2):  # try up to 3 times if the service is busy
         try:
             reply = client.chat.completions.create(
                 model=MODEL,
