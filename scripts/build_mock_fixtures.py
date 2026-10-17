@@ -231,7 +231,7 @@ def main(argv: list[str] | None = None) -> int:
         "tokens_per_s": None,
         "cost_per_100_cards_usd": None,
         "gpu": "AMD GPUs via AMD Token Factory",
-        "model": None,
+        "model": "DeepSeek-V4-Flash",  # the backend's default model (VLLM_MODEL)
     }
 
     MOCKS.mkdir(exist_ok=True)

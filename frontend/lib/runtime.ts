@@ -47,5 +47,5 @@ export function shortModel(model: string | null): string | null {
 
 /** How the model is served, worded from the GPU label. */
 export function servingLabel(gpu: string): string {
-  return /token factory/i.test(gpu) ? "AMD Token Factory model API" : "vLLM on ROCm, AMD Developer Cloud";
+  return /token factory/i.test(gpu) ? "AMD Token Factory model API" : "OpenAI-compatible model API";
 }
