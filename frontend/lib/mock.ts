@@ -176,15 +176,6 @@ export const mockApi = {
   },
 
   /** No model runs in the cached demo, so a "photo" returns a real logged entry: the latest N926NK fume event. */
-  async ingestImage(): Promise<JobCard> {
-    await delay(800);
-    const cards = await loadCards();
-    const example = cards
-      .filter((c) => c.registration === "N926NK" && c.ata_chapter === "21" && c.failure_mode === "smoke_or_odor")
-      .sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""))[0];
-    return { ...example, id: "photo-0001", source: "photo", action_taken: "", parts: [], raw_text: example.symptom };
-  },
-
   /** `asset` narrows to one tail; `aircraftType` (when no tail is picked) narrows to that type's fleet. */
   async assist(faultText: string, asset: string | null, aircraftType: string | null = null): Promise<AssistResponse> {
     const started = performance.now();
