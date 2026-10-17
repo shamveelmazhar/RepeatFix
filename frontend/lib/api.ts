@@ -82,7 +82,16 @@ export const api = {
     if (USE_MOCKS) return mockApi.ingestImage();
     const form = new FormData();
     form.append("file", file);
-    const r = await request<{ cards: JobCard[] }>("/api/ingest", { method: "POST", body: form });
+    let r: { cards: JobCard[] };
+    try {
+      r = await request<{ cards: JobCard[] }>("/api/ingest", { method: "POST", body: form });
+    } catch (err) {
+      // The backend reads typed text only for now and turns photos away with a 4xx.
+      if (err instanceof ApiError && err.status < 500) {
+        throw new Error("Photo reading is coming soon. For now, type the fault into the box.");
+      }
+      throw err;
+    }
     if (!r.cards.length) throw new Error("No text could be read from this photo.");
     return r.cards[0];
   },

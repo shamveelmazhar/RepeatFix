@@ -25,6 +25,7 @@ export default function FixAFaultPage() {
   const [loading, setLoading] = useState(false);
   const [reading, setReading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [errorTitle, setErrorTitle] = useState("Couldn't get an answer");
   const [result, setResult] = useState<AssistResult | null>(null);
   const [askedType, setAskedType] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -59,6 +60,7 @@ export default function FixAFaultPage() {
     if (!text.trim()) return;
     setLoading(true);
     setError(null);
+    setErrorTitle("Couldn't get an answer");
     setResult(null);
     try {
       setResult(await api.assist(text, asset || null, aircraftType || null));
@@ -74,6 +76,7 @@ export default function FixAFaultPage() {
     if (!file) return;
     setReading(true);
     setError(null);
+    setErrorTitle("Couldn't read the photo");
     try {
       const card = await api.ingestImage(file);
       setText(card.raw_text || card.symptom);
@@ -201,7 +204,7 @@ export default function FixAFaultPage() {
         <div role="alert" className="flex items-start gap-3 rounded-xl border border-critical/30 bg-critical-soft p-4 text-critical">
           <AlertIcon className="mt-0.5 shrink-0" />
           <div>
-            <p className="font-semibold">Couldn&apos;t get an answer</p>
+            <p className="font-semibold">{errorTitle}</p>
             <p>{error}</p>
           </div>
         </div>
