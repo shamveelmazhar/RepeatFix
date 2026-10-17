@@ -1,9 +1,14 @@
 import json
+import sys
 from pathlib import Path
 
-from app.extract import extract_card
+# Let this script find the backend code
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "backend"))
 
-sample = Path("../data/samples/asrs_mechanic.jsonl")
+from app.extract import extract_card  # noqa: E402
+
+sample = ROOT / "data" / "samples" / "asrs_mechanic.jsonl"
 with open(sample, encoding="utf-8") as f:
     original = json.loads(f.readline())
 
