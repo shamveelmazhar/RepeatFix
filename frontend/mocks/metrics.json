@@ -1,10 +1,10 @@
 {
   "cards_processed": 180012,
-  "extraction_field_accuracy": null,
-  "labelled_cards": 0,
+  "extraction_field_accuracy": 0.675,
+  "labelled_cards": 20,
   "repeat_groups_found": 16473,
-  "p50_latency_ms": null,
-  "tokens_per_s": null,
+  "p50_latency_ms": 15893,
+  "tokens_per_s": 19.8,
   "cost_per_100_cards_usd": null,
   "gpu": "AMD GPUs via AMD Token Factory",
   "model": "DeepSeek-V4-Flash"
