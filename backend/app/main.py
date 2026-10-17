@@ -179,7 +179,7 @@ def metrics():
         "p50_latency_ms": bench.get("p50_latency_ms") or median_of([t["total_ms"] for t in live]),
         "tokens_per_s": bench.get("tokens_per_s") or median_of([t["tokens_per_s"] for t in live]),
         "cost_per_100_cards_usd": None,
-        "gpu": os.getenv("GPU_LABEL", "AMD GPU via AMD Token Factory"),
+        "gpu": os.getenv("GPU_LABEL", "AMD GPUs via AMD Token Factory"),
         "model": extract_module.MODEL,
     }
 
