@@ -1,10 +1,37 @@
 # Backend (owner: Nida, branch `nida/backend`)
 
-A FastAPI service that runs alongside vLLM (Qwen2.5-VL-7B-Instruct) on the AMD MI300X droplet. Endpoints are listed in `../docs/API.md`.
+A FastAPI service that loads the job cards, finds repeat failures and answers new faults. Every model call goes to an OpenAI-compatible model API. We use DeepSeek-V4-Flash on AMD GPUs via AMD Token Factory. Endpoints are listed in `../docs/API.md`.
 
-Suggested layout: `app/main.py` (routes), `app/extract.py` (LLM → JobCard), `app/repeats.py` (pandas stats), `app/retrieve.py` (embeddings + search), `app/assist.py` (hypotheses + work order), `app/evolus.py`. Also add `Dockerfile` and `requirements.txt`.
+## Run it
+```bash
+cd backend
+python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -r requirements-dev.txt   # also installs requirements.txt
+uvicorn app.main:app --reload --port 8001
+python -m pytest
+```
+Settings come from a `.env` file in `backend/` or the repo root. It's git-ignored, so never commit it; `../.env.example` lists the names.
 
-vLLM on MI300X: `VLLM_ROCM_USE_AITER=1 vllm serve Qwen/Qwen2.5-VL-7B-Instruct --port 8000`
+| Var | Meaning |
+|---|---|
+| `VLLM_BASE_URL` | the model API's `/v1` address (AMD Token Factory) |
+| `VLLM_API_KEY` | the key for it |
+| `VLLM_MODEL` | model id; we run `DeepSeek-V4-Flash`, which is also the code default |
+| `GPU_LABEL` | where the model runs, shown in the app, e.g. `AMD GPUs via AMD Token Factory` |
+| `ALLOWED_ORIGINS` | extra websites allowed to call the API, comma-separated (e.g. the Vercel URL) |
+| `ASSIST_BUDGET_S` | optional, default `45`: the total time limit for `/api/assist` in seconds, after which it falls back to the closest saved answer |
+
+Cards, repeat failures and procedures work without the model. If the model is busy, unreachable or too slow, Fix a fault falls back to the saved answer for the closest saved fault. If no saved fault is close enough, it returns a 502 error, and the app then shows its own saved demo answer.
+
+Layout:
+- `app/main.py`: the routes
+- `app/extract.py`, `app/llm.py`: model calls (text → JobCard, JSON answers)
+- `app/assist.py`: Fix a fault, built from `retrieval.py` (similar past cards, TF-IDF), `hypotheses.py` (likely causes), `procedures.py` + `handbooks.py` (cited procedures) and `workorder.py` (draft work order)
+- `app/repeats.py`: repeat-failure stats in pandas
+- `app/cache.py`: saved answers
+- `app/benchmark.py`: reads and writes the measured numbers shown on Results
+- `app/asrs.py`, `app/sdr.py`, `app/vocab.py`, `app/aircraft.py`: ingestion and the ATA / failure-mode vocabularies
+- `scripts/`: `benchmark.py` (measures the numbers), `make_demo_cache.py` (builds the saved answers for the demo faults) and `check_key.py` (checks the Token Factory key)
 
 ## ASRS ingestion (`app/asrs.py`)
 Parses a NASA ASRS report set PDF into JobCards with deterministic rules (no LLM):
@@ -29,7 +56,7 @@ The full 2024–2026 build (179,962 cards) is in our shared project files as `sd
 
 `app/procedures.py` splits AC 43.13-1B CHG 1 into one chunk per paragraph (e.g. `9-14. TIRE INSPECTION AND REPAIR`), keeping the chapter, section, paragraph number and the page each chunk starts on. Long paragraphs are split at their sub-paragraphs (`a.`, `(3)`), and each part keeps the page it starts on. The result is committed as `data/procedures/ac_43-13-1b.jsonl` (661 paragraphs, 970 chunks), so the service doesn't need the PDF at runtime.
 
-Search is BM25 on the CPU, with shop shorthand expanded (`brk` → brake, `hyd` → hydraulic). Embedding search on the MI300X can rerank these hits later. `to_procedure()` returns the `procedures[]` item from `docs/API.md`, and `citation()` gives the full reference, e.g. `AC 43.13-1B, Chapter 9, Section 1, par. 9-7 (Landing-gear Components), page 9-6`.
+Search is BM25 on the CPU, with shop shorthand expanded (`brk` → brake, `hyd` → hydraulic). Token Factory has no embedding model, so search stays on the CPU. `to_procedure()` returns the `procedures[]` item from `docs/API.md`, and `citation()` gives the full reference, e.g. `AC 43.13-1B, Chapter 9, Section 1, par. 9-7 (Landing-gear Components), page 9-6`.
 
 `app/handbooks.py` adds the three FAA Aviation Maintenance Technician Handbooks: General (FAA-H-8083-30B), Airframe (31B) and Powerplant (32B). They have no paragraph numbers, so each chunk is the text under one PDF bookmark heading (e.g. "Bleeding Shock Struts"), with the chapter, parent headings and printed page it starts on. Figure callouts are dropped, and captions are kept at the end of the section. The result is committed as `data/procedures/faa-h-8083-3{0,1,2}b.jsonl` (3,573 sections, 5,091 chunks). Their citation looks like `FAA-H-8083-31B, Chapter 13 (Aircraft Landing Gear Systems), "Bleeding Shock Struts", page 13-14`.
 

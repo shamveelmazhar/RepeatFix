@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { BoltIcon, ChipIcon, ClockIcon, CoinIcon, FileIcon, RepeatIcon, TargetIcon } from "@/components/icons";
 import { Panel, StatTile } from "@/components/ui";
 import { USE_MOCKS, api } from "@/lib/api";
+import { DEFAULT_GPU, servingLabel, shortModel } from "@/lib/runtime";
 import type { Metrics } from "@/lib/types";
 
 const STEPS = [
@@ -63,9 +64,9 @@ export default function ResultsPage() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <StatTile tint="peach" icon={<TargetIcon />}
           loading={!m}
-          label="Reading accuracy"
+          label="Agreement with parser"
           value={m && pct(m.extraction_field_accuracy)}
-          sub={m ? `Fields read correctly on ${m.labelled_cards} hand-checked job cards` : ""}
+          sub={m ? `Model vs our rule-based parser's labels, on ${m.labelled_cards} job cards` : ""}
         />
         <StatTile tint="sand" icon={<FileIcon />} loading={!m} label="Job cards processed" value={m && m.cards_processed.toLocaleString()} />
         <StatTile tint="slate" icon={<RepeatIcon />}
@@ -85,13 +86,13 @@ export default function ResultsPage() {
           loading={!m}
           label="Cost per 100 job cards"
           value={m && (m.cost_per_100_cards_usd === null ? null : `$${m.cost_per_100_cards_usd.toFixed(2)}`)}
-          sub="At $1.99 per GPU hour"
+          sub="Token Factory bills in points, not dollars"
         />
       </div>
 
       {USE_MOCKS && (
         <p className="text-sm text-muted">
-          Numbers marked &ldquo;Not measured yet&rdquo; will be filled in by the benchmark run on the MI300X.
+          Numbers marked &ldquo;Not measured yet&rdquo; will be filled in by the benchmark run on AMD Token Factory.
         </p>
       )}
 
@@ -117,15 +118,15 @@ export default function ResultsPage() {
             <dl className="space-y-3">
               <div>
                 <dt className="text-sm text-muted">GPU</dt>
-                <dd className="font-semibold">{m?.gpu ?? "AMD Instinct MI300X"}</dd>
+                <dd className="font-semibold">{m?.gpu || DEFAULT_GPU}</dd>
               </div>
               <div>
                 <dt className="text-sm text-muted">Model</dt>
-                <dd className="font-semibold">{m?.model ?? "Qwen2.5-VL-7B-Instruct"}</dd>
+                <dd className="font-semibold">{shortModel(m?.model ?? null) ?? "Not measured yet"}</dd>
               </div>
               <div>
                 <dt className="text-sm text-muted">Serving</dt>
-                <dd className="font-semibold">vLLM on ROCm, AMD Developer Cloud</dd>
+                <dd className="font-semibold">{servingLabel(m?.gpu || DEFAULT_GPU)}</dd>
               </div>
             </dl>
           </Panel>

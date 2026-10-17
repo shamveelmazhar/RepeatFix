@@ -6,6 +6,7 @@ import { useOpenCard } from "@/components/CardViewer";
 import { AlertIcon, BookIcon, CameraIcon, CheckIcon, HistoryIcon, SearchIcon } from "@/components/icons";
 import { AtaTag, Button, Panel, Skeleton, StatusBadge, formatDate } from "@/components/ui";
 import { type AssistResult, USE_MOCKS, api } from "@/lib/api";
+import { useRuntime } from "@/lib/runtime";
 import { failureModeLabel } from "@/lib/mock";
 import type { WorkOrder } from "@/lib/types";
 
@@ -247,14 +248,17 @@ function Results({
   const openCard = useOpenCard();
   const s = result.structured;
   const history = result.repeat_history;
+  const { gpu } = useRuntime();
   // A live backend answered from its saved answers, or couldn't answer and we used the saved demo.
   const savedNote = USE_MOCKS
     ? null
     : result.savedDemo
       ? "The live model is busy or can't be reached, so this answer comes from the saved demo. Try again in a minute for a live answer."
-      : result.cached
-        ? "This fault was answered before, so this is the saved answer from that live run."
-        : null;
+      : result.cached_for
+        ? `The live model is busy, so this is the saved answer for a similar fault: “${result.cached_for}”. Try again in a minute for a live answer.`
+        : result.cached
+          ? "This fault was answered before, so this is the saved answer from that live run."
+          : null;
 
   return (
     <div className="space-y-6">
@@ -366,25 +370,31 @@ function Results({
         </Panel>
 
         <Panel title="Procedure" icon={<BookIcon />} lift>
-          <ul className="space-y-3">
-            {result.procedures.map((p) => (
-              <li key={`${p.doc}-${p.section}`} className="glass-inset rounded-xl p-3">
-                <p className="text-sm font-semibold text-muted">{p.doc}</p>
-                <p className="font-medium">
-                  {p.section}
-                  {(p.page_label ?? p.page) != null && (
-                    <span className="text-muted">, page {p.page_label ?? p.page}</span>
+          {result.procedures.length === 0 ? (
+            <p className="text-muted">
+              No matching procedure found in AC 43.13-1B or the FAA handbooks. Check the aircraft maintenance manual.
+            </p>
+          ) : (
+            <ul className="space-y-3">
+              {result.procedures.map((p) => (
+                <li key={`${p.doc}-${p.section}`} className="glass-inset rounded-xl p-3">
+                  <p className="text-sm font-semibold text-muted">{p.doc}</p>
+                  <p className="font-medium">
+                    {p.section}
+                    {(p.page_label ?? p.page) != null && (
+                      <span className="text-muted">, page {p.page_label ?? p.page}</span>
+                    )}
+                  </p>
+                  <p className="mt-1 text-sm text-muted">{p.snippet}</p>
+                  {p.url && (
+                    <a href={p.url} target="_blank" rel="noreferrer" className="mt-1 inline-block text-sm font-medium text-accent underline">
+                      Open document
+                    </a>
                   )}
-                </p>
-                <p className="mt-1 text-sm text-muted">{p.snippet}</p>
-                {p.url && (
-                  <a href={p.url} target="_blank" rel="noreferrer" className="mt-1 inline-block text-sm font-medium text-accent underline">
-                    Open document
-                  </a>
-                )}
-              </li>
-            ))}
-          </ul>
+                </li>
+              ))}
+            </ul>
+          )}
         </Panel>
       </div>
 
@@ -394,12 +404,11 @@ function Results({
         {USE_MOCKS || result.savedDemo ? (
           "Saved demo: matched by wording against real FAA records, without the model."
         ) : result.cached ? (
-          <>Saved answer from an earlier live run (answered then in {(result.timing.total_ms / 1000).toFixed(1)} s)</>
+          `Saved answer from an earlier live run on ${gpu}.`
         ) : (
           <>
             Answered in {(result.timing.total_ms / 1000).toFixed(1)} s
-            {result.timing.tokens_per_s ? ` · ${Math.round(result.timing.tokens_per_s)} tokens/s` : ""} · on AMD Instinct
-            MI300X
+            {result.timing.tokens_per_s ? ` · ${Math.round(result.timing.tokens_per_s)} tokens/s` : ""} · on {gpu}
           </>
         )}
       </p>

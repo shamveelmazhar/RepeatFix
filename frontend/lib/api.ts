@@ -21,7 +21,8 @@ export class ApiError extends Error {
 export type AssistResult = AssistResponse & { savedDemo?: boolean };
 
 // The longest we wait for a live fault answer before showing the saved demo answer instead.
-const ASSIST_TIMEOUT_MS = 40_000;
+// The backend answers within about 50 s (falling back to its own saved answer), so this sits above that.
+const ASSIST_TIMEOUT_MS = 60_000;
 
 /** Busy, broken or unreachable: worth showing a saved answer instead of an error. */
 function backendUnavailable(err: unknown): boolean {
