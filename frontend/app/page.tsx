@@ -370,25 +370,31 @@ function Results({
         </Panel>
 
         <Panel title="Procedure" icon={<BookIcon />} lift>
-          <ul className="space-y-3">
-            {result.procedures.map((p) => (
-              <li key={`${p.doc}-${p.section}`} className="glass-inset rounded-xl p-3">
-                <p className="text-sm font-semibold text-muted">{p.doc}</p>
-                <p className="font-medium">
-                  {p.section}
-                  {(p.page_label ?? p.page) != null && (
-                    <span className="text-muted">, page {p.page_label ?? p.page}</span>
+          {result.procedures.length === 0 ? (
+            <p className="text-muted">
+              No matching procedure found in AC 43.13-1B or the FAA handbooks. Check the aircraft maintenance manual.
+            </p>
+          ) : (
+            <ul className="space-y-3">
+              {result.procedures.map((p) => (
+                <li key={`${p.doc}-${p.section}`} className="glass-inset rounded-xl p-3">
+                  <p className="text-sm font-semibold text-muted">{p.doc}</p>
+                  <p className="font-medium">
+                    {p.section}
+                    {(p.page_label ?? p.page) != null && (
+                      <span className="text-muted">, page {p.page_label ?? p.page}</span>
+                    )}
+                  </p>
+                  <p className="mt-1 text-sm text-muted">{p.snippet}</p>
+                  {p.url && (
+                    <a href={p.url} target="_blank" rel="noreferrer" className="mt-1 inline-block text-sm font-medium text-accent underline">
+                      Open document
+                    </a>
                   )}
-                </p>
-                <p className="mt-1 text-sm text-muted">{p.snippet}</p>
-                {p.url && (
-                  <a href={p.url} target="_blank" rel="noreferrer" className="mt-1 inline-block text-sm font-medium text-accent underline">
-                    Open document
-                  </a>
-                )}
-              </li>
-            ))}
-          </ul>
+                </li>
+              ))}
+            </ul>
+          )}
         </Panel>
       </div>
 
