@@ -101,3 +101,36 @@ function Field({ label, value, wide }: { label: string; value: string; wide?: bo
     </div>
   );
 }
+
+const dates = new Map<string, Promise<string | null>>();
+
+function cardDate(id: string) {
+  if (!dates.has(id)) {
+    dates.set(
+      id,
+      api
+        .getCard(id)
+        .then((c) => c?.date ?? null)
+        .catch(() => null),
+    );
+  }
+  return dates.get(id)!;
+}
+
+/** Opens a past job card. Labelled with the report's date, which means more to a technician than the record id. */
+export function CardLink({ id, className }: { id: string; className?: string }) {
+  const openCard = useOpenCard();
+  const [date, setDate] = useState<string | null | undefined>(undefined);
+  useEffect(() => {
+    let current = true;
+    cardDate(id).then((d) => current && setDate(d));
+    return () => {
+      current = false;
+    };
+  }, [id]);
+  return (
+    <button onClick={() => openCard(id)} className={className} title={`Open report ${id}`}>
+      {date === undefined ? "…" : date ? formatDate(date) : id}
+    </button>
+  );
+}

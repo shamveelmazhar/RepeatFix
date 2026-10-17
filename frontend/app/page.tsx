@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { useOpenCard } from "@/components/CardViewer";
+import { CardLink, useOpenCard } from "@/components/CardViewer";
 import { AlertIcon, BookIcon, CameraIcon, CheckIcon, HistoryIcon, SearchIcon } from "@/components/icons";
 import { AtaTag, Button, Panel, Skeleton, StatusBadge, formatDate } from "@/components/ui";
 import { type AssistResult, USE_MOCKS, api } from "@/lib/api";
 import { useRuntime } from "@/lib/runtime";
 import { failureModeLabel } from "@/lib/mock";
-import type { WorkOrder } from "@/lib/types";
+import type { JobCard, WorkOrder } from "@/lib/types";
 
 // Real write-ups from the FAA SDR records: N926NK fume events, N2193J fire loop faults, N3760C exit lights.
 // Picking one also picks its aircraft, so the repeat alert counts that tail's history.
@@ -321,7 +321,7 @@ function Results({
             <p className="text-muted">No similar past fixes found.</p>
           ) : (
             <ul className="space-y-3">
-              {result.similar.map(({ card, score }) => (
+              {withFixFirst(result.similar).map(({ card, score }) => (
                 <li key={card.id}>
                   <button
                     onClick={() => openCard(card.id)}
@@ -361,9 +361,7 @@ function Results({
                       <p className="mt-1 flex flex-wrap gap-1.5 text-sm text-muted">
                         Based on:
                         {h.evidence_card_ids.map((id) => (
-                          <button key={id} onClick={() => openCard(id)} className="font-medium text-accent underline underline-offset-2">
-                            {id}
-                          </button>
+                          <CardLink key={id} id={id} className="font-medium text-accent underline underline-offset-2" />
                         ))}
                       </p>
                     ) : (
@@ -542,4 +540,9 @@ function WorkOrderPanel({ id, initial, onReset }: { id: string; initial: WorkOrd
       </div>
     </Panel>
   );
+}
+
+/** Past cards that record what was done come first: the fix is what a technician is looking for. Order is kept otherwise. */
+function withFixFirst<T extends { card: JobCard }>(similar: T[]): T[] {
+  return [...similar].sort((a, b) => Number(!!b.card.action_taken) - Number(!!a.card.action_taken));
 }
