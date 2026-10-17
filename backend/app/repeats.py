@@ -104,21 +104,36 @@ def repeat_rows(cards, group_by="aircraft", min_count=2, min_gap_days=7):
     rows.sort(key=lambda r: (-r["downtime_hours"], -r["count"], r["asset"]))
     return rows
 
+GENERIC_MODES = {"other", "component_malfunction"}
 
-def repeat_history(cards, failure_mode, asset=None, aircraft_type=None):
-    """Earlier cards with the same failure mode on this asset, or aircraft type, or the fleet."""
-    if failure_mode == "other":
-        return None
+def repeat_history(cards, failure_mode, asset=None, aircraft_type=None, ata_chapter=None, min_gap_days=7):
+    """Earlier reports of the same failure, counted like the Repeat failures screen:
+    same ATA chapter, and reports at least min_gap_days apart on the same tail."""
+    if failure_mode == "other" or (failure_mode in GENERIC_MODES and not ata_chapter):
+        return None  # a catch-all bucket is only a repeat within a known ATA chapter
     same = [c for c in cards if c.get("failure_mode") == failure_mode]
+    if ata_chapter:
+        same = [c for c in same if c.get("ata_chapter") == ata_chapter]
     if asset:
         same = [c for c in same if c.get("registration") == asset]
     elif aircraft_type:
         same = [c for c in same if same_aircraft_type(c.get("aircraft_type"), aircraft_type)]
     if not same:
         return None
+
+    # Count events: reports on the same tail less than min_gap_days apart are one event.
+    # Reports with no tail or date (for example ASRS) count one each.
+    by_tail, loose = {}, 0
+    for c in same:
+        if c.get("registration") and c.get("date"):
+            by_tail.setdefault(c["registration"], []).append(date.fromisoformat(c["date"]))
+        else:
+            loose += 1
+    count = loose + sum(len(event_dates(days, min_gap_days)) for days in by_tail.values())
+
     dates = sorted(c["date"] for c in same if c.get("date"))
     return {
-        "count": len(same),
+        "count": count,
         "first_date": dates[0] if dates else None,
         "last_date": dates[-1] if dates else None,
         "card_ids": [c["id"] for c in same][:50],

@@ -35,10 +35,10 @@ Return ONLY the JSON object. No extra words and no code fences.
 Use exactly these fields:
 - aircraft_type: for example "B737-800" (null if not stated)
 - registration: the tail number, for example "N12345" (null if not stated)
-- ata_chapter: the 2-digit ATA chapter as text, for example "32" (null if unsure)
+- ata_chapter: the 2-digit ATA chapter as text. Always give your best guess. Examples: "21" cabin air, smoke or fumes; "24" electrical power; "26" fire protection; "28" fuel; "29" hydraulics; "32" landing gear and brakes; "33" lights, including emergency lights. Use null only if the text gives no clue.
 - component: the part or system involved, short
 - symptom: what went wrong, in one short sentence
-- failure_mode: ONE code from the list below
+- failure_mode: ONE code from the list below. Pick the most specific code. Use "component_malfunction" or "other" only if nothing else fits.
 - action_taken: what the mechanic did (empty text if not stated)
 - parts: list of part numbers mentioned (empty list if none)
 - downtime_hours: a number (null if not stated)
