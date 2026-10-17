@@ -2,7 +2,7 @@
   "cards_processed": 180012,
   "extraction_field_accuracy": null,
   "labelled_cards": 0,
-  "repeat_groups_found": 17746,
+  "repeat_groups_found": 16473,
   "p50_latency_ms": null,
   "tokens_per_s": null,
   "cost_per_100_cards_usd": null,

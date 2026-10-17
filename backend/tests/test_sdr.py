@@ -117,14 +117,41 @@ def test_failure_mode_rules():
     # Physical condition wins.
     assert sdr.failure_mode("52", "AFT CARGO DOOR FRAME", "CORRODED") == "corrosion"
     # A plain door write-up is not a door actuator fault in SDR.
-    assert sdr.failure_mode("52", "R1 DOOR WILL NOT ARM", "INOPERATIVE") == "component_malfunction"
+    assert sdr.failure_mode("52", "R1 DOOR WILL NOT ARM", "INOPERATIVE") == "door_latch_fault"
     assert sdr.failure_mode("52", "DOOR ASSIST ACTUATOR LEAKING", None) == "door_actuator_fault"
     # Functional condition: the text is more specific, so it goes first.
     assert sdr.failure_mode("33", "EMER LIGHT BATTERY PACK FAILED TEST", "NO TEST") == "emer_light_battery_fault"
     # The AMM reference must not make it a procedure gap.
     assert sdr.failure_mode("29", "PUMP NOISY. REPLACED IAW AMM 29-11", None) == "component_malfunction"
     # A system-specific code is never given under another chapter.
-    assert sdr.failure_mode("53", "SKIN", "DISCHARGED") == "component_malfunction"
+    assert sdr.failure_mode("53", "SKIN", "DISCHARGED") == "skin_frame_fault"
+
+
+@pytest.mark.parametrize("ata,text,condition,part,expected", [
+    # A plain "failed" report is named after the part.
+    ("26", "ENG 2 FIRE LOOP B FAULT", "FAILED", "FIRE LOOP", "fire_detection_fault"),
+    ("26", "ENG 1 CHIP DET LIGHT", "FAILED", "CHIP DETECTOR", "component_malfunction"),
+    ("31", "DOOR WARNING LIGHT INOP", "INOPERATIVE", "WARNING LIGHT", "warning_indication_fault"),
+    ("33", "LAV SIGN INOP", "INOPERATIVE", "SIGN", "lighting_fault"),
+    ("22", "FLIGHT DIR INOP", "INOPERATIVE", "FLIGHT DIR", "component_malfunction"),
+    ("34", "PITOT HEAT FAULT", "FAILED", "PITOT TUBE", "sensor_switch_fault"),
+    ("53", "FLOOR PANEL BROKEN", "BROKEN", "FLOOR PANEL", "floor_panel_fault"),
+    ("29", "PUMP NOISY", None, "RESERVOIR", "component_malfunction"),
+    # No part name: the chapter names it where it can.
+    ("52", "R1 DOOR WILL NOT ARM", "INOPERATIVE", None, "door_latch_fault"),
+    ("29", "PUMP NOISY", None, None, "component_malfunction"),
+    # A specific finding is never replaced by the part name.
+    ("52", "AFT CARGO DOOR FRAME", "CORRODED", "DOOR FRAME", "corrosion"),
+])
+def test_failed_reports_are_named_after_the_part(ata, text, condition, part, expected):
+    assert sdr.failure_mode(ata, text, condition, part) == expected
+
+
+def test_component_modes_are_in_the_vocabulary():
+    for code, _ in sdr.COMPONENT_MODES:
+        assert code in vocab.FAILURE_MODES_BY_CODE
+    for code in sdr.CHAPTER_MODES.values():
+        assert code in vocab.FAILURE_MODES_BY_CODE
 
 
 def test_condition_maps_point_at_real_modes():
