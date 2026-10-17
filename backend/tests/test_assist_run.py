@@ -171,3 +171,17 @@ def test_procedures_list_only_has_cited_paragraphs(monkeypatch):
 
     result = assist_module.run_assist(make_cards(), "brake hot")
     assert [p["page_label"] for p in result["procedures"]] == ["9-12"]
+
+def test_failure_mode_follows_the_neighbours_when_four_agree():
+    from app.assist import refine_failure_mode
+
+    similar = [{"card": {"failure_mode": "component_malfunction"}} for _ in range(4)]
+    similar.append({"card": {"failure_mode": "fuel_leak"}})
+    card = {"failure_mode": "false_warning"}
+    refine_failure_mode(card, similar)
+    assert card["failure_mode"] == "component_malfunction"
+
+    mixed = similar[:3] + [{"card": {"failure_mode": "fuel_leak"}}, {"card": {"failure_mode": "fuel_leak"}}]
+    card = {"failure_mode": "false_warning"}
+    refine_failure_mode(card, mixed)
+    assert card["failure_mode"] == "false_warning"

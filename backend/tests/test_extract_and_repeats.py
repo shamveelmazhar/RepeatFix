@@ -93,3 +93,8 @@ def test_repeat_history_uses_7_day_rule_and_ata():
     ]
     history = repeat_history(cards, "brake_overheat", "N1", None, "32")
     assert history["count"] == 2
+
+def test_repeat_history_generic_mode_needs_a_chapter():
+    cards = [dict(make_card(n, f"2026-0{n}-10", 1.0), failure_mode="component_malfunction") for n in (1, 2)]
+    assert repeat_history(cards, "component_malfunction", "N1") is None
+    assert repeat_history(cards, "component_malfunction", "N1", None, "32")["count"] == 2

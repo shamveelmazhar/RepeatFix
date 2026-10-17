@@ -109,8 +109,8 @@ GENERIC_MODES = {"other", "component_malfunction"}
 def repeat_history(cards, failure_mode, asset=None, aircraft_type=None, ata_chapter=None, min_gap_days=7):
     """Earlier reports of the same failure, counted like the Repeat failures screen:
     same ATA chapter, and reports at least min_gap_days apart on the same tail."""
-    if failure_mode in GENERIC_MODES:
-        return None  # a catch-all bucket is not a real repeat
+    if failure_mode == "other" or (failure_mode in GENERIC_MODES and not ata_chapter):
+        return None  # a catch-all bucket is only a repeat within a known ATA chapter
     same = [c for c in cards if c.get("failure_mode") == failure_mode]
     if ata_chapter:
         same = [c for c in same if c.get("ata_chapter") == ata_chapter]

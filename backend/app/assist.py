@@ -52,19 +52,16 @@ def pick_similar(cards, query, card, aircraft_type):
 
 
 def refine_failure_mode(card, similar):
-    """If the model chose a catch-all code, use the specific code that at least 3 similar cards share."""
-    if card["failure_mode"] not in GENERIC_MODES:
-        return
+    """Use the failure mode that at least 4 of the 5 most similar cards share.
+    This keeps the alert consistent with how the data was labelled."""
     votes = Counter(
-        s["card"]["failure_mode"] for s in similar
-        if s["card"].get("failure_mode") not in GENERIC_MODES
+        s["card"]["failure_mode"] for s in similar if s["card"].get("failure_mode")
     )
     if votes:
         mode, count = votes.most_common(1)[0]
-        if count >= 3:
+        if count >= 4 and card["failure_mode"] != mode:
             card["failure_mode"] = mode
-
-
+            
 def run_assist(cards, fault_text, asset=None, aircraft_type=None):
     t0 = time.time()
 
