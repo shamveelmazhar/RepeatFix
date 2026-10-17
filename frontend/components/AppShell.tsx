@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import { USE_MOCKS } from "@/lib/api";
+import { shortModel, useRuntime } from "@/lib/runtime";
 import { Backdrop } from "./Backdrop";
 import { CardViewerProvider } from "./CardViewer";
 import { ChipIcon, GaugeIcon, MoonIcon, RepeatIcon, SunIcon, WrenchIcon } from "./icons";
@@ -52,15 +53,20 @@ function ThemeToggle({ onDark = false }: { onDark?: boolean }) {
 }
 
 function AmdBadge() {
+  const { gpu, model } = useRuntime();
   return (
     <div className="flex items-center gap-2.5 rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-side-muted">
       <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-brand-gradient text-white">
         <ChipIcon width={18} height={18} />
       </span>
       <span>
-        Runs on <strong className="text-white">AMD Instinct MI300X</strong>
-        <br />
-        vLLM + ROCm
+        Runs on <strong className="text-white">{gpu}</strong>
+        {model && (
+          <>
+            <br />
+            {shortModel(model)}
+          </>
+        )}
       </span>
     </div>
   );
@@ -137,7 +143,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         <main className="min-w-0 flex-1 md:py-4 md:pr-4">
           {USE_MOCKS && (
             <div className="mx-4 mt-4 rounded-xl border border-warning/30 bg-warning-soft px-4 py-2 text-center text-sm text-warning md:mx-0 md:mt-0">
-              Showing <strong>saved demo data</strong>: real FAA and NASA records, without the live model. Connect the backend for answers from the MI300X.
+              Showing <strong>saved demo data</strong>: real FAA and NASA records, without the live model. Connect the backend for live answers from the model on AMD GPUs.
             </div>
           )}
           <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10 lg:px-8">{children}</div>

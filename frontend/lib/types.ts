@@ -76,6 +76,8 @@ export interface AssistResponse {
   timing: { total_ms: number; tokens_per_s: number | null };
   /** True when the backend returned a saved answer instead of calling the model. */
   cached?: boolean;
+  /** Set when the saved answer was written for a different (similar) fault: that fault's text. */
+  cached_for?: string;
 }
 
 export interface FailureMode {
@@ -92,6 +94,7 @@ export interface Metrics {
   p50_latency_ms: number | null;
   tokens_per_s: number | null;
   cost_per_100_cards_usd: number | null;
-  gpu: string;
-  model: string;
+  /** Where the model runs, e.g. "AMD GPUs via AMD Token Factory". */
+  gpu: string | null;
+  model: string | null;
 }

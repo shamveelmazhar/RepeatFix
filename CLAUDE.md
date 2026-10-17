@@ -3,16 +3,16 @@
 Guidance for Claude Code (and humans) working in this repo. The full plan and schedule are in [`PLAN.md`](PLAN.md). The API contract is in [`docs/API.md`](docs/API.md).
 
 ## What we are building
-RepeatFix is an AI tool that finds **repeat failures hidden in messy aviation maintenance logs** and helps technicians fix the next breakdown faster, using past fixes and **cited procedures**. All model inference runs on an **AMD Instinct MI300X** (AMD Developer Cloud, ROCm, vLLM).
+RepeatFix is an AI tool that finds **repeat failures hidden in messy aviation maintenance logs** and helps technicians fix the next breakdown faster, using past fixes and **cited procedures**. All model inference runs on **AMD GPUs via AMD Token Factory**, the OpenAI-compatible model API the event is hosted on. (We planned our own vLLM on an MI300X droplet, but the AMD credits never arrived, so never claim MI300X.)
 
-The entry is for the AMD Developer Hackathon: ACT III on lablab.ai. It targets the Intelligent Industry track plus the Evolus partner prize. **Submissions close Sun 18 Oct 2026, 15:00 UTC; we submit by 10:00 UTC. Feature freeze is Fri 16 Oct, evening.**
+The entry is for the AMD Developer Hackathon: ACT III on lablab.ai. It targets the Intelligent Industry track. (We dropped the Evolus partner prize: it needs our own vLLM endpoint on AMD Developer Cloud.) **Submissions close Sun 18 Oct 2026, 15:00 UTC; we submit by 10:00 UTC. Feature freeze is Fri 16 Oct, evening.**
 
 Pitch line: *"No new sensors: your logbooks already know which aircraft will break next."* Call it a reliability-engineering tool, never a "chatbot".
 
 **Demo storyline (about 3 min):**
 1. Messy logs.
 2. The pain: downtime and wrench-time stats.
-3. Ingest into JSON live on the MI300X.
+3. Ingest into JSON live on AMD (Token Factory).
 4. The repeat-failure Pareto ("bad actors").
 5. A new fault comes in. RepeatFix shows the 3 similar past fixes, likely causes, the cited AC 43.13 section and a draft work order. The supervisor edits and approves it.
 6. Measured numbers + architecture.
@@ -20,13 +20,13 @@ Pitch line: *"No new sensors: your logbooks already know which aircraft will bre
 ## Team and ownership
 | Area | Owner | Branch |
 |---|---|---|
-| `backend/`: vLLM, FastAPI, extraction, retrieval, repeat engine, Evolus REST, Docker | Nida Amir (@Nidaamir083) | `nida/backend` |
-| `frontend/`: Next.js UI; plus data, docs, Evolus workspace, video, slides, submission | Shamveel Mazhar (@shamveelmazhar) | `shamveel/frontend` |
+| `backend/`: model calls, FastAPI, extraction, retrieval, repeat engine, saved answers, Docker | Nida Amir (@Nidaamir083) | `nida/backend` |
+| `frontend/`: Next.js UI; plus data, docs, video, slides, submission | Shamveel Mazhar (@shamveelmazhar) | `shamveel/frontend` |
 
 ## Repo layout
 ```
 frontend/       Next.js + Tailwind app (deployed on Vercel)
-backend/        FastAPI service + pipelines (Docker, runs next to vLLM on the MI300X droplet)
+backend/        FastAPI service + pipelines (Docker on Render; calls the model on AMD Token Factory)
 data/samples/   small committed samples + hand-labelled ground truth
 data/raw/       full downloads; git-ignored
 docs/           API contract, architecture, metrics write-up
@@ -58,22 +58,21 @@ scripts/        data download notes, benchmark scripts
 `failure_mode` is normalised to a controlled list keyed by ATA chapter. The LLM only normalises text. All statistics (count, MTBF, downtime, Pareto) are computed deterministically in pandas.
 
 ## Running locally
-- **Backend** (once scaffolded): `cd backend && pip install -r requirements.txt && uvicorn app.main:app --reload --port 8000`. It needs `VLLM_BASE_URL` to point at the MI300X vLLM endpoint.
+- **Backend** (once scaffolded): `cd backend && pip install -r requirements.txt && uvicorn app.main:app --reload --port 8000`. It needs `VLLM_BASE_URL` and `VLLM_API_KEY` for the Token Factory model API.
 - **Frontend:** `cd frontend && npm install && npm run dev` (http://localhost:3000). Before pushing, run `npm run lint && npm run build`. Details are in `frontend/README.md`.
 - **Mock mode:** `NEXT_PUBLIC_USE_MOCKS=true` makes the UI read JSON fixtures in `frontend/mocks/` instead of the API. Use it to build the UI before the backend is ready, and as the fallback "cached demo mode" during judging.
 
 ## Environment variables (never commit values; use `.env`, which is git-ignored)
 | Var | Used by | Meaning |
 |---|---|---|
-| `VLLM_BASE_URL` | backend | OpenAI-compatible URL of vLLM on MI300X, e.g. `http://<droplet>:8000/v1` |
-| `VLLM_MODEL` | backend | `Qwen/Qwen2.5-VL-7B-Instruct` |
-| `EVOLUS_API_KEY`, `EVOLUS_APP_ID` | backend | Evolus REST (`X-ApiKey`, `X-Application-Id` headers; base `https://api.evolus.ai/api/v1`) |
+| `VLLM_BASE_URL`, `VLLM_API_KEY` | backend | OpenAI-compatible model API (AMD Token Factory) and its key |
+| `VLLM_MODEL` | backend | model id; the code default is `Qwen/Qwen2.5-VL-7B-Instruct`, we run `DeepSeek-V4-Flash` |
+| `GPU_LABEL` | backend | where the model runs, shown in the UI, e.g. `AMD GPUs via AMD Token Factory` |
 | `NEXT_PUBLIC_API_URL` | frontend | Public URL of the FastAPI service |
 | `NEXT_PUBLIC_USE_MOCKS` | frontend | `true` = use fixtures |
 
 ## Hackathon rules we must satisfy
-- AMD tech must visibly run the product: vLLM-ROCm on MI300X serves every LLM/VLM call, and embeddings run there too. Say so in the UI and in the video.
-- Evolus: the main agent runs on **our** vLLM endpoint, and we use 3 building blocks (knowledge library, document extractor, workflow).
+- AMD tech must visibly run the product: every model call goes to AMD Token Factory, which the lablab FAQ names as the event's AMD API. Say "AMD GPUs via AMD Token Factory" in the UI, the video and the slides, never MI300X. Search is TF-IDF on the CPU (Token Factory has no embedding model).
 - Submission needs:
   - a title, plus short and long descriptions
   - tags
@@ -83,12 +82,12 @@ scripts/        data download notes, benchmark scripts
   - a **public** GitHub repo
   - a live app URL
 - Show **measured numbers**:
-  - extraction field accuracy on the 20 hand-labelled cards
+  - extraction accuracy on 20 cards (today: agreement with the parser's labels, so label it that way)
   - repeat failures found
   - latency
   - tokens/s
-  - cost per 100 cards at $1.99/h
-- Cost discipline: **stop the MI300X droplet when you're not working.**
+  - cost per 100 cards (null on Token Factory, which bills in points, not dollars)
+- Token Factory limits: 20 requests a minute and a daily allowance; each fault answer makes 3 model calls, so saved answers cover the demo.
 
 ## UI style rules (users are technicians and engineers)
 - Three screens only: **Fix a fault**, **Repeat failures**, **Results**.

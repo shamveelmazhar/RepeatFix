@@ -203,7 +203,7 @@ def main(argv: list[str] | None = None) -> int:
         "default_procedures": default_procedures,
     }
 
-    # Results counts: measured on the data. Model numbers stay null until the MI300X benchmark runs.
+    # Results counts: measured on the data. Model numbers stay null: no model runs in the saved demo.
     full = read_jsonl(args.full) if args.full else sdr
     metrics = {
         "cards_processed": len(full) + len(asrs),
@@ -213,8 +213,8 @@ def main(argv: list[str] | None = None) -> int:
         "p50_latency_ms": None,
         "tokens_per_s": None,
         "cost_per_100_cards_usd": None,
-        "gpu": "AMD Instinct MI300X",
-        "model": "Qwen2.5-VL-7B-Instruct",
+        "gpu": "AMD GPUs via AMD Token Factory",
+        "model": None,
     }
 
     MOCKS.mkdir(exist_ok=True)

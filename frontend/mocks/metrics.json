@@ -6,6 +6,6 @@
   "p50_latency_ms": null,
   "tokens_per_s": null,
   "cost_per_100_cards_usd": null,
-  "gpu": "AMD Instinct MI300X",
-  "model": "Qwen2.5-VL-7B-Instruct"
+  "gpu": "AMD GPUs via AMD Token Factory",
+  "model": null
 }

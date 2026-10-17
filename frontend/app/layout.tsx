@@ -7,7 +7,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "RepeatFix",
   description:
-    "Finds repeat failures in maintenance logs and helps technicians fix the next breakdown faster, with past fixes and cited procedures. Runs on AMD MI300X.",
+    "Finds repeat failures in maintenance logs and helps technicians fix the next breakdown faster, with past fixes and cited procedures. Runs on AMD GPUs.",
 };
 
 // Applies the saved theme before paint so there is no light/dark flash.
