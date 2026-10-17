@@ -18,10 +18,10 @@ _procedure_index = None
 
 
 def get_procedure_index():
-    """Load only AC 43.13-1B, the only document assist searches. Saves time and memory."""
+    """Load AC 43.13-1B plus the three FAA handbooks so assist can cite any of them."""
     global _procedure_index
     if _procedure_index is None:
-        _procedure_index = ProcedureIndex.load(AC_FILE)
+        _procedure_index = ProcedureIndex.load()
     return _procedure_index
 
 
@@ -29,7 +29,7 @@ def find_procedures(fault_text, card):
     """Candidate AC 43.13 paragraphs. The work order decides which ones it really uses."""
     query = f"{fault_text} {card.get('component') or ''}".strip()
     hits = get_procedure_index().search(
-        f"{query} {card.get('symptom') or ''}", k=3, docs={"AC 43.13-1B"}
+        f"{query} {card.get('symptom') or ''}", k=3
     )
     return query, hits
 
