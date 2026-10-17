@@ -2,6 +2,8 @@ import json
 import os
 import time
 import uuid
+import re
+from datetime import date
 
 from dotenv import load_dotenv
 from openai import OpenAI
@@ -16,7 +18,7 @@ def get_client():
     return OpenAI(
         base_url=os.getenv("VLLM_BASE_URL"),
         api_key=os.getenv("VLLM_API_KEY", "none"),
-        timeout=40,  # give up on a call after 40 seconds instead of waiting for minutes
+        timeout=30,  # give up on a call after 30 seconds instead of waiting for minutes
         max_retries=0,  # our own retry loop handles repeats
     )
 
@@ -54,6 +56,7 @@ Allowed failure modes:
 
 def clean_json(text):
     """Models sometimes add extra words. Cut out just the {...} part and read it."""
+    text = text or ""
     start = text.find("{")
     end = text.rfind("}")
     if start == -1 or end == -1:
@@ -67,6 +70,18 @@ def to_float(value):
     except (TypeError, ValueError):
         return None
 
+def clean_date(value):
+    """Keep only a full, real YYYY-MM-DD date. '2024-03' or 'March 2024' becomes None."""
+    if not isinstance(value, str):
+        return None
+    value = value.strip()
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", value):
+        return None
+    try:
+        date.fromisoformat(value)
+    except ValueError:
+        return None
+    return value
 
 def normalise(data, raw_text, source):
     """Fix the model's answer so it always matches the JobCard contract."""
@@ -90,7 +105,7 @@ def normalise(data, raw_text, source):
     return {
         "id": f"{source}-{uuid.uuid4().hex[:12]}",
         "source": source,
-        "date": data.get("date"),
+        "date": clean_date(data.get("date")),
         "aircraft_type": data.get("aircraft_type"),
         "registration": data.get("registration"),
         "ata_chapter": chapter,
@@ -110,7 +125,8 @@ def extract_card(text, source="text", client=None):
     client = client or get_client()
     started = time.time()
     reply = None
-    for attempt in range(2):  # try up to 3 times if the service is busy
+    last_error = None
+    for attempt in range(2):  # one retry if the call fails
         try:
             reply = client.chat.completions.create(
                 model=MODEL,
@@ -122,10 +138,12 @@ def extract_card(text, source="text", client=None):
                 max_tokens=1500,
             )
             break
-        except Exception:
-            if attempt == 2:
-                raise
-            time.sleep(2)
+        except Exception as error:
+            last_error = error
+            if attempt == 0:
+                time.sleep(2)
+    if reply is None:
+        raise last_error  # both tries failed: let the caller decide (saved answer or error)
     model_ms = int((time.time() - started) * 1000)
     data = clean_json(reply.choices[0].message.content)
     return normalise(data, text, source), model_ms

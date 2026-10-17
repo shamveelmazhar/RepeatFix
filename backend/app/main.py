@@ -17,7 +17,7 @@ from pydantic import BaseModel, Field
 from app.repeats import repeat_rows
 from app.assist import run_assist
 import time
-
+from concurrent.futures import ThreadPoolExecutor
 from openai import OpenAIError
 from app.benchmark import load_results
 import app.cache as assist_cache
@@ -190,6 +190,16 @@ class AssistRequest(BaseModel):
     aircraft_type: str | None = None
 
 
+ASSIST_BUDGET_S = float(os.getenv("ASSIST_BUDGET_S", "45"))
+_assist_pool = ThreadPoolExecutor(max_workers=8)
+
+
+def run_assist_with_budget(fault_text, asset, aircraft_type):
+    """Run assist, but stop waiting after ASSIST_BUDGET_S seconds."""
+    future = _assist_pool.submit(run_assist, CARDS, fault_text, asset, aircraft_type)
+    return future.result(timeout=ASSIST_BUDGET_S)  # raises TimeoutError if too slow
+
+
 @app.post("/api/assist")
 def assist(body: AssistRequest):
     started = time.time()
@@ -201,9 +211,9 @@ def assist(body: AssistRequest):
         return assist_cache.as_cached(saved, started)
 
     try:
-        result = run_assist(CARDS, body.fault_text, body.asset, body.aircraft_type)
-    except (OpenAIError, ValueError):
-        # The model service failed (limit reached, timeout, bad answer). Use the closest saved answer.
+        result = run_assist_with_budget(body.fault_text, body.asset, body.aircraft_type)
+    except (OpenAIError, ValueError, TimeoutError):
+        # The model service failed or was too slow. Use the closest saved answer.
         traceback.print_exc()
         fallback = assist_cache.closest(body.fault_text)
         if fallback:
@@ -237,9 +247,14 @@ def ingest(body: IngestRequest):
 
 @app.on_event("startup")
 def warm_up():
-    """Load the search indexes when the server starts, so the first request is not slower."""
+    """Load the search indexes in the background, so the server starts listening at once."""
+    import threading
+
     from app.assist import get_procedure_index
     from app.retrieval import get_card_index
 
-    get_procedure_index()
-    get_card_index(CARDS)
+    def load():
+        get_procedure_index()
+        get_card_index(CARDS)
+
+    threading.Thread(target=load, daemon=True).start()
