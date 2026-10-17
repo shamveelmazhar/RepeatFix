@@ -37,7 +37,9 @@ The new card is kept in memory, so it shows in `/api/cards` and `/api/repeats` u
 → `JobCard`
 
 ### `GET /api/repeats?group_by=aircraft|component&min_count=2`
-Returns rows ranked by downtime, then count.
+Returns rows with `count >= min_count`, ranked by downtime, then count.
+- `group_by=aircraft` uses our repeat rule: same tail + ATA chapter + failure mode, with reports at least 7 days apart. A report filed within 7 days of the last counted one is the same event, so it isn't counted again. `count` is the number of counted failures, `mtbf_days` is the average number of days between them, and `card_ids` lists every report in the group (so it can be longer than `count`). Cards with no tail or no date are left out.
+- `group_by=component` groups by component + failure mode across the whole fleet, and `asset` holds the component name. Here `count` is every report; the 7-day rule doesn't apply.
 ```json
 [{ "asset": "N12345", "aircraft_type": "B737-800", "ata_chapter": "32", "ata_name": "Landing Gear",
    "failure_mode": "brake_overheat", "count": 5, "mtbf_days": 41.2, "downtime_hours": 31.0,
@@ -61,8 +63,7 @@ Request: `{ "fault_text": "...", "asset": "N12345" | null, "aircraft_type": "B73
   "work_order": { "title": "...", "asset": "N12345", "steps": ["..."], "parts": ["..."],
                   "est_hours": 3.0, "status": "draft" },
   "repeat_history": { "count": 4, "first_date": "2026-01-08", "last_date": "2026-05-19",
-                      "card_ids": ["sdr-..."] },   // optional/null: earlier cards with the same failure_mode
-                                                     // on this asset (or fleet if no asset); drives the repeat alert
+                      "card_ids": ["sdr-..."] },   // optional/null; drives the repeat alert, see below
   "timing": { "total_ms": 2100, "tokens_per_s": 95.0 },  // tokens_per_s may be null
   "cached": false,                                      // optional; true = a saved answer, not a fresh model call
   "cached_for": "FUME EVENT ON DESCENT IN COCKPIT"      // optional; only on a fallback: the fault this saved answer was written for
@@ -73,6 +74,8 @@ Request: `{ "fault_text": "...", "asset": "N12345" | null, "aircraft_type": "B73
 - The live call failed (rate limit, timeout, bad model answer) and the backend fell back to the saved answer for the closest saved fault. `cached_for` holds that fault's text. If no saved fault is close enough, it returns a 502 instead.
 
 On a saved answer, `timing.total_ms` is the time this request took, and `timing.tokens_per_s` is `null`. Saved answers are not counted in `/api/metrics`. The whole request should finish within about 50 s, so the fallback answers before the UI's 60 s limit. The UI labels these answers "Saved answer" and names `cached_for` when present. If the backend is unreachable, answers 429 or 5xx, or takes more than 60 s, the UI shows its own saved demo answer.
+`repeat_history` counts earlier reports with the same `failure_mode` on the tail in `asset`. If only `aircraft_type` is given, it uses that type, and with neither it uses the whole fleet. It counts every matching report, from any ATA chapter, without the 7-day rule, so for the same tail it can be higher than the count on Repeat failures. It is `null` when the failure mode is `other` or nothing matches.
+
 `procedures[].page` may be `null` when only the section is known. Two optional fields may also be present: `page_label`, the page number printed in the document (e.g. `"9-12"`; `page` is the PDF page, for links), and `citation`, the full reference string, e.g. `"AC 43.13-1B, Chapter 9, Section 1, par. 9-14 (Tire Inspection and Repair), page 9-12"`. AC excerpts come from `data/procedures/ac_43-13-1b.jsonl` (see `backend/README.md`). `ata_name` is optional on any JobCard or repeat row; the UI falls back to its own ATA chapter table.
 
 ### `POST /api/work-orders/{id}/approve`
@@ -96,5 +99,7 @@ Every number except `cards_processed` and `repeat_groups_found` may be `null` un
 
 ## Conventions
 - Errors return `{ "error": "message" }` with a 4xx/5xx status.
+- Bad query or body values (e.g. `group_by=foo`, `limit=0`, a `fault_text` under 3 characters) return 422, e.g. `{ "error": "Invalid value for 'group_by': ..." }`.
+- `/api/assist` returns 502 `{ "error": ... }` when the model call fails and no saved answer is close enough. `/api/ingest` returns 502 when the model call fails.
 - CORS must allow the Vercel domain and `http://localhost:3000`.
 - The frontend fixtures in `frontend/mocks/*.json` mirror these response shapes exactly.
