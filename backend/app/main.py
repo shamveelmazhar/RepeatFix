@@ -78,10 +78,27 @@ async def validation_error_handler(request, exc):
     )
 
 
+_health_cache = {"at": 0.0, "model_ok": False}
+
+
+def model_is_up():
+    """Cheap check that the model service answers. The result is kept for 60 seconds."""
+    now = time.time()
+    if now - _health_cache["at"] < 60:
+        return _health_cache["model_ok"]
+    try:
+        extract_module.get_client().with_options(timeout=5, max_retries=0).models.list()
+        ok = True
+    except Exception:
+        ok = False
+    _health_cache.update(at=now, model_ok=ok)
+    return ok
+
+
 @app.get("/api/health")
 def health():
-    # vllm and evolus become real checks later
-    return {"ok": True, "vllm": False, "evolus": False}
+    # evolus stays false: the Evolus integration is not built, so we don't claim it
+    return {"ok": True, "vllm": model_is_up(), "evolus": False}
 
 
 @app.get("/api/cards")
