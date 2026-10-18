@@ -4,7 +4,8 @@ The UI reads these files when no backend is connected (mock / cached demo mode):
   cards.json      every JobCard in data/samples/sdr_demo.jsonl and asrs_mechanic.jsonl
   knowledge.json  failure-mode labels, plus cited procedures (AC 43.13-1B and the AMT
                   Handbooks, via backend/app/procedures.py) for each ATA chapter + failure mode
-  metrics.json    counts measured on the data; model numbers stay null until benchmarked
+  metrics.json    counts measured on the data, plus the model numbers from
+                  data/benchmark/results.json when that benchmark has been run
 
 Run from the repo root:
     python scripts/build_mock_fixtures.py
@@ -220,15 +221,18 @@ def main(argv: list[str] | None = None) -> int:
         "default_procedures": default_procedures,
     }
 
-    # Results counts: measured on the data. Model numbers stay null: no model runs in the saved demo.
+    # Results counts: measured on the data. Model numbers come from the benchmark run on
+    # AMD Token Factory (no model runs in the saved demo), and stay null until it exists.
     full = read_jsonl(args.full) if args.full else sdr
+    bench_file = ROOT / "data" / "benchmark" / "results.json"
+    bench = json.loads(bench_file.read_text(encoding="utf-8")) if bench_file.exists() else {}
     metrics = {
         "cards_processed": len(full) + len(asrs),
-        "extraction_field_accuracy": None,
-        "labelled_cards": 0,
+        "extraction_field_accuracy": bench.get("extraction_field_accuracy"),
+        "labelled_cards": bench.get("labelled_cards", 0),
         "repeat_groups_found": len(repeat_groups(full, 2, 7)),
-        "p50_latency_ms": None,
-        "tokens_per_s": None,
+        "p50_latency_ms": bench.get("p50_latency_ms"),
+        "tokens_per_s": bench.get("tokens_per_s"),
         "cost_per_100_cards_usd": None,
         "gpu": "AMD GPUs via AMD Token Factory",
         "model": "DeepSeek-V4-Flash",  # the backend's default model (VLLM_MODEL)
